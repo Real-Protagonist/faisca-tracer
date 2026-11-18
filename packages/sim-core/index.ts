@@ -13,6 +13,26 @@ export { motor1Rated, START_TIME } from './devices/motors';
 export { APPLIANCES, DEFECTS } from './devices/loads';
 export { FLOOR } from './devices/faults';
 export * from './devices/symbols';
+export { motor3Rated, motorModel, torqueAt, MOTOR_H, type MotorModel } from './devices/industrial/motor3';
+export { VFD_THD, VFD_HARMONICS } from './devices/industrial/drives';
+export { OVERLOAD_K, overloadTripTime } from './devices/industrial/helpers';
+export {
+  COIL_TARGETS,
+  DEFAULT_PROGRAM,
+  parseLadder,
+  serializeLadder,
+  validOperand,
+  PLC_INPUTS,
+  PLC_OUTPUTS,
+  PLC_MEMORY,
+  PLC_TIMERS,
+  PLC_COUNTERS,
+  type CoilKind,
+  type LadderCoil,
+  type LadderContact,
+  type LadderProgram,
+  type LadderRung,
+} from './devices/industrial/plc';
 export * from './diagnostics';
 export * from './checks/tables';
 export * from './format';

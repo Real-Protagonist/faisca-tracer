@@ -8,7 +8,7 @@ import { createProject, parseProject, type Domain, type Lang, type Level } from 
 import { EXAMPLES } from '@faisca/content';
 import { rememberLang } from '../i18n';
 import { closeWizard, loadProject, setLang, useApp } from '../store';
-import { startTour } from '../tour/TourOverlay';
+import { startTour, TOUR_OF } from '../tour/TourOverlay';
 import { fitView } from '../view';
 
 type Screen = 'lang' | 'area' | 'level' | 'start' | 'examples';
@@ -79,13 +79,13 @@ export function Wizard() {
     remember(domain, level);
     closeWizard();
     loadProject(P);
-    requestAnimationFrame(fitView);
+    requestAnimationFrame(() => fitView());
   };
 
   const empty = () => {
     finish(createProject({ domain, level, lang }));
     // No nível Iniciante, o projecto vazio arranca o tour (o industrial chega na Fase 4).
-    if (level === 'beginner' && domain === 'domestic') startTour('domestic-first-light', false);
+    if (level === 'beginner') startTour(TOUR_OF[domain], false);
   };
 
   const examples = EXAMPLES.filter((e) => e.domain === domain && e.level === level);

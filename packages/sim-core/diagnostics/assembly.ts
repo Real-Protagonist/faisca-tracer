@@ -4,6 +4,7 @@ import type { Registry } from '../devices/registry';
 import type { Project } from '../project/types';
 import { diag, dev, wire, type Diagnostic } from './types';
 import { buildTopology, findPath, type Topology } from './topology';
+import { lineVoltageOf } from '../devices/industrial/helpers';
 
 type Fmt = (v: number, unit: string) => string;
 
@@ -33,8 +34,10 @@ export function assemblyDiagnostics(P: Project, registry: Registry, fmt: Fmt, to
     const def = registry.get(d.type);
     if (!def) continue;
 
-    // Cargas: terminais livres e caminho de retorno.
-    if (def.load) {
+    // Cargas trifásicas: cada terminal de linha tem de estar ligado.
+    if (def.load?.phases) {
+      for (const t of def.load.phases) if (!topo.wired(d.id, t)) out.push(diag('TERMINAL_UNCONNECTED', 'warning', [dev(d.id)], { device: d.name, terminal: t }, d.id));
+    } else if (def.load) {
       const { phase, neutral } = def.load;
       const pPin = topo.pin(d.id, phase);
       const nPin = topo.pin(d.id, neutral);
@@ -42,7 +45,12 @@ export function assemblyDiagnostics(P: Project, registry: Registry, fmt: Fmt, to
       const nWired = topo.wired(d.id, neutral);
       const phaseOk = pPin >= 0 && topo.roles[pPin]!.has('phase');
       const neutralOk = nPin >= 0 && topo.roles[nPin]!.has('neutral');
-      if (phaseOk && !neutralOk) {
+      const between = phaseOk && !neutralOk ? phasePhase(topo, pPin, nPin) : null;
+      if (between) {
+        // Entre duas fases: só serve se a carga for da tensão composta.
+        if (def.load.nominalVoltage(d) < 0.9 * between.voltage)
+          out.push(diag('LOAD_PHASE_PHASE', 'error', [dev(d.id)], { device: d.name, voltage: fmt(between.voltage, 'V'), nominal: fmt(def.load.nominalVoltage(d), 'V') }, d.id));
+      } else if (phaseOk && !neutralOk) {
         out.push(diag('LOAD_NO_RETURN', 'error', [dev(d.id)], { device: d.name, terminal: neutral }, d.id));
       } else {
         if (!pWired) out.push(diag('TERMINAL_UNCONNECTED', 'warning', [dev(d.id)], { device: d.name, terminal: phase }, d.id));
@@ -133,4 +141,14 @@ export function assemblyDiagnostics(P: Project, registry: Registry, fmt: Fmt, to
     }
   }
   return out;
+}
+
+/** Os dois terminais recebem fases diferentes da mesma fonte: devolve a tensão entre fases. */
+function phasePhase(topo: Topology, a: number, b: number): { voltage: number } | null {
+  const phasesAt = (pin: number) => topo.seeds.filter((s) => s.role === 'phase' && topo.reach[pin]!.has(`${s.device.id}:${s.terminal}`));
+  const pa = phasesAt(a);
+  const pb = phasesAt(b);
+  for (const x of pa)
+    for (const y of pb) if (x.device.id === y.device.id && x.terminal !== y.terminal) return { voltage: lineVoltageOf(x.device) };
+  return null;
 }

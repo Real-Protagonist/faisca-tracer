@@ -12,7 +12,7 @@ import { Figure } from './figures';
 /** Avisos de montagem que só aparecem no painel Problemas (aparecem a cada aparelho colocado). */
 const PANEL_ONLY = new Set(['TERMINAL_UNCONNECTED']);
 /** Diagnósticos de montagem: o cartão espera que o utilizador pare de editar. */
-const ASSEMBLY = new Set(['SOURCE_SHORT', 'LOAD_NO_RETURN', 'SWITCH_ON_NEUTRAL', 'PE_MISSING', 'CABLE_UNPROTECTED', 'WIRE_COLOR']);
+const ASSEMBLY = new Set(['SOURCE_SHORT', 'LOAD_NO_RETURN', 'SWITCH_ON_NEUTRAL', 'PE_MISSING', 'CABLE_UNPROTECTED', 'WIRE_COLOR', 'LOAD_PHASE_PHASE']);
 const IDLE_MS = 2500;
 const MAX_CARDS = 3;
 /** Valores técnicos mostrados no perfil Profissional. */

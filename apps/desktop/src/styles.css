@@ -97,6 +97,13 @@ button, select, input { font: inherit; color: inherit; }
 .sl.solar { fill: #cfe0fb; }
 .sl.ring { fill: #ffe9a6; }
 .sl.rot { stroke: #2f80ed; stroke-width: 3; }
+.sl.bad { stroke: #d63030; }
+.sl.coil.bad { fill: #ffd9d9; }
+.sl.fill.on { fill: #e3f7ea; }
+.sl.fill-dark { fill: var(--ink); }
+.sl.pe { stroke: #2e9e44; stroke-dasharray: 6 3; }
+.txt.on { fill: #1f9d55; }
+.txt.bad { fill: #d63030; font-weight: 600; }
 .txt { fill: var(--ink); font-size: 11px; font-family: inherit; }
 .txt.sm { font-size: 10px; }
 .txt.xs { font-size: 9px; }
@@ -283,3 +290,20 @@ table.list tr:hover { background: var(--ui-bg3); }
 .tour-bubble .buttons button.primary, .tour-bubble .buttons button:not(.link) { background: var(--accent); color: var(--accent-text); border: 0; font-weight: 600; }
 .tour-bubble .buttons button:disabled { opacity: 0.6; }
 .spacer { flex: 1; }
+
+/* Editor de ladder */
+.ladder .rung { margin: 8px 0; padding: 6px; border: 1px solid var(--ui-line); border-radius: 6px; background: var(--ui-bg2); }
+.ladder .rung-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.ladder .rung-svg { display: block; background: #fbfcfe; border-radius: 4px; margin-bottom: 6px; }
+.lad { fill: none; stroke: #4a5568; stroke-width: 1.6; }
+.lad.on { stroke: #1f9d55; stroke-width: 2.4; }
+.lad.rail { stroke: #2f3a4d; stroke-width: 2.4; }
+.lad-txt { font-size: 9px; fill: #263040; }
+.ladder .cols { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; }
+.ladder .col { display: flex; flex-direction: column; gap: 3px; padding: 4px; border: 1px dashed var(--ui-line); border-radius: 4px; }
+.ladder .contact { display: flex; gap: 3px; align-items: center; }
+.ladder .contact select, .ladder .coil-row select { background: var(--ui-bg3); border: 1px solid var(--ui-line); border-radius: 4px; padding: 1px 2px; }
+.ladder .nc { min-width: 30px; padding: 1px 4px; border: 1px solid var(--ui-line); border-radius: 4px; background: var(--ui-bg3); cursor: pointer; font-size: 11px; }
+.ladder .nc.active { background: #6b3a3a; }
+.ladder .coil-row { display: flex; gap: 4px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
+.ladder .preset { width: 56px; background: var(--ui-bg3); border: 1px solid var(--ui-line); border-radius: 4px; }

@@ -22,6 +22,8 @@ export interface BuiltNetwork extends Network {
   tags: Map<string, Element>;
   /** 'idEquipamento#nome' → nó interno */
   internals: Map<string, number>;
+  /** Frequência de um nó como fracção da frequência da rede (saída dos variadores). */
+  freqAt(node: number): number;
 }
 
 export interface ExtraStamp {
@@ -73,6 +75,8 @@ export function buildNetwork(
     for (const t of def.terminals) termNode.set(`${d.id}:${t.id}`, nodeFor(`${d.id}:${t.id}`, `${d.name}:${t.id}`));
   }
 
+  const freqAt = frequencyDomains(project, registry, runtimeOf, termNode);
+
   const elements: Element[] = [];
   const tags = new Map<string, Element>();
   const internals = new Map<string, number>();
@@ -118,6 +122,7 @@ export function buildNetwork(
     sw: (a, b, closed, tag) => {
       if (closed) push({ k: 'Z', a, b, R: CONTACT_R, L: 0, C: 0 }, tag);
     },
+    freq: (t) => freqAt(ctx.node(t)),
   };
 
   for (const d of project.devices) {
@@ -150,7 +155,43 @@ export function buildNetwork(
     current = null;
   }
 
-  return { nodeCount: count, elements, omega, nodeLabels, termNode, tags, internals };
+  return { nodeCount: count, elements, omega, nodeLabels, termNode, tags, internals, freqAt };
+}
+
+/**
+ * Zonas de frequência: a saída de um variador propaga-se pelos cabos e pelos contactos
+ * fechados até às cargas. O resto da rede fica à frequência da rede (factor 1).
+ */
+function frequencyDomains(project: Project, registry: Registry, runtimeOf: (d: Device) => object, termNode: Map<string, number>): (node: number) => number {
+  const marks: { node: number; factor: number }[] = [];
+  for (const d of project.devices) {
+    const o = registry.get(d.type)?.outputFrequency?.(d, runtimeOf(d) as never);
+    if (!o) continue;
+    for (const t of o.terminals) {
+      const n = termNode.get(`${d.id}:${t}`);
+      if (n !== undefined) marks.push({ node: n, factor: o.factor });
+    }
+  }
+  if (!marks.length) return () => 1;
+  const parent = new Map<number, number>();
+  const find = (k: number): number => {
+    let r = k;
+    while (parent.has(r)) r = parent.get(r)!;
+    return r;
+  };
+  const union = (a: number | undefined, b: number | undefined) => {
+    if (a === undefined || b === undefined) return;
+    const ra = find(a);
+    const rb = find(b);
+    if (ra !== rb) parent.set(ra, rb);
+  };
+  for (const w of project.wires) if (!w.fault?.cut) union(termNode.get(`${w.a.device}:${w.a.terminal}`), termNode.get(`${w.b.device}:${w.b.terminal}`));
+  for (const d of project.devices) {
+    for (const c of registry.get(d.type)?.conducts?.(d) ?? []) if (c.closed) union(termNode.get(`${d.id}:${c.a}`), termNode.get(`${d.id}:${c.b}`));
+  }
+  const byRoot = new Map<number, number>();
+  for (const m of marks) byRoot.set(find(m.node), m.factor);
+  return (node) => byRoot.get(find(node)) ?? 1;
 }
 
 export function makeView(net: BuiltNetwork, sol: NetworkSolution): SolutionView {
@@ -174,6 +215,10 @@ export function makeView(net: BuiltNetwork, sol: NetworkSolution): SolutionView 
     },
     i: (d, tag) => iEl(net.tags.get(`${d.id}:${tag}`)),
     iWire: (id) => iEl(net.tags.get(`w:${id}`)),
+    freq: (d, t) => {
+      const n = net.termNode.get(`${d.id}:${t}`);
+      return n === undefined ? 1 : net.freqAt(n);
+    },
     hasAC: !!sol.ac,
     hasDC: !!sol.dc,
   };

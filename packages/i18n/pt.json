@@ -193,6 +193,130 @@
     "note": {
       "name": "Nota",
       "desc": "Texto livre para instruções ou observações."
+    },
+    "grid3ph": {
+      "name": "Rede trifásica",
+      "desc": "Rede de 400/230 V com três fases e neutro, para motores e quadros industriais."
+    },
+    "mcb3p": {
+      "name": "Disjuntor 3P",
+      "desc": "Protege as três fases de um circuito trifásico e corta-as ao mesmo tempo."
+    },
+    "mcb4p": {
+      "name": "Disjuntor 4P",
+      "desc": "Corta as três fases e o neutro, para circuitos trifásicos com cargas monofásicas."
+    },
+    "motorBreaker": {
+      "name": "Disjuntor-motor",
+      "desc": "Protege o motor contra curto-circuito e sobrecarga, com a corrente Ir regulada para o motor."
+    },
+    "thermalRelay": {
+      "name": "Relé térmico",
+      "desc": "Abre o contacto 95-96 quando o motor puxa corrente a mais durante demasiado tempo."
+    },
+    "phaseMonitor": {
+      "name": "Relé de falta e sequência de fases",
+      "desc": "Fecha o contacto 11-14 só com as três fases presentes e pela ordem certa."
+    },
+    "heater3ph": {
+      "name": "Resistências trifásicas",
+      "desc": "Três resistências de aquecimento em estrela, ligadas às três fases."
+    },
+    "capacitorBank": {
+      "name": "Bateria de condensadores",
+      "desc": "Fornece energia reactiva e melhora o factor de potência da instalação."
+    },
+    "powerAnalyzer": {
+      "name": "Analisador de rede",
+      "desc": "Mede tensão, corrente e factor de potência em cada fase, e as potências totais."
+    },
+    "phaseSequenceMeter": {
+      "name": "Sequencímetro",
+      "desc": "Mostra se as fases estão pela ordem directa ou inversa, ou se falta alguma."
+    },
+    "phaseLoss": {
+      "name": "Falta de fase",
+      "desc": "Corta uma das três fases para ensaiar o que acontece ao motor."
+    },
+    "phaseReversal": {
+      "name": "Inversão de fases",
+      "desc": "Troca duas fases: o motor passa a rodar ao contrário."
+    },
+    "contactor3p": {
+      "name": "Contactor",
+      "desc": "Interruptor comandado por uma bobina: os contactos principais ligam o motor e os auxiliares 13-14 e 21-22 servem o comando."
+    },
+    "auxRelay": {
+      "name": "Contactor auxiliar",
+      "desc": "Relé de comando com dois contactos NA e dois NF, sem contactos de potência."
+    },
+    "timerOn": {
+      "name": "Temporizador com atraso à operação",
+      "desc": "Comuta os contactos 15-16 e 15-18 algum tempo depois de a bobina receber tensão."
+    },
+    "timerOff": {
+      "name": "Temporizador com atraso à desoperação",
+      "desc": "Mantém os contactos comutados algum tempo depois de a bobina perder a tensão."
+    },
+    "buttonNO": {
+      "name": "Botoneira NA (marcha)",
+      "desc": "Botão de pressão verde: fecha o contacto 13-14 só enquanto está premido."
+    },
+    "buttonNC": {
+      "name": "Botoneira NF (paragem)",
+      "desc": "Botão de pressão vermelho: abre o contacto 11-12 enquanto está premido."
+    },
+    "emergencyStop": {
+      "name": "Botão de emergência",
+      "desc": "Corta o comando e fica encravado até ser desbloqueado."
+    },
+    "selector012": {
+      "name": "Selector 0-1-2",
+      "desc": "Comutador rotativo de três posições: a 1 fecha 13-14 e a 2 fecha 23-24."
+    },
+    "pilotLight": {
+      "name": "Sinalizador luminoso",
+      "desc": "Lâmpada de sinalização do quadro: marcha, disparo ou presença de tensão."
+    },
+    "limitSwitch": {
+      "name": "Fim de curso",
+      "desc": "Contacto actuado mecanicamente quando uma peça chega ao fim do percurso."
+    },
+    "floatSwitch": {
+      "name": "Bóia de nível",
+      "desc": "Fecha o contacto 13-14 com o nível alto e o 21-22 com o nível baixo."
+    },
+    "pressureSwitch": {
+      "name": "Pressostato",
+      "desc": "Comuta os contactos quando a pressão passa o valor regulado."
+    },
+    "inductiveSensor": {
+      "name": "Detector indutivo",
+      "desc": "Sensor PNP de três fios: detecta metal sem contacto e põe 24 V na saída BK."
+    },
+    "photocell": {
+      "name": "Fotocélula",
+      "desc": "Sensor PNP que liga a saída BK quando um objecto corta o feixe de luz."
+    },
+    "motor3ph": {
+      "name": "Motor trifásico",
+      "desc": "Motor de indução das máquinas industriais; liga-se em estrela ou em triângulo na placa de bornes."
+    },
+    "starDeltaStarter": {
+      "name": "Arrancador estrela-triângulo",
+      "desc": "Arranca o motor em estrela, com um terço da corrente, e passa a triângulo pelo temporizador."
+    },
+    "softStarter": {
+      "name": "Arrancador suave",
+      "desc": "Sobe a tensão do motor aos poucos durante o arranque e depois liga directo."
+    },
+    "vfd": {
+      "name": "Variador de frequência",
+      "desc": "Controla a velocidade do motor pela frequência, com rampas de aceleração e desaceleração."
+    },
+    "plc": {
+      "name": "Autómato programável (PLC)",
+      "desc": "Lê 8 entradas de 24 V, corre um programa em ladder e comanda 8 saídas a relé."
     }
   },
   "param": {
@@ -232,7 +356,26 @@
     "title": "Título",
     "W": "Largura",
     "H": "Altura",
-    "text": "Texto"
+    "text": "Texto",
+    "Ir": "Corrente regulada Ir",
+    "Q": "Potência reactiva",
+    "U0": "Tensão inicial",
+    "Uc": "Tensão da bobina",
+    "Un": "Tensão nominal",
+    "cls": "Classe de disparo",
+    "color": "Cor",
+    "connection": "Ligação na placa de bornes",
+    "fTarget": "Frequência de referência",
+    "load": "Carga mecânica",
+    "phase": "Fase cortada",
+    "poles": "Número de pólos",
+    "program": "Programa",
+    "resetMode": "Rearme",
+    "setpoint": "Pressão regulada",
+    "t": "Tempo",
+    "tAcc": "Rampa de aceleração",
+    "tDec": "Rampa de desaceleração",
+    "tRamp": "Duração da rampa"
   },
   "option": {
     "earthing": {
@@ -277,6 +420,22 @@
       "wet": "Descalço, chão molhado",
       "shoes": "Calçado normal",
       "insulating": "Calçado isolante"
+    },
+    "color": {
+      "green": "Verde",
+      "red": "Vermelho",
+      "orange": "Laranja",
+      "white": "Branco",
+      "blue": "Azul"
+    },
+    "connection": {
+      "star": "Estrela (Y)",
+      "delta": "Triângulo (Δ)",
+      "external": "Externa (arrancador Y/Δ)"
+    },
+    "resetMode": {
+      "auto": "Automático",
+      "manual": "Manual"
     }
   },
   "meas": {
@@ -326,7 +485,39 @@
     "bodyCurrent": "Corrente no corpo",
     "touchVoltage": "Tensão de contacto",
     "bodyZone": "Efeito provável (IEC 60479-1)",
-    "exposure": "Tempo de exposição"
+    "exposure": "Tempo de exposição",
+    "currentL1": "Corrente L1",
+    "currentL2": "Corrente L2",
+    "currentL3": "Corrente L3",
+    "voltageL1": "Tensão L1-N",
+    "voltageL2": "Tensão L2-N",
+    "voltageL3": "Tensão L3-N",
+    "powerFactorL1": "FP L1",
+    "powerFactorL2": "FP L2",
+    "powerFactorL3": "FP L3",
+    "counters": "Contadores C",
+    "direction": "Sentido de rotação",
+    "elapsed": "Tempo decorrido",
+    "frequency": "Frequência",
+    "h5": "Harmónico 5",
+    "h7": "Harmónico 7",
+    "inputCurrent": "Corrente de entrada",
+    "inputs": "Entradas I0–I7",
+    "outputs": "Saídas Q0–Q7",
+    "memory": "Memórias M",
+    "timers": "Temporizadores T",
+    "lineVoltage": "Tensão entre fases",
+    "phaseVoltage": "Tensão fase-neutro",
+    "neutralCurrent": "Corrente no neutro",
+    "output": "Saída",
+    "outputCurrent": "Corrente de saída",
+    "outputVoltage": "Tensão de saída",
+    "prospectiveIcc3": "Icc trifásica presumida",
+    "ratedSlip": "Escorregamento nominal",
+    "slip": "Escorregamento",
+    "supplyVoltage": "Tensão de alimentação",
+    "thdI": "THD de corrente",
+    "torque": "Binário"
   },
   "state": {
     "closed": "Fechado (ligado)",
@@ -373,7 +564,46 @@
     "appliance_microwave": "Micro-ondas",
     "appliance_heater": "Aquecedor",
     "appliance_washer": "Máquina de lavar",
-    "appliance_kettle": "Chaleira"
+    "appliance_kettle": "Chaleira",
+    "accelerating": "A acelerar",
+    "decelerating": "A desacelerar",
+    "actuated": "Actuado",
+    "beam_clear": "Feixe livre",
+    "beam_cut": "Feixe cortado",
+    "bits": "{{bits}}",
+    "coil_burnt": "Bobina queimada",
+    "contact_switched": "Contacto comutado",
+    "energized": "Activado",
+    "deenergized": "Em repouso",
+    "fault": "Avaria",
+    "forward": "À direita",
+    "reverse": "À esquerda",
+    "none": "Sem rotação",
+    "idle": "Em repouso",
+    "latched": "Encravado",
+    "level_high": "Nível alto",
+    "level_low": "Nível baixo",
+    "ok": "Fases correctas",
+    "phase_loss": "Falta de fase",
+    "phase_missing": "Falta uma fase",
+    "wrong_sequence": "Sequência errada",
+    "plc_run": "RUN",
+    "plc_stop": "STOP",
+    "position_0": "Posição 0",
+    "pressure_high": "Pressão alta",
+    "pressure_low": "Pressão baixa",
+    "sequence_direct": "Sequência directa",
+    "sequence_inverse": "Sequência inversa",
+    "stage_off": "Desligado",
+    "stage_star": "Estrela",
+    "stage_delta": "Triângulo",
+    "stage_ramp": "Em rampa",
+    "stage_bypass": "Ligado directo",
+    "stalled": "Bloqueado",
+    "stopping": "A parar",
+    "target_absent": "Sem metal",
+    "target_present": "Metal detectado",
+    "timing": "A temporizar"
   },
   "action": {
     "open": "Desligar",
@@ -391,7 +621,30 @@
     "activate": "Activar",
     "deactivate": "Desactivar",
     "touch": "Tocar",
-    "stop_touching": "Deixar de tocar"
+    "stop_touching": "Deixar de tocar",
+    "actuated": "Actuar",
+    "released": "Libertar",
+    "beam_cut": "Cortar o feixe",
+    "beam_clear": "Libertar o feixe",
+    "free_rotor": "Libertar o rotor",
+    "lock_rotor": "Bloquear o rotor",
+    "level_high": "Nível alto",
+    "level_low": "Nível baixo",
+    "plc_run": "Pôr em RUN",
+    "plc_stop": "Pôr em STOP",
+    "pos_0": "Posição 0",
+    "pos_1": "Posição 1",
+    "pos_2": "Posição 2",
+    "press_latch": "Premir (encrava)",
+    "unlatch": "Desbloquear",
+    "pressure_high": "Pressão alta",
+    "pressure_low": "Pressão baixa",
+    "reset_fault": "Rearmar a avaria",
+    "run_fwd": "Marcha à direita",
+    "run_rev": "Marcha à esquerda",
+    "stop": "Parar",
+    "target_present": "Aproximar metal",
+    "target_absent": "Afastar o metal"
   },
   "event": {
     "mcb_magnetic_trip": "Disparo magnético: {{current}} ({{ratio}} × In)",
@@ -406,7 +659,17 @@
     "motor_running": "Motor em marcha",
     "motor_stalled": "Motor bloqueado: só {{voltage}}",
     "body_current": "Perigo: {{current}} no corpo",
-    "control_unstable": "O comando oscila e não estabiliza"
+    "control_unstable": "O comando oscila e não estabiliza",
+    "coil_burnt": "A bobina de {{device}} queimou: recebeu {{voltage}} e é de {{rated}}",
+    "contactor_no_hold": "{{device}} caiu ao largar {{button}}: falta a auto-retenção",
+    "motor_burnt": "O motor {{device}} queimou",
+    "motor_overload": "{{device}} disparou por sobrecarga ({{current}})",
+    "motor_phase_loss": "Falta uma fase no motor {{device}}",
+    "phase_fault": "{{device}} detectou falta ou inversão de fases",
+    "soft_start_done": "{{device}} terminou a rampa e ligou directo",
+    "star_delta_switch": "{{device}} passou de estrela a triângulo",
+    "timer_elapsed": "{{device}} comutou os contactos temporizados",
+    "vfd_fault": "O variador {{device}} parou: tensão de entrada {{voltage}}"
   },
   "diag": {
     "source_short": {
@@ -519,8 +782,8 @@
     },
     "control_unstable": {
       "title": "O circuito de comando oscila",
-      "cause": "Um contacto alimenta e corta a própria bobina sem parar.",
-      "hint": "Reveja os contactos NF ligados às bobinas.",
+      "cause": "{{device}} liga e desliga sem parar: um contacto NF alimenta a própria bobina.",
+      "hint": "Reveja os contactos NF de {{device}}, como o 21-22.",
       "learn": "Se o contacto de um relé desligar a sua própria bobina, o relé abre e fecha sem fim. O comando nunca fica estável."
     },
     "path_open": {
@@ -570,6 +833,66 @@
       "cause": "Esta verificação segue o caminho de uma carga até à fonte.",
       "hint": "Escolha uma lâmpada, tomada, motor ou outra carga.",
       "learn": "Cargas são os aparelhos que consomem energia: lâmpadas, tomadas, aquecedores, motores."
+    },
+    "coil_off": {
+      "title": "{{device}} não funciona",
+      "cause": "A bobina de {{blocker}} não está alimentada.",
+      "hint": "Prima o botão de marcha ou veja porque {{blocker}} não actua.",
+      "learn": "Um contactor só fecha os contactos quando a bobina recebe tensão. Siga o circuito de comando até à bobina."
+    },
+    "coil_voltage": {
+      "title": "A bobina de {{device}} não actua",
+      "cause": "{{device}} tem bobina de {{rated}} e recebe {{voltage}}.",
+      "hint": "Troque a bobina ou alimente o comando a {{rated}}.",
+      "learn": "A bobina tem de receber a tensão da placa. Com menos não actua; com muito mais queima."
+    },
+    "load_phase_phase": {
+      "title": "{{device}} está ligado entre duas fases",
+      "cause": "Recebe {{voltage}} e é de {{nominal}}.",
+      "hint": "Ligue {{device}} entre uma fase e o neutro.",
+      "learn": "Entre duas fases há 400 V; entre uma fase e o neutro há 230 V. Um aparelho de 230 V queima a 400 V."
+    },
+    "motor_no_hold": {
+      "title": "{{device}} pára quando larga {{button}}",
+      "cause": "Falta a auto-retenção: o contacto {{contact}} de {{contactor}} não está em paralelo com {{button}}.",
+      "hint": "Ligue {{contactor}}-{{a}} e {{contactor}}-{{b}} aos terminais de {{button}}.",
+      "learn": "O botão de marcha só fecha enquanto está premido. O contacto NA do contactor, em paralelo com o botão, mantém a bobina alimentada."
+    },
+    "motor_overheated": {
+      "title": "O motor {{device}} queimou",
+      "cause": "Funcionou muito tempo acima da corrente nominal de {{rated}}.",
+      "hint": "Substitua {{device}} e proteja-o com um relé térmico regulado para {{rated}}.",
+      "learn": "O relé térmico desliga o motor antes de os enrolamentos aquecerem demasiado. Sem ele, o isolamento queima."
+    },
+    "motor_overload": {
+      "title": "{{device}} disparou por sobrecarga",
+      "cause": "{{motor}} pediu {{current}} e {{device}} está regulado para {{rated}}.",
+      "hint": "Verifique a carga de {{motor}} e rearme {{device}} depois de arrefecer.",
+      "learn": "A sobrecarga aquece o motor devagar. O relé térmico imita esse aquecimento e abre o comando antes de o motor se estragar."
+    },
+    "motor_phase_loss": {
+      "title": "Falta uma fase no motor {{device}}",
+      "cause": "Falta a fase {{phase}} no terminal {{terminal}}.",
+      "hint": "Verifique o cabo de {{from}} para {{to}}.",
+      "learn": "Com duas fases, o motor parado não tem binário para arrancar. A corrente sobe e os enrolamentos aquecem."
+    },
+    "motor_stalled": {
+      "title": "O motor {{device}} não arranca",
+      "cause": "O rotor está bloqueado ou a carga de {{load}} é demasiado grande.",
+      "hint": "Liberte o rotor de {{device}} ou reduza a carga.",
+      "learn": "Parado, o motor puxa 6 a 8 vezes a corrente nominal. Se não acelerar, aquece em poucos segundos."
+    },
+    "overload_phase_loss": {
+      "title": "{{device}} disparou por falta de fase",
+      "cause": "{{motor}} ficou só com duas fases e pediu {{current}}.",
+      "hint": "Verifique as três fases de {{motor}} antes de rearmar {{device}}.",
+      "learn": "Sem uma fase, as outras duas levam corrente a mais. O relé térmico detecta o desequilíbrio e dispara mais depressa."
+    },
+    "vfd_undervoltage": {
+      "title": "O variador {{device}} parou por falta de tensão",
+      "cause": "Falta uma fase ou a tensão de entrada é baixa.",
+      "hint": "Verifique as três fases à entrada de {{device}} e rearme a avaria.",
+      "learn": "O variador vigia o seu barramento DC. Sem tensão suficiente, pára o motor para se proteger."
     }
   },
   "simpl": {
@@ -584,7 +907,18 @@
     "led_resistive": "LED: modelado como resistência; o driver real tem potência quase constante.",
     "fluorescent_ballast": "Fluorescente: impedância R + jX fixa; arranca acima de 75 % da tensão.",
     "motor1_two_state": "Motor monofásico: dois estados (arranque e marcha) em vez do escorregamento contínuo.",
-    "body_model": "Corpo humano: resistência fixa de 1000 Ω; zonas da IEC 60479-1 aproximadas."
+    "body_model": "Corpo humano: resistência fixa de 1000 Ω; zonas da IEC 60479-1 aproximadas.",
+    "analyzer_fundamental": "Analisador de rede: mede só a componente fundamental (50/60 Hz).",
+    "capacitor_ideal": "Bateria de condensadores: condensadores ideais, sem perdas nem escalões automáticos.",
+    "contactor_threshold": "Contactor: actua a 75 % e larga a 50 % de Uc, sem tempo de fecho nem ressaltos.",
+    "motor3_equivalent": "Motor trifásico: circuito equivalente com R1 = R2, calculado a partir da placa (In, FP e corrente de arranque).",
+    "motor3_sequence": "Motor trifásico: binário pelas componentes simétricas; a impedância inversa própria não é modelada.",
+    "overload_thermal": "Relé térmico: aquecimento I²t acima de 1,12 · Ir e arrefecimento simples, sem temperatura ambiente.",
+    "plc_scan": "PLC: o programa corre no passo do simulador (10 a 50 ms); entradas só a 24 V DC.",
+    "pnp_sensor": "Sensor PNP: a saída é um contacto para o positivo, sem queda de tensão nem atraso.",
+    "soft_starter": "Arrancador suave: tensão reduzida por um transformador ideal, sem os harmónicos dos tirístores.",
+    "star_delta_no_gap": "Arrancador estrela-triângulo: passagem sem tempo morto entre estrela e triângulo.",
+    "vfd_vf": "Variador: modelo V/f constante, sem controlo vectorial; harmónicos de entrada típicos e fixos."
   },
   "ui": {
     "untitled": "Projecto sem título",
@@ -746,6 +1080,33 @@
     "about": {
       "version": "Versão {{version}}",
       "simplifications": "Simplificações dos modelos"
+    },
+    "ladder": {
+      "title": "Programa (ladder)",
+      "hint": "I entradas, Q saídas, M memórias, T temporizadores, C contadores. Cada coluna é um grupo em paralelo.",
+      "empty": "Ainda não há degraus. Acrescente o primeiro.",
+      "rung": "Degrau {{n}}",
+      "removeRung": "Apagar o degrau",
+      "removeContact": "Apagar o contacto",
+      "operand": "Operando",
+      "toggle": "Trocar entre NA e NF",
+      "no": "NA",
+      "nc": "NF",
+      "addParallel": "+ paralelo",
+      "addSeries": "+ série",
+      "addRung": "+ degrau",
+      "coil": "Bobina",
+      "presetTime": "Tempo (s)",
+      "presetCount": "Contagem",
+      "kind": {
+        "out": "Saída",
+        "set": "SET (activa)",
+        "reset": "RESET (desactiva)",
+        "ton": "Temporizador TON",
+        "tof": "Temporizador TOF",
+        "ctu": "Contador CTU",
+        "res": "Repor T ou C"
+      }
     }
   },
   "example": {
@@ -764,6 +1125,26 @@
     "tt-protection": {
       "title": "Protecção de pessoas em TT",
       "desc": "Um ferro com defeito e uma pessoa a tocar-lhe. Veja o diferencial cortar a fuga e depois desligue-o para comparar."
+    },
+    "dol-start": {
+      "title": "Arranque directo com sinalização",
+      "desc": "Motor de 4 kW com disjuntor-motor, contactor, relé térmico, auto-retenção e sinalizadores de marcha e de disparo."
+    },
+    "reversing": {
+      "title": "Inversão de marcha com encravamento",
+      "desc": "Dois contactores trocam duas fases; os contactos 21-22 impedem que fechem os dois ao mesmo tempo."
+    },
+    "star-delta": {
+      "title": "Arranque estrela-triângulo",
+      "desc": "Motor de 7,5 kW que arranca em estrela e passa a triângulo ao fim de 5 s, com contactores e temporizador."
+    },
+    "vfd-motor": {
+      "title": "Motor com variador de frequência",
+      "desc": "O selector comanda o variador pelas entradas DI1 e DI2: rampas de 5 s nos dois sentidos."
+    },
+    "plc-pump": {
+      "title": "Bomba com bóia de nível por PLC",
+      "desc": "O autómato liga a bomba quando a bóia indica nível alto e acende o sinalizador; S0 pára."
     }
   },
   "wizard": {
@@ -842,6 +1223,21 @@
       "view-3d": "Abra o separador Físico 3D para ver a instalação real.",
       "fault": "Volte ao esquema. Coloque um Curto-circuito entre o L e o N da lâmpada e active-o com Operar.",
       "fix": "O disjuntor disparou. Clique em «Como corrigir» na mensagem, desactive o curto e rearme o disjuntor."
+    },
+    "motor": {
+      "title": "O meu primeiro arranque de motor",
+      "intro": "Vai montar o arranque directo de um motor trifásico. O circuito de potência fica à esquerda e o de comando à direita.",
+      "place-grid": "Arraste a Rede trifásica para o esquema. Tem três fases, L1, L2 e L3, o neutro e a terra.",
+      "breaker": "Coloque um Disjuntor-motor por baixo da rede e ligue L1, L2 e L3 aos terminais 1, 3 e 5.",
+      "contactor": "O contactor liga e desliga o motor. Coloque-o por baixo e ligue os terminais 2, 4 e 6 do disjuntor-motor aos 1, 3 e 5 do contactor.",
+      "motor": "Coloque o Relé térmico e o Motor trifásico. Ligue o contactor ao relé (2-1, 4-3, 6-5), o relé ao motor (U1, V1, W1) e a terra ao PE.",
+      "control": "Agora o comando: do terminal 2 do disjuntor-motor ao 95 do relé, depois 96, botão de paragem, botão de marcha e bobina A1. Ligue A2 ao neutro.",
+      "try-start": "Escolha Operar, prima o botão de marcha e largue-o. Repare no que acontece ao motor.",
+      "self-hold": "O motor parou ao largar o botão: falta a auto-retenção. Ligue K1-13 e K1-14 aos terminais 13 e 14 do botão de marcha e arranque outra vez.",
+      "relay": "Seleccione o relé térmico e regule Ir para a corrente nominal do motor, 7,7 A.",
+      "phase-loss": "Ensaio de falta de fase: seleccione o cabo do relé 6 para o motor W1 e marque «Fio cortado».",
+      "phase-fix": "Leia a mensagem, carregue em «Como corrigir» e volte a ligar o cabo cortado.",
+      "done": "Montou o arranque directo, com auto-retenção e relé térmico, e viu como se explica uma falta de fase. O próximo passo é o primeiro exercício industrial."
     }
   }
 }

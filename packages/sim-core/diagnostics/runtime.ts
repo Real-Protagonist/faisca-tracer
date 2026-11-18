@@ -26,9 +26,9 @@ function feedingSource(topo: Topology, phasePin: number, neutralPin: number) {
   const reach = topo.reach[phasePin];
   if (!reach) return null;
   for (const s of topo.seeds) {
-    if (s.role !== 'phase' || !reach.has(`${s.device.id}:phase`)) continue;
+    if (s.role !== 'phase' || !reach.has(`${s.device.id}:${s.terminal}`)) continue;
     const n = topo.seeds.find((x) => x.device.id === s.device.id && x.role === 'neutral');
-    if (n && topo.reach[neutralPin]?.has(`${s.device.id}:neutral`)) return { phase: s, neutral: n };
+    if (n && topo.reach[neutralPin]?.has(`${n.device.id}:${n.terminal}`)) return { phase: s, neutral: n };
   }
   return null;
 }
@@ -39,7 +39,7 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
   const view = sim.view();
   const fmt = sim.fmt;
   const name = (id: string) => P.devices.find((d) => d.id === id)?.name ?? id;
-  const ctx = { sol: view, project: P, fmt };
+  const ctx = { sol: view, project: P, fmt, registry: sim.registry, topo };
 
   for (const d of P.devices) {
     const def = sim.registry.get(d.type);
@@ -83,12 +83,13 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
     if (w.fault?.cut) continue;
     const I = rms(view.iWire(w.id));
     const iz = ampacity(w);
-    if (I > iz * 1.001) {
+    const Ith = sim.wireThermalCurrent(w.id);
+    if (Ith > iz * 1.001) {
       out.push(
         diag('CABLE_OVERLOAD', 'warning', [wire(w.id)], {
           from: name(w.a.device),
           to: name(w.b.device),
-          current: fmt(I, 'A'),
+          current: fmt(Ith, 'A'),
           section: fmt(w.section, 'mm²'),
           iz: fmt(iz, 'A'),
         }, w.id),
@@ -100,7 +101,10 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
     }
   }
 
-  if (sim.unstable) out.push(diag('CONTROL_UNSTABLE', 'error', [], {}));
+  if (sim.unstable) {
+    const ids = sim.unstableDevices;
+    out.push(diag('CONTROL_UNSTABLE', 'error', ids.map(dev), { device: ids.length ? name(ids[0]!) : '—' }, ids[0]));
+  }
   return out;
 }
 
@@ -117,7 +121,10 @@ export function allDiagnostics(sim: Simulator): Diagnostic[] {
  * «Porque não funciona?»: percorre o caminho da carga até à fonte, pela fase e pelo neutro,
  * e aponta o primeiro elemento que corta o circuito ou a primeira ligação em falta.
  */
-export function whyNotWorking(sim: Simulator, idOrName: string): Diagnostic {
+/** Respostas que não explicam uma causa concreta (ao seguir a bobina de um contactor). */
+const GENERIC = new Set(['PATH_OPEN', 'COIL_OFF', 'LOAD_OK', 'LOAD_SWITCHED_OFF', 'NOT_A_LOAD']);
+
+export function whyNotWorking(sim: Simulator, idOrName: string, depth = 0): Diagnostic {
   const d = sim.device(idOrName);
   if (!d) throw new Error(`Equipamento inexistente: ${idOrName}`);
   const def = sim.registry.require(d.type);
@@ -125,7 +132,8 @@ export function whyNotWorking(sim: Simulator, idOrName: string): Diagnostic {
   const P = sim.project;
   const view = sim.view();
   const fmt = sim.fmt;
-  const ctx = { sol: view, project: P, fmt };
+  const topo = buildTopology(P, sim.registry);
+  const ctx = { sol: view, project: P, fmt, registry: sim.registry, topo };
   const { phase, neutral } = def.load;
 
   // O próprio equipamento avariado (lâmpada fundida…).
@@ -133,7 +141,6 @@ export function whyNotWorking(sim: Simulator, idOrName: string): Diagnostic {
   if (own.length) return own[0]!;
   if (def.load.working?.(d, view, sim.rt(d))) return diag('LOAD_OK', 'info', [dev(d.id)], { device: d.name });
 
-  const topo = buildTopology(P, sim.registry);
   const pPin = topo.pin(d.id, phase);
   const nPin = topo.pin(d.id, neutral);
   const phaseSeeds = topo.seeds.filter((s) => s.role === 'phase');
@@ -154,11 +161,32 @@ export function whyNotWorking(sim: Simulator, idOrName: string): Diagnostic {
       const bdef = sim.registry.require(blocker.type);
       const bd = bdef.diagnose?.(blocker, ctx, sim.rt(blocker)) ?? [];
       if (bd.length) return { ...bd[0]!, targets: [...bd[0]!.targets, dev(d.id)] };
+      // Contactor ou relé aberto: o problema está no circuito da bobina. Se lá houver uma causa
+      // concreta (relé térmico disparado, fio cortado…), é essa a resposta.
+      if (bdef.coilOperated && !blocker.state.coil) {
+        if (depth < 3) {
+          const inner = whyNotWorking(sim, blocker.id, depth + 1);
+          if (!GENERIC.has(inner.code)) return { ...inner, targets: [...inner.targets, dev(d.id)] };
+        }
+        return diag('COIL_OFF', 'error', [dev(blocker.id), dev(d.id)], { device: d.name, blocker: blocker.name }, blocker.id);
+      }
       return diag('PATH_OPEN', 'error', [dev(blocker.id), dev(d.id)], { device: d.name, blocker: blocker.name }, blocker.id);
     }
     return null;
   };
 
+  // Carga trifásica: cada terminal de linha até uma fase.
+  if (def.load.phases) {
+    for (const t of def.load.phases) {
+      const r = check(topo.pin(d.id, t), t, phaseSeeds, 'LOAD_NO_SUPPLY');
+      if (r) return r;
+    }
+    const seed = phaseSeeds.find((s) => topo.reach[pPin]?.has(`${s.device.id}:${s.terminal}`));
+    if (seed && (seed.device.state.on === false || seed.device.state.output === false)) {
+      return diag('SOURCE_OFF', 'error', [dev(seed.device.id), dev(d.id)], { device: d.name, source: seed.device.name }, seed.device.id);
+    }
+    return diag('LOAD_SWITCHED_OFF', 'info', [dev(d.id)], { device: d.name }, d.id);
+  }
   const ph = check(pPin, phase, phaseSeeds, 'LOAD_NO_SUPPLY');
   if (ph) return ph;
   const ne = check(nPin, neutral, neutralSeeds, 'LOAD_NO_RETURN');

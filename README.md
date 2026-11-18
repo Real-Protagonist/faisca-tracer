@@ -27,7 +27,19 @@ npm run e2e        # testes de interface (Playwright)
 
 Os exemplos são gerados a partir de `packages/content/examples.ts` com `npm run content`. Um teste falha se os JSON ficarem desactualizados.
 
-Os tours são JSON editáveis: cada passo tem `{ id, step, targetSelector, textKey, waitFor, mistakes?, showMeAction }`. As condições e as acções disponíveis estão em `packages/content/tour-types.ts`; os textos ficam nas traduções.
+Os tours são JSON editáveis: cada passo tem `{ id, step, targetSelector, textKey, waitFor, mistakes?, showMeAction }`. As condições e as acções disponíveis estão em `packages/content/tour-types.ts`; os textos ficam nas traduções. Há um tour por área: `domestic-first-light` (12 passos) e `industrial-first-motor` (10 passos).
+
+Condições (`waitFor.type`): `next`, `deviceExists`, `wire`, `chain`, `loadState`, `probe`, `tab`, `event`, `flag`, `deviceState`, `param` (parâmetro entre `min` e `max`), `diag` (código presente ou ausente), `wireCut` (cabo cortado ou inteiro) e `all`. Acções de «Mostrar-me»: `place`, `wire`, `operate`, `press` (premir e largar), `probe`, `tab`, `flag`, `param`, `wireCut` e `sequence`.
+
+### Programa do autómato (ladder)
+
+O PLC guarda o programa no parâmetro `program`, em JSON, dentro do próprio `.faisca`:
+
+```json
+{ "rungs": [{ "cols": [[{ "op": "I0" }, { "op": "Q0" }], [{ "op": "I1", "nc": true }]], "coil": { "kind": "out", "op": "Q0" } }] }
+```
+
+Cada degrau é uma série de colunas; cada coluna é um grupo de contactos em paralelo (`nc: true` = contacto NF). Operandos: `I0`–`I7` (entradas a 24 V DC), `Q0`–`Q7` (saídas a relé, comuns `1L` e `2L`), `M0`–`M15`, `T0`–`T7` e `C0`–`C7`. Bobinas: `out`, `set`, `reset`, `ton` e `tof` (com `preset` em segundos), `ctu` (com `preset` em contagens) e `res` (repõe um temporizador ou contador). O exemplo acima é a auto-retenção marcha/paragem.
 
 Antes do primeiro `npm run e2e`, instale o navegador de testes com `npx playwright install chromium`.
 

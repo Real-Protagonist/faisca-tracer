@@ -128,7 +128,7 @@ export function Canvas() {
     if (h.device) {
       const d = project.devices.find((x) => x.id === h.device)!;
       if (tool === 'operate') {
-        const a = registry.require(d.type).actions?.(d)[0];
+        const a = registry.require(d.type).actions?.(d).find((x) => !x.manualOnly);
         if (!a) return;
         if (a.momentary) {
           operate(d.id, a.id, 'down');

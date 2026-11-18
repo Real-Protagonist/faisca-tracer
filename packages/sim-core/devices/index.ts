@@ -1,4 +1,4 @@
-/** Biblioteca de equipamentos (Fase 1: área doméstica). */
+/** Biblioteca de equipamentos: área doméstica (Fase 1) e industrial (Fase 4). */
 import { Registry } from './registry';
 import { sources } from './sources';
 import { protection } from './protection';
@@ -9,6 +9,11 @@ import { measurement } from './measurement';
 import { distribution } from './distribution';
 import { faults } from './faults';
 import { annotations } from './annotations';
+import { power3 } from './industrial/power';
+import { command3 } from './industrial/command';
+import { motor3ph } from './industrial/motor3';
+import { drives } from './industrial/drives';
+import { plcDevices } from './industrial/plc';
 import type { DeviceDef } from './types';
 
 export const BUILTIN_DEVICES: DeviceDef[] = [
@@ -21,6 +26,11 @@ export const BUILTIN_DEVICES: DeviceDef[] = [
   ...distribution,
   ...faults,
   ...annotations,
+  ...power3,
+  ...command3,
+  motor3ph,
+  ...drives,
+  ...plcDevices,
 ];
 
 /** Registo com todos os equipamentos incluídos. */

@@ -16,6 +16,7 @@ import {
   useApp,
 } from '../store';
 import { fmtMeasurement } from '../format';
+import { LadderEditor } from './Ladder';
 import { WIRE_COLOR } from '../editor/Canvas';
 
 export function Properties() {
@@ -174,14 +175,15 @@ function DeviceProps({ d }: { d: Device }) {
           )}
         </div>
       )}
-      {!!def.params.length && (
+      {def.params.some((p) => !p.hidden) && (
         <>
           <h3>{t('ui.props.params')}</h3>
-          {def.params.filter((p) => pro || !p.pro).map((p) => (
+          {def.params.filter((p) => !p.hidden && (pro || !p.pro)).map((p) => (
             <ParamField key={p.key} d={d} p={p} />
           ))}
         </>
       )}
+      {def.editor === 'ladder' && <LadderEditor d={d} ms={ms} />}
       {!!ms.length && (
         <>
           <h3>{t('ui.props.measurements')}</h3>

@@ -83,6 +83,12 @@ function requiredKeys(): Set<string> {
   }
   // Estados calculados (dependem da simulação).
   for (const s of ['tripped_magnetic', 'tripped_thermal', 'tripped_residual', 'starting', 'running', 'stopped', 'burnt', 'charging', 'discharging']) add(`state.${s}`);
+  // Estados industriais calculados.
+  for (const s of [
+    'stopping', 'stalled', 'phase_loss', 'forward', 'reverse', 'none', 'energized', 'deenergized', 'coil_burnt', 'timing', 'contact_switched', 'idle',
+    'stage_off', 'stage_star', 'stage_delta', 'stage_ramp', 'stage_bypass', 'accelerating', 'decelerating', 'fault', 'plc_run', 'plc_stop', 'no_power',
+    'sequence_direct', 'sequence_inverse', 'phase_missing', 'wrong_sequence', 'ok', 'in_service', 'on', 'off', 'bits',
+  ]) add(`state.${s}`);
   for (const z of ['AC1', 'AC2', 'AC3', 'AC4']) add(`state.zone_${z}`);
   for (const a of Object.keys(APPLIANCES)) add(`state.appliance_${a}`);
   for (const c of DIAG_CODES) for (const part of ['title', 'cause', 'hint', 'learn']) add(`diag.${c.toLowerCase()}.${part}`);
@@ -111,7 +117,7 @@ describe('mensagens de diagnóstico', () => {
     device: 'Q2', terminal: 'N', blocker: 'Q2', current: '771 A', ratio: '77', rated: '10 A', icn: '6 kA', idn: '30 mA',
     location: 'X2', voltage: '400 V', nominal: '230 V', drop: '6,2 %', limit: '3 %', section: '1,5 mm²', length: '60 m',
     iz: '24 A', nextSection: '4 mm²', lowerRating: '20 A', from: 'Q4', to: 'E1', expected: 'N', actual: 'L1', power: '130 W',
-    source: 'G1', rcd: 'no',
+    source: 'G1', rcd: 'no', motor: 'M1', button: 'S1', contactor: 'K1', contact: '13-14', a: '13', b: '14', phase: 'L3', load: '100 %',
   };
 
   it('interpolam em pt, en e fr sem variáveis por resolver (i18next)', async () => {
@@ -141,9 +147,9 @@ describe('mensagens de diagnóstico', () => {
 
   it('a dica começa por um verbo no imperativo (lista de verbos conhecida)', () => {
     const verbs: Record<string, RegExp> = {
-      pt: /^(Ligue|Retire|Use|Procure|Divida|Escolha|Elimine|Desligue|Aumente|Aperte|Instale|Recarregue|Reveja|Substitua|Reponha|Verifique|Experimente)\b/,
-      en: /^(Connect|Remove|Use|Find|Split|Choose|Unplug|Supply|Increase|Tighten|Install|Recharge|Check|Switch|Replace|Restore)\b/,
-      fr: /^(Reliez|Retirez|Placez|Utilisez|Cherchez|Répartissez|Choisissez|Supprimez|Débranchez|Alimentez|Augmentez|Resserrez|Installez|Rechargez|Vérifiez|Fermez|Remplacez|Rétablissez|Allumez|Coupez)\b/,
+      pt: /^(Ligue|Retire|Use|Procure|Divida|Escolha|Elimine|Desligue|Aumente|Aperte|Instale|Recarregue|Reveja|Substitua|Reponha|Verifique|Experimente|Prima|Troque|Liberte)\b/,
+      en: /^(Connect|Remove|Use|Find|Split|Choose|Unplug|Supply|Increase|Tighten|Install|Recharge|Check|Switch|Replace|Restore|Press|Free)\b/,
+      fr: /^(Reliez|Retirez|Placez|Utilisez|Cherchez|Répartissez|Choisissez|Supprimez|Débranchez|Alimentez|Augmentez|Resserrez|Installez|Rechargez|Vérifiez|Fermez|Remplacez|Rétablissez|Allumez|Coupez|Appuyez|Libérez)\b/,
     };
     for (const [lang, f] of Object.entries(FLAT))
       for (const c of DIAG_CODES) expect(f[`diag.${c.toLowerCase()}.hint`], `${lang} ${c}`).toMatch(verbs[lang]!);

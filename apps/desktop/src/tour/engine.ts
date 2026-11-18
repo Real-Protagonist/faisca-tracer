@@ -1,7 +1,7 @@
 /** Motor do tour: avalia as condições dos passos (JSON) e executa «Mostrar-me». */
 import { lookFrom, type Diagnostic, type Project, type WireEnd } from '@faisca/sim-core';
 import type { Condition, ShowMe, TermRef, TourStep } from '@faisca/content';
-import { connect, operate, placeDevice, setFlag, setProbes, ui, type AppState } from '../store';
+import { connect, operate, placeDevice, setFlag, setProbes, ui, updateDevice, updateWire, type AppState } from '../store';
 
 export interface TourContext {
   project: Project;
@@ -23,6 +23,12 @@ function hasWire(P: Project, a: WireEnd, b: WireEnd, conductor?: string) {
     const same = (x: WireEnd, y: WireEnd) => x.device === y.device && x.terminal === y.terminal;
     return ((same(w.a, a) && same(w.b, b)) || (same(w.a, b) && same(w.b, a))) && (!conductor || w.conductor === conductor);
   });
+}
+
+/** Cabo entre dois terminais (em qualquer sentido). */
+function findWire(P: Project, a: WireEnd, b: WireEnd) {
+  const same = (x: WireEnd, y: WireEnd) => x.device === y.device && x.terminal === y.terminal;
+  return P.wires.find((w) => (same(w.a, a) && same(w.b, b)) || (same(w.a, b) && same(w.b, a)));
 }
 
 /** Terminais ligados por cabo a (device, terminal). */
@@ -88,6 +94,19 @@ export function evaluate(c: Condition, ctx: TourContext): boolean {
       return ctx.flags.includes(c.params.flag);
     case 'deviceState':
       return P.devices.filter((d) => d.type === c.params.type).every((d) => d.state[c.params.key] === c.params.value);
+    case 'param': {
+      const d = first(P, c.params.type);
+      const v = Number(d?.params[c.params.key]);
+      return !!d && v >= c.params.min && v <= c.params.max;
+    }
+    case 'diag':
+      return (ctx.snapshot?.diagnostics ?? []).some((d) => d.code === c.params.code) === c.params.present;
+    case 'wireCut': {
+      const a = first(P, c.params.a.type);
+      const b = first(P, c.params.b.type);
+      const w = a && b && findWire(P, { device: a.id, terminal: c.params.a.terminal! }, { device: b.id, terminal: c.params.b.terminal! });
+      return !!w && !!w.fault?.cut === c.params.cut;
+    }
     case 'all':
       return c.params.conditions.every((x) => evaluate(x, ctx));
   }
@@ -135,6 +154,26 @@ export async function showMe(a: ShowMe, getProject: () => Project): Promise<void
     case 'flag':
       setFlag(a.params.flag);
       break;
+    case 'press': {
+      const d = first(getProject(), a.params.type);
+      if (!d) break;
+      operate(d.id, 'press', 'down');
+      await wait(600);
+      operate(d.id, 'press', 'up');
+      break;
+    }
+    case 'param': {
+      const d = first(getProject(), a.params.type);
+      if (d) updateDevice(d.id, (x) => (x.params[a.params.key] = a.params.value));
+      break;
+    }
+    case 'wireCut': {
+      const x = end(a.params.a);
+      const y = end(a.params.b);
+      const w = x && y && findWire(getProject(), x, y);
+      if (w) updateWire(w.id, (z) => (z.fault = { ...z.fault, cut: a.params.cut }));
+      break;
+    }
     case 'sequence':
       for (const x of a.params.actions) {
         await showMe(x, getProject);

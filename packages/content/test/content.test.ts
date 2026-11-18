@@ -51,6 +51,78 @@ describe('exemplos', () => {
     expect(sim.measure('H1', 'meas.current')).toBeGreaterThan(0.25);
   });
 
+  it('pelo menos dois por célula industrial (Iniciante e Profissional)', () => {
+    for (const level of ['beginner', 'pro']) expect(built.filter((b) => b.meta.domain === 'industrial' && b.meta.level === level).length).toBeGreaterThanOrEqual(2);
+  });
+
+  const ex = (id: string) => new Simulator(built.find((b) => b.meta.id === id)!.project);
+  const stateOf = (sim: Simulator, name: string, key = 'meas.state') => {
+    const v = sim.measurements(name).find((m) => m.key === key)?.value;
+    return typeof v === 'object' ? v.key.replace(/^state\./, '') : '';
+  };
+  const press = (sim: Simulator, name: string) => {
+    sim.operate(name, 'press', 'down');
+    sim.run(0.2);
+    sim.operate(name, 'press', 'up');
+  };
+
+  it('arranque directo: S1 põe M1 em marcha com o sinalizador verde; S0 pára', () => {
+    const sim = ex('dol-start');
+    press(sim, 'S1');
+    sim.run(3);
+    expect(stateOf(sim, 'M1')).toBe('running');
+    expect(stateOf(sim, 'H1')).toBe('lit');
+    expect(stateOf(sim, 'H2')).toBe('unlit');
+    press(sim, 'S0');
+    sim.run(6);
+    expect(stateOf(sim, 'M1')).toBe('stopped');
+  });
+
+  it('inversão de marcha: S1 à direita; S0; S2 à esquerda', () => {
+    const sim = ex('reversing');
+    press(sim, 'S1');
+    sim.run(3);
+    expect(stateOf(sim, 'M1', 'meas.direction')).toBe('forward');
+    press(sim, 'S0');
+    sim.run(6);
+    press(sim, 'S2');
+    sim.run(3);
+    expect(stateOf(sim, 'M1', 'meas.direction')).toBe('reverse');
+  });
+
+  it('estrela-triângulo: KM2 (estrela) e depois KM3 (triângulo) ao fim de 5 s', () => {
+    const sim = ex('star-delta');
+    press(sim, 'S1');
+    sim.run(1);
+    expect(sim.device('KM2')!.state.closed).toBe(true);
+    sim.run(5);
+    expect(sim.device('KM2')!.state.closed).toBe(false);
+    expect(sim.device('KM3')!.state.closed).toBe(true);
+    expect(stateOf(sim, 'M1')).toBe('running');
+  });
+
+  it('variador: posição 1 roda à direita a 50 Hz; posição 2 à esquerda', () => {
+    const sim = ex('vfd-motor');
+    sim.operate('S1', 'pos_1');
+    sim.run(8);
+    expect(sim.measure('T1', 'meas.frequency')).toBe(50);
+    expect(stateOf(sim, 'M1', 'meas.direction')).toBe('forward');
+    sim.operate('S1', 'pos_2');
+    sim.run(14);
+    expect(stateOf(sim, 'M1', 'meas.direction')).toBe('reverse');
+  });
+
+  it('bomba por PLC: nível alto liga a bomba e o sinalizador; S0 pára', () => {
+    const sim = ex('plc-pump');
+    sim.operate('B1', 'level_high');
+    sim.run(3);
+    expect(stateOf(sim, 'M1')).toBe('running');
+    expect(stateOf(sim, 'H1')).toBe('lit');
+    sim.operate('S0', 'press', 'down');
+    sim.run(4);
+    expect(stateOf(sim, 'M1')).not.toBe('running');
+  });
+
   it('protecção TT: o diferencial elimina a fuga do ferro com defeito', () => {
     const sim = new Simulator(built.find((b) => b.meta.id === 'tt-protection')!.project);
     sim.run(0.3);
@@ -77,8 +149,10 @@ describe('tours', () => {
       case 'loadState':
       case 'probe':
       case 'deviceState':
+      case 'param':
         return [c.params.type];
       case 'wire':
+      case 'wireCut':
         return [c.params.a.type, c.params.b.type];
       case 'chain':
         return c.params.chain.map((x) => x.type);
@@ -90,22 +164,25 @@ describe('tours', () => {
   for (const tour of tours) {
     it(`${tour.id}: textos, equipamentos e códigos existem`, () => {
       expect(PT[tour.titleKey]).toBeTruthy();
+      if (tour.doneTextKey) expect(PT[tour.doneTextKey]).toBeTruthy();
       for (const s of tour.steps) {
         expect(PT[s.textKey], s.textKey).toBeTruthy();
         for (const m of s.mistakes ?? []) expect(DIAG_CODES).toContain(m);
         for (const c of conds(s.waitFor)) {
           for (const t of refsOf(c)) expect(types.has(t), `${s.id}: ${t}`).toBe(true);
           if (c.type === 'event') expect(EVENT_CODES).toContain(c.params.code);
+          if (c.type === 'diag') expect(DIAG_CODES).toContain(c.params.code);
         }
         for (const a of s.showMeAction ? acts(s.showMeAction) : []) {
-          if (a.type === 'place' || a.type === 'operate' || a.type === 'probe') expect(types.has(a.params.type), s.id).toBe(true);
-          if (a.type === 'wire') for (const r of [a.params.a, a.params.b]) expect(types.has(r.type), s.id).toBe(true);
+          if (a.type === 'place' || a.type === 'operate' || a.type === 'probe' || a.type === 'press' || a.type === 'param') expect(types.has(a.params.type), s.id).toBe(true);
+          if (a.type === 'wire' || a.type === 'wireCut') for (const r of [a.params.a, a.params.b]) expect(types.has(r.type), s.id).toBe(true);
         }
       }
     });
 
-    it(`${tour.id}: 12 passos numerados de 1 a 12, todos os que esperam uma acção têm «Mostrar-me»`, () => {
-      expect([...new Set(tour.steps.map((s) => s.step))]).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    const n = tour.domain === 'industrial' ? 10 : 12;
+    it(`${tour.id}: ${n} passos numerados de 1 a ${n}, todos os que esperam uma acção têm «Mostrar-me»`, () => {
+      expect([...new Set(tour.steps.map((s) => s.step))]).toEqual(Array.from({ length: n }, (_, i) => i + 1));
       for (const s of tour.steps) if (s.waitFor.type !== 'next') expect(s.showMeAction, s.id).toBeDefined();
     });
   }

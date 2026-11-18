@@ -696,8 +696,8 @@ describe('símbolos 2D', () => {
 });
 
 describe('casos por equipamento', () => {
-  it('todos os equipamentos da biblioteca têm casos normal, limite e falha', () => {
-    expect(Object.keys(CASES).sort()).toEqual(defaultRegistry.all().map((d) => d.type).sort());
+  it('todos os equipamentos domésticos têm casos normal, limite e falha (industriais: devices-industrial.test.ts)', () => {
+    expect(Object.keys(CASES).sort()).toEqual(defaultRegistry.all().filter((d) => d.domain.includes('domestic')).map((d) => d.type).sort());
   });
   for (const [type, c] of Object.entries(CASES)) {
     describe(type, () => {

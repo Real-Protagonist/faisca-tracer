@@ -19,16 +19,24 @@ export type Prim =
 export interface Look {
   num(key: string): number;
   state: string;
+  /** Valor de uma medição de estado (sem o prefixo «state.»), por exemplo `str('direction')`. */
+  str(key: string): string;
 }
 
 export function lookFrom(ms: Measurement[]): Look {
   const map = new Map<string, number>();
+  const strs = new Map<string, string>();
   let state = '';
   for (const m of ms) {
     if (typeof m.value === 'number') map.set(m.key, m.value);
-    else if (m.key === 'meas.state' || m.key === 'meas.position') state ||= m.value.key.replace(/^state\./, '');
+    else {
+      const v = m.value.key.replace(/^state\./, '');
+      strs.set(m.key, v);
+      if (m.key === 'meas.state' || m.key === 'meas.position') state ||= v;
+    }
   }
-  return { num: (k) => map.get(k.startsWith('meas.') ? k : 'meas.' + k) ?? 0, state };
+  const k = (x: string) => (x.startsWith('meas.') ? x : 'meas.' + x);
+  return { num: (x) => map.get(k(x)) ?? 0, state, str: (x) => strs.get(k(x)) ?? '' };
 }
 
 export const L = (x1: number, y1: number, x2: number, y2: number, cls?: string): Prim => ({ t: 'line', x1, y1, x2, y2, cls });

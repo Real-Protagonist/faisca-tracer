@@ -12,6 +12,8 @@ import type { Quantity } from '../solver/complex';
 import type { Device, Domain, Level, ParamValue, Project } from '../project/types';
 import type { Diagnostic, Severity } from '../diagnostics/types';
 import type { Look, NumFmt, Prim } from './symbols';
+import type { Registry } from './registry';
+import type { Topology } from '../diagnostics/topology';
 
 export type Category =
   | 'sources'
@@ -59,6 +61,8 @@ export interface ParamDef {
   labelKey?: string;
   /** As opções têm texto traduzido em `option.<key>.<valor>`. */
   translatedOptions?: boolean;
+  /** Não aparece como campo (editado por um editor próprio). */
+  hidden?: boolean;
 }
 
 /** Valor de uma medição: número com unidade ou chave de tradução de um estado. */
@@ -84,6 +88,8 @@ export interface ActionDef {
   labelKey?: string;
   /** Acção momentânea (botão de pressão): premir e largar. */
   momentary?: boolean;
+  /** Só pelo painel de propriedades: o clique da ferramenta Operar não a executa (ensaios, falhas). */
+  manualOnly?: boolean;
   pro?: boolean;
 }
 
@@ -104,6 +110,11 @@ export interface StampContext {
   X(p1: number, p2: number, s1: number, s2: number, ratio: number, tag?: string): void;
   /** Contacto: só existe quando fechado (1 mΩ). */
   sw(a: number, b: number, closed: boolean, tag?: string): void;
+  /**
+   * Frequência no terminal, como fracção da frequência da rede (1 = 50/60 Hz).
+   * Só muda à saída de um variador de frequência.
+   */
+  freq(terminal: string): number;
 }
 
 /** Leitura dos resultados do passo actual. */
@@ -120,6 +131,8 @@ export interface SolutionView {
   i(device: Device, tag: string): Quantity;
   /** Corrente num cabo (de a para b). */
   iWire(wireId: string): Quantity;
+  /** Frequência no terminal, como fracção da frequência da rede. */
+  freq(device: Device, terminal: string): number;
   hasAC: boolean;
   hasDC: boolean;
 }
@@ -143,18 +156,31 @@ export interface LogicContext {
   device(id: string): Device | undefined;
   /** Corrente de fuga (para a terra) de cada equipamento que a declara. */
   leakages(): { device: Device; current: number }[];
+  /** Comando que provocou esta resolução (premir ou largar um botão…), ou null. */
+  readonly cause: OperateCause | null;
+}
+
+export interface OperateCause {
+  deviceId: string;
+  action: string;
+  phase?: 'down' | 'up';
 }
 
 export interface DiagnoseContext {
   readonly sol: SolutionView;
   readonly project: Project;
   fmt(value: number, unit: string): string;
+  /** Registo e topologia do esquema (para seguir ligações). */
+  readonly registry: Registry;
+  readonly topo: Topology;
 }
 
 export interface LoadInfo {
-  /** Terminal de fase e terminal de retorno (neutro). */
+  /** Terminal de fase e terminal de retorno (neutro). Numa carga trifásica, as duas primeiras fases. */
   phase: string;
   neutral: string;
+  /** Carga trifásica sem neutro: terminais de linha (U1, V1, W1). */
+  phases?: string[];
   /** Tensão nominal (V). */
   nominalVoltage(d: Device): number;
   /** Iluminação: limite de queda de tensão de 3 %. */
@@ -198,6 +224,12 @@ export interface DeviceDef<RT extends object = any> {
   load?: LoadInfo;
   protection?: ProtectionInfo;
   stamp?(d: Device, b: StampContext, rt: RT): void;
+  /** Equipamento comandado por bobina (contactor, relé): no caminho de uma carga, explica a bobina. */
+  coilOperated?: boolean;
+  /** Editor próprio no painel de propriedades (programa do autómato). */
+  editor?: 'ladder';
+  /** Saída a frequência variável (variador): terminais e fracção da frequência da rede. */
+  outputFrequency?(d: Device, rt: RT): { terminals: string[]; factor: number } | null;
   /** Lógica discreta; devolve true se o estado mudou (obriga a resolver outra vez). */
   logic?(d: Device, ctx: LogicContext, rt: RT): boolean;
   measure?(d: Device, sol: SolutionView, rt: RT, ctx: { fmt(v: number, u: string): string }): Measurement[];

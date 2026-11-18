@@ -137,10 +137,24 @@ describe('biblioteca por área e nível', () => {
     expect(lib.map((d) => d.type)).not.toContain('rcbo');
   });
   it('Doméstica + Profissional mostra todos os domésticos', () => {
-    expect(defaultRegistry.library('domestic', 'pro').length).toBe(defaultRegistry.all().length);
+    const domestic = defaultRegistry.all().filter((d) => d.domain.includes('domestic'));
+    expect(defaultRegistry.library('domestic', 'pro').map((d) => d.type).sort()).toEqual(domestic.map((d) => d.type).sort());
+  });
+  it('Doméstica não mostra equipamentos industriais', () => {
+    expect(defaultRegistry.library('domestic', 'pro').map((d) => d.type)).not.toContain('contactor3p');
   });
   it('Industrial + Iniciante inclui os básicos domésticos', () => {
-    expect(defaultRegistry.library('industrial', 'beginner').map((d) => d.type)).toContain('switch1');
+    const lib = defaultRegistry.library('industrial', 'beginner').map((d) => d.type);
+    expect(lib).toContain('switch1');
+    expect(lib).toContain('contactor3p');
+    expect(lib).not.toContain('plc');
+  });
+  it('Industrial + Profissional mostra todos os industriais', () => {
+    const lib = defaultRegistry.library('industrial', 'pro').map((d) => d.type);
+    for (const d of defaultRegistry.all().filter((x) => x.domain.includes('industrial'))) expect(lib).toContain(d.type);
+  });
+  it('todos os equipamentos pertencem a uma área', () => {
+    for (const d of defaultRegistry.all()) expect(d.domain.length, d.type).toBeGreaterThan(0);
   });
   it('a biblioteca tem pelo menos 20 equipamentos domésticos', () => {
     expect(defaultRegistry.all().filter((d) => d.domain.includes('domestic')).length).toBeGreaterThanOrEqual(20);

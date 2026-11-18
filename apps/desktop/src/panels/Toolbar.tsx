@@ -72,7 +72,7 @@ export function Toolbar() {
         <button className="tool" aria-label={t('ui.menu.zoomIn')} onClick={() => zoomBy(1.2)}>
           +
         </button>
-        <button className="tool" aria-label={t('ui.menu.fit')} title={t('ui.menu.fit')} onClick={fitView}>
+        <button className="tool" aria-label={t('ui.menu.fit')} title={t('ui.menu.fit')} onClick={() => fitView()}>
           ⛶
         </button>
       </div>

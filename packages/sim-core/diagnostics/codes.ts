@@ -9,6 +9,7 @@ export const DIAG_CODES = [
   'PE_MISSING',
   'CABLE_UNPROTECTED',
   'WIRE_COLOR',
+  'LOAD_PHASE_PHASE',
   // Durante a simulação
   'MCB_MAGNETIC_TRIP',
   'MCB_THERMAL_TRIP',
@@ -22,6 +23,15 @@ export const DIAG_CODES = [
   'BODY_CURRENT',
   'BATTERY_EMPTY',
   'CONTROL_UNSTABLE',
+  // Industrial
+  'MOTOR_PHASE_LOSS',
+  'MOTOR_NO_HOLD',
+  'COIL_VOLTAGE',
+  'MOTOR_OVERLOAD',
+  'OVERLOAD_PHASE_LOSS',
+  'MOTOR_STALLED',
+  'MOTOR_OVERHEATED',
+  'VFD_UNDERVOLTAGE',
   // A pedido («Porque não funciona?»)
   'PATH_OPEN',
   'LOAD_NO_SUPPLY',
@@ -31,6 +41,7 @@ export const DIAG_CODES = [
   'LOW_VOLTAGE',
   'LOAD_OK',
   'NOT_A_LOAD',
+  'COIL_OFF',
 ] as const;
 
 export const EVENT_CODES = [
@@ -47,4 +58,14 @@ export const EVENT_CODES = [
   'motor_stalled',
   'body_current',
   'control_unstable',
+  'motor_overload',
+  'motor_phase_loss',
+  'motor_burnt',
+  'coil_burnt',
+  'contactor_no_hold',
+  'timer_elapsed',
+  'star_delta_switch',
+  'soft_start_done',
+  'vfd_fault',
+  'phase_fault',
 ] as const;

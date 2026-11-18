@@ -22,5 +22,35 @@
     "file": "tt-protection.faisca",
     "domain": "domestic",
     "level": "pro"
+  },
+  {
+    "id": "dol-start",
+    "file": "dol-start.faisca",
+    "domain": "industrial",
+    "level": "beginner"
+  },
+  {
+    "id": "reversing",
+    "file": "reversing.faisca",
+    "domain": "industrial",
+    "level": "beginner"
+  },
+  {
+    "id": "star-delta",
+    "file": "star-delta.faisca",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "vfd-motor",
+    "file": "vfd-motor.faisca",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "plc-pump",
+    "file": "plc-pump.faisca",
+    "domain": "industrial",
+    "level": "pro"
   }
 ]

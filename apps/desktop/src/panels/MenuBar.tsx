@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Lang } from '@faisca/sim-core';
 import { newProject, openProject, openRecent, saveProject } from '../actions';
-import { startTour } from '../tour/TourOverlay';
+import { startTour, TOUR_OF } from '../tour/TourOverlay';
 import { isTauri, recentFiles } from '../platform/files';
 import { rememberLang } from '../i18n';
 import {
@@ -92,7 +92,7 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
       items: [
         { key: 'ui.menu.zoomIn', shortcut: '+', run: () => zoomBy(1.2) },
         { key: 'ui.menu.zoomOut', shortcut: '−', run: () => zoomBy(1 / 1.2) },
-        { key: 'ui.menu.fit', shortcut: '0', run: fitView },
+        { key: 'ui.menu.fit', shortcut: '0', run: () => fitView() },
         { key: 'sep1', sep: true },
         { key: 'ui.tab.logic', run: () => ui.setTab('logic') },
         { key: 'ui.tab.physical', run: () => ui.setTab('physical') },
@@ -128,7 +128,7 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.tool.delete', shortcut: 'D', run: () => ui.setTool('delete') },
       ],
     },
-    { key: 'help', items: [{ key: 'ui.menu.tour', run: () => startTour('domestic-first-light') }, { key: 'ui.menu.about', run: onAbout }] },
+    { key: 'help', items: [{ key: 'ui.menu.tour', run: () => startTour(TOUR_OF[useApp.getState().project.domain]) }, { key: 'ui.menu.about', run: onAbout }] },
   ];
 
   const changeLang = (l: Lang) => {

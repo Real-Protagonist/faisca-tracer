@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { TOURS } from '@faisca/content';
 import { setTour, useApp } from '../store';
 import { evaluate, mistake, showMe } from './engine';
+import { ensureVisible } from '../view';
 
 const SAVE_KEY = 'faisca.tour';
 
@@ -19,6 +20,9 @@ export function savedTour(): { id: string; index: number } | null {
     return null;
   }
 }
+
+/** Tour de cada área. */
+export const TOUR_OF: Record<'domestic' | 'industrial', string> = { domestic: 'domestic-first-light', industrial: 'industrial-first-motor' };
 
 export function startTour(id: string, resume = true) {
   const saved = savedTour();
@@ -53,7 +57,7 @@ export function TourOverlay() {
   const [next, setNext] = useState(false);
   const [rect, setRect] = useState<Rect | null>(null);
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<string | null>(null);
   const sinceSeq = useRef(0);
   const tour = tourState ? TOURS[tourState.id] : undefined;
   const step = tour && tourState ? tour.steps[tourState.index] : undefined;
@@ -69,6 +73,8 @@ export function TourOverlay() {
   // A zona destacada segue o elemento (que pode mudar de tamanho ou de sítio).
   useLayoutEffect(() => {
     if (!step) return setRect(null);
+    // O alvo pode estar fora da zona visível (azulejo no fim da biblioteca): traz-se à vista.
+    document.querySelector(step.targetSelector)?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
     let raf = 0;
     const measure = () => {
       const el = document.querySelector(step.targetSelector);
@@ -95,7 +101,7 @@ export function TourOverlay() {
       if (tourState.index + 1 >= tour.steps.length) {
         setTour(null);
         save(null);
-        setDone(true);
+        setDone(tour.doneTextKey ?? 'tour.ui.done.text');
       } else setTour({ id: tourState.id, index: tourState.index + 1 });
     }, step?.waitFor.type === 'next' ? 0 : 600);
     return () => clearTimeout(id);
@@ -106,10 +112,10 @@ export function TourOverlay() {
       <div className="modal-back" role="presentation">
         <div className="modal tour-done" role="dialog" aria-modal="true" aria-labelledby="tour-done-title" data-testid="tour-done">
           <h2 id="tour-done-title">{t('tour.ui.done.title')}</h2>
-          <p>{t('tour.ui.done.text')}</p>
+          <p>{t(done)}</p>
           <div className="buttons right">
             <button disabled>{t('tour.ui.done.exercise')}</button>
-            <button autoFocus onClick={() => setDone(false)}>
+            <button autoFocus onClick={() => setDone(null)}>
               {t('tour.ui.done.close')}
             </button>
           </div>
@@ -128,7 +134,9 @@ export function TourOverlay() {
   const above = !below && !!hole && hole.y - bh > 0;
   const inside = !below && !above;
   const bx = !hole ? window.innerWidth / 2 - bw / 2 : inside ? hole.x + hole.w - bw - 16 : Math.min(window.innerWidth - bw - 12, Math.max(12, hole.x + hole.w / 2 - bw / 2));
-  const by = !hole ? window.innerHeight / 3 : below ? hole.y + hole.h + 12 : above ? hole.y - 12 : hole.y + hole.h - bh - 16;
+  const by0 = !hole ? window.innerHeight / 3 : below ? hole.y + hole.h + 12 : above ? hole.y - 12 : hole.y + hole.h - bh - 16;
+  // A bolha nunca sai do ecrã, mesmo com o alvo meio escondido.
+  const by = above ? Math.max(bh + 8, Math.min(window.innerHeight - 8, by0)) : Math.max(8, Math.min(window.innerHeight - bh - 8, by0));
 
   return (
     <>
@@ -166,6 +174,8 @@ export function TourOverlay() {
                 onClick={async () => {
                   setBusy(true);
                   await showMe(step.showMeAction!, () => useApp.getState().project);
+                  // O que «Mostrar-me» colocou tem de ficar à vista.
+                  requestAnimationFrame(ensureVisible);
                   setBusy(false);
                 }}
                 data-testid="tour-show-me"

@@ -193,6 +193,130 @@
     "note": {
       "name": "Note",
       "desc": "Texte libre pour des consignes ou remarques."
+    },
+    "grid3ph": {
+      "name": "Réseau triphasé",
+      "desc": "Réseau 400/230 V à trois phases et neutre, pour les moteurs et les tableaux industriels."
+    },
+    "mcb3p": {
+      "name": "Disjoncteur 3P",
+      "desc": "Protège les trois phases d'un circuit triphasé et les coupe ensemble."
+    },
+    "mcb4p": {
+      "name": "Disjoncteur 4P",
+      "desc": "Coupe les trois phases et le neutre, pour les circuits triphasés avec charges monophasées."
+    },
+    "motorBreaker": {
+      "name": "Disjoncteur-moteur",
+      "desc": "Protège le moteur contre les courts-circuits et les surcharges, avec Ir réglé sur le moteur."
+    },
+    "thermalRelay": {
+      "name": "Relais thermique",
+      "desc": "Ouvre le contact 95-96 quand le moteur absorbe trop de courant trop longtemps."
+    },
+    "phaseMonitor": {
+      "name": "Relais de contrôle de phases",
+      "desc": "Ferme le contact 11-14 seulement avec les trois phases présentes et dans le bon ordre."
+    },
+    "heater3ph": {
+      "name": "Résistances triphasées",
+      "desc": "Trois résistances chauffantes en étoile, raccordées aux trois phases."
+    },
+    "capacitorBank": {
+      "name": "Batterie de condensateurs",
+      "desc": "Fournit de l'énergie réactive et améliore le facteur de puissance de l'installation."
+    },
+    "powerAnalyzer": {
+      "name": "Analyseur de réseau",
+      "desc": "Mesure tension, courant et facteur de puissance sur chaque phase, et les puissances totales."
+    },
+    "phaseSequenceMeter": {
+      "name": "Indicateur d'ordre des phases",
+      "desc": "Indique si les phases sont dans l'ordre direct ou inverse, ou s'il en manque une."
+    },
+    "phaseLoss": {
+      "name": "Perte de phase",
+      "desc": "Coupe une des trois phases pour tester ce qui arrive au moteur."
+    },
+    "phaseReversal": {
+      "name": "Inversion de phases",
+      "desc": "Inverse deux phases : le moteur tourne dans l'autre sens."
+    },
+    "contactor3p": {
+      "name": "Contacteur",
+      "desc": "Interrupteur commandé par une bobine : les contacts principaux alimentent le moteur et les auxiliaires 13-14 et 21-22 servent à la commande."
+    },
+    "auxRelay": {
+      "name": "Contacteur auxiliaire",
+      "desc": "Relais de commande avec deux contacts NO et deux NF, sans contacts de puissance."
+    },
+    "timerOn": {
+      "name": "Temporisateur travail",
+      "desc": "Commute les contacts 15-16 et 15-18 un certain temps après la mise sous tension de la bobine."
+    },
+    "timerOff": {
+      "name": "Temporisateur repos",
+      "desc": "Maintient les contacts commutés un certain temps après la coupure de la bobine."
+    },
+    "buttonNO": {
+      "name": "Bouton-poussoir NO (marche)",
+      "desc": "Bouton vert : ferme le contact 13-14 seulement pendant l'appui."
+    },
+    "buttonNC": {
+      "name": "Bouton-poussoir NF (arrêt)",
+      "desc": "Bouton rouge : ouvre le contact 11-12 pendant l'appui."
+    },
+    "emergencyStop": {
+      "name": "Arrêt d'urgence",
+      "desc": "Coupe la commande et reste verrouillé jusqu'au déverrouillage."
+    },
+    "selector012": {
+      "name": "Sélecteur 0-1-2",
+      "desc": "Commutateur rotatif à trois positions : la 1 ferme 13-14 et la 2 ferme 23-24."
+    },
+    "pilotLight": {
+      "name": "Voyant lumineux",
+      "desc": "Voyant du tableau : marche, déclenchement ou présence de tension."
+    },
+    "limitSwitch": {
+      "name": "Fin de course",
+      "desc": "Contact actionné mécaniquement quand une pièce arrive en fin de course."
+    },
+    "floatSwitch": {
+      "name": "Interrupteur à flotteur",
+      "desc": "Ferme le contact 13-14 au niveau haut et le 21-22 au niveau bas."
+    },
+    "pressureSwitch": {
+      "name": "Pressostat",
+      "desc": "Commute les contacts quand la pression dépasse la valeur réglée."
+    },
+    "inductiveSensor": {
+      "name": "Détecteur inductif",
+      "desc": "Capteur PNP trois fils : détecte le métal sans contact et met 24 V sur la sortie BK."
+    },
+    "photocell": {
+      "name": "Cellule photoélectrique",
+      "desc": "Capteur PNP qui active la sortie BK quand un objet coupe le faisceau lumineux."
+    },
+    "motor3ph": {
+      "name": "Moteur triphasé",
+      "desc": "Moteur asynchrone des machines industrielles ; couplage étoile ou triangle sur la plaque à bornes."
+    },
+    "starDeltaStarter": {
+      "name": "Démarreur étoile-triangle",
+      "desc": "Démarre le moteur en étoile avec un tiers du courant, puis passe en triangle par temporisation."
+    },
+    "softStarter": {
+      "name": "Démarreur progressif",
+      "desc": "Augmente progressivement la tension du moteur au démarrage, puis se court-circuite."
+    },
+    "vfd": {
+      "name": "Variateur de fréquence",
+      "desc": "Règle la vitesse du moteur par la fréquence, avec des rampes d'accélération et de décélération."
+    },
+    "plc": {
+      "name": "Automate programmable (API)",
+      "desc": "Lit 8 entrées 24 V, exécute un programme en ladder et commande 8 sorties relais."
     }
   },
   "param": {
@@ -232,7 +356,26 @@
     "title": "Titre",
     "W": "Largeur",
     "H": "Hauteur",
-    "text": "Texte"
+    "text": "Texte",
+    "Ir": "Courant de réglage Ir",
+    "Q": "Puissance réactive",
+    "U0": "Tension initiale",
+    "Uc": "Tension de bobine",
+    "Un": "Tension nominale",
+    "cls": "Classe de déclenchement",
+    "color": "Couleur",
+    "connection": "Couplage sur la plaque à bornes",
+    "fTarget": "Fréquence de consigne",
+    "load": "Charge mécanique",
+    "phase": "Phase coupée",
+    "poles": "Nombre de pôles",
+    "program": "Programme",
+    "resetMode": "Réarmement",
+    "setpoint": "Pression de consigne",
+    "t": "Temps",
+    "tAcc": "Rampe d'accélération",
+    "tDec": "Rampe de décélération",
+    "tRamp": "Durée de la rampe"
   },
   "option": {
     "earthing": {
@@ -277,6 +420,22 @@
       "wet": "Pieds nus, sol mouillé",
       "shoes": "Chaussures normales",
       "insulating": "Chaussures isolantes"
+    },
+    "color": {
+      "green": "Vert",
+      "red": "Rouge",
+      "orange": "Orange",
+      "white": "Blanc",
+      "blue": "Bleu"
+    },
+    "connection": {
+      "star": "Étoile (Y)",
+      "delta": "Triangle (Δ)",
+      "external": "Externe (démarreur Y/Δ)"
+    },
+    "resetMode": {
+      "auto": "Automatique",
+      "manual": "Manuel"
     }
   },
   "meas": {
@@ -326,7 +485,39 @@
     "bodyCurrent": "Courant dans le corps",
     "touchVoltage": "Tension de contact",
     "bodyZone": "Effet probable (CEI 60479-1)",
-    "exposure": "Durée d'exposition"
+    "exposure": "Durée d'exposition",
+    "currentL1": "Courant L1",
+    "currentL2": "Courant L2",
+    "currentL3": "Courant L3",
+    "voltageL1": "Tension L1-N",
+    "voltageL2": "Tension L2-N",
+    "voltageL3": "Tension L3-N",
+    "powerFactorL1": "FP L1",
+    "powerFactorL2": "FP L2",
+    "powerFactorL3": "FP L3",
+    "counters": "Compteurs C",
+    "direction": "Sens de rotation",
+    "elapsed": "Temps écoulé",
+    "frequency": "Fréquence",
+    "h5": "Harmonique 5",
+    "h7": "Harmonique 7",
+    "inputCurrent": "Courant d'entrée",
+    "inputs": "Entrées I0–I7",
+    "outputs": "Sorties Q0–Q7",
+    "memory": "Mémoires M",
+    "timers": "Temporisations T",
+    "lineVoltage": "Tension entre phases",
+    "phaseVoltage": "Tension phase-neutre",
+    "neutralCurrent": "Courant de neutre",
+    "output": "Sortie",
+    "outputCurrent": "Courant de sortie",
+    "outputVoltage": "Tension de sortie",
+    "prospectiveIcc3": "Icc triphasé présumé",
+    "ratedSlip": "Glissement nominal",
+    "slip": "Glissement",
+    "supplyVoltage": "Tension d'alimentation",
+    "thdI": "THD en courant",
+    "torque": "Couple"
   },
   "state": {
     "closed": "Fermé (enclenché)",
@@ -373,7 +564,46 @@
     "appliance_microwave": "Micro-ondes",
     "appliance_heater": "Radiateur",
     "appliance_washer": "Lave-linge",
-    "appliance_kettle": "Bouilloire"
+    "appliance_kettle": "Bouilloire",
+    "accelerating": "En accélération",
+    "decelerating": "En décélération",
+    "actuated": "Actionné",
+    "beam_clear": "Faisceau libre",
+    "beam_cut": "Faisceau coupé",
+    "bits": "{{bits}}",
+    "coil_burnt": "Bobine grillée",
+    "contact_switched": "Contact commuté",
+    "energized": "Enclenché",
+    "deenergized": "Au repos",
+    "fault": "Défaut",
+    "forward": "Avant",
+    "reverse": "Arrière",
+    "none": "Sans rotation",
+    "idle": "Au repos",
+    "latched": "Verrouillé",
+    "level_high": "Niveau haut",
+    "level_low": "Niveau bas",
+    "ok": "Phases correctes",
+    "phase_loss": "Perte de phase",
+    "phase_missing": "Une phase manque",
+    "wrong_sequence": "Mauvais ordre des phases",
+    "plc_run": "RUN",
+    "plc_stop": "STOP",
+    "position_0": "Position 0",
+    "pressure_high": "Pression haute",
+    "pressure_low": "Pression basse",
+    "sequence_direct": "Ordre direct",
+    "sequence_inverse": "Ordre inverse",
+    "stage_off": "Arrêt",
+    "stage_star": "Étoile",
+    "stage_delta": "Triangle",
+    "stage_ramp": "En rampe",
+    "stage_bypass": "Shunté",
+    "stalled": "Calé",
+    "stopping": "En ralentissement",
+    "target_absent": "Pas de cible",
+    "target_present": "Cible détectée",
+    "timing": "Temporisation en cours"
   },
   "action": {
     "open": "Couper",
@@ -391,7 +621,30 @@
     "activate": "Activer",
     "deactivate": "Désactiver",
     "touch": "Toucher",
-    "stop_touching": "Ne plus toucher"
+    "stop_touching": "Ne plus toucher",
+    "actuated": "Actionner",
+    "released": "Relâcher",
+    "beam_cut": "Couper le faisceau",
+    "beam_clear": "Libérer le faisceau",
+    "free_rotor": "Débloquer le rotor",
+    "lock_rotor": "Bloquer le rotor",
+    "level_high": "Niveau haut",
+    "level_low": "Niveau bas",
+    "plc_run": "Passer en RUN",
+    "plc_stop": "Passer en STOP",
+    "pos_0": "Position 0",
+    "pos_1": "Position 1",
+    "pos_2": "Position 2",
+    "press_latch": "Appuyer (verrouille)",
+    "unlatch": "Déverrouiller",
+    "pressure_high": "Pression haute",
+    "pressure_low": "Pression basse",
+    "reset_fault": "Acquitter le défaut",
+    "run_fwd": "Marche avant",
+    "run_rev": "Marche arrière",
+    "stop": "Arrêter",
+    "target_present": "Approcher du métal",
+    "target_absent": "Éloigner le métal"
   },
   "event": {
     "mcb_magnetic_trip": "Déclenchement magnétique : {{current}} ({{ratio}} × In)",
@@ -406,7 +659,17 @@
     "motor_running": "Moteur en marche",
     "motor_stalled": "Moteur bloqué : seulement {{voltage}}",
     "body_current": "Danger : {{current}} dans le corps",
-    "control_unstable": "La commande oscille et ne se stabilise pas"
+    "control_unstable": "La commande oscille et ne se stabilise pas",
+    "coil_burnt": "La bobine de {{device}} a grillé : elle a reçu {{voltage}} pour {{rated}}",
+    "contactor_no_hold": "{{device}} est retombé au relâchement de {{button}} : pas d'auto-maintien",
+    "motor_burnt": "Le moteur {{device}} a grillé",
+    "motor_overload": "{{device}} a déclenché sur surcharge ({{current}})",
+    "motor_phase_loss": "Il manque une phase au moteur {{device}}",
+    "phase_fault": "{{device}} a détecté une phase manquante ou inversée",
+    "soft_start_done": "{{device}} a terminé la rampe et s'est shunté",
+    "star_delta_switch": "{{device}} est passé d'étoile en triangle",
+    "timer_elapsed": "{{device}} a commuté ses contacts temporisés",
+    "vfd_fault": "Le variateur {{device}} s'est arrêté : tension d'entrée {{voltage}}"
   },
   "diag": {
     "source_short": {
@@ -519,8 +782,8 @@
     },
     "control_unstable": {
       "title": "Le circuit de commande oscille",
-      "cause": "Un contact alimente et coupe sa propre bobine sans fin.",
-      "hint": "Vérifiez les contacts NF reliés aux bobines.",
+      "cause": "{{device}} s'enclenche et se déclenche sans arrêt : un contact NF alimente sa propre bobine.",
+      "hint": "Vérifiez les contacts NF de {{device}}, comme le 21-22.",
       "learn": "Si le contact d'un relais coupe sa propre bobine, le relais s'ouvre et se ferme sans fin. La commande ne se stabilise jamais."
     },
     "path_open": {
@@ -570,6 +833,66 @@
       "cause": "Cette vérification suit le chemin d'un récepteur jusqu'à la source.",
       "hint": "Choisissez une lampe, une prise, un moteur ou un autre récepteur.",
       "learn": "Les récepteurs sont les appareils qui consomment de l'énergie : lampes, prises, radiateurs, moteurs."
+    },
+    "coil_off": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "La bobine de {{blocker}} n'est pas alimentée.",
+      "hint": "Appuyez sur le bouton marche ou vérifiez pourquoi {{blocker}} ne colle pas.",
+      "learn": "Un contacteur ne ferme ses contacts que si sa bobine est sous tension. Suivez le circuit de commande jusqu'à la bobine."
+    },
+    "coil_voltage": {
+      "title": "La bobine de {{device}} ne colle pas",
+      "cause": "{{device}} a une bobine de {{rated}} et reçoit {{voltage}}.",
+      "hint": "Remplacez la bobine ou alimentez la commande en {{rated}}.",
+      "learn": "La bobine doit recevoir sa tension nominale. En dessous, elle ne colle pas ; bien au-dessus, elle grille."
+    },
+    "load_phase_phase": {
+      "title": "{{device}} est raccordé entre deux phases",
+      "cause": "Il reçoit {{voltage}} et il est prévu pour {{nominal}}.",
+      "hint": "Reliez {{device}} entre une phase et le neutre.",
+      "learn": "Entre deux phases il y a 400 V ; entre une phase et le neutre, 230 V. Un appareil de 230 V grille sous 400 V."
+    },
+    "motor_no_hold": {
+      "title": "{{device}} s'arrête quand on relâche {{button}}",
+      "cause": "Pas d'auto-maintien : le contact {{contact}} de {{contactor}} n'est pas en parallèle avec {{button}}.",
+      "hint": "Reliez {{contactor}}-{{a}} et {{contactor}}-{{b}} aux bornes de {{button}}.",
+      "learn": "Le bouton marche ne ferme que pendant l'appui. Le contact NO du contacteur, en parallèle avec le bouton, garde la bobine alimentée."
+    },
+    "motor_overheated": {
+      "title": "Le moteur {{device}} a grillé",
+      "cause": "Il a fonctionné trop longtemps au-dessus de son courant nominal de {{rated}}.",
+      "hint": "Remplacez {{device}} et protégez-le par un relais thermique réglé à {{rated}}.",
+      "learn": "Le relais thermique coupe le moteur avant que les enroulements ne chauffent trop. Sans lui, l'isolant brûle."
+    },
+    "motor_overload": {
+      "title": "{{device}} a déclenché sur surcharge",
+      "cause": "{{motor}} a absorbé {{current}} et {{device}} est réglé à {{rated}}.",
+      "hint": "Vérifiez la charge de {{motor}} et réarmez {{device}} après refroidissement.",
+      "learn": "La surcharge chauffe le moteur lentement. Le relais thermique imite cet échauffement et coupe la commande avant les dégâts."
+    },
+    "motor_phase_loss": {
+      "title": "Il manque une phase au moteur {{device}}",
+      "cause": "La phase {{phase}} manque à la borne {{terminal}}.",
+      "hint": "Vérifiez le câble de {{from}} à {{to}}.",
+      "learn": "Avec deux phases, le moteur à l'arrêt n'a pas de couple pour démarrer. Le courant monte et les enroulements chauffent."
+    },
+    "motor_stalled": {
+      "title": "Le moteur {{device}} ne démarre pas",
+      "cause": "Le rotor est bloqué ou la charge de {{load}} est trop forte.",
+      "hint": "Libérez le rotor de {{device}} ou réduisez la charge.",
+      "learn": "À l'arrêt, le moteur absorbe 6 à 8 fois son courant nominal. S'il n'accélère pas, il chauffe en quelques secondes."
+    },
+    "overload_phase_loss": {
+      "title": "{{device}} a déclenché sur perte de phase",
+      "cause": "{{motor}} n'avait plus que deux phases et a absorbé {{current}}.",
+      "hint": "Vérifiez les trois phases de {{motor}} avant de réarmer {{device}}.",
+      "learn": "Sans une phase, les deux autres portent trop de courant. Le relais thermique détecte le déséquilibre et déclenche plus vite."
+    },
+    "vfd_undervoltage": {
+      "title": "Le variateur {{device}} s'est arrêté sur sous-tension",
+      "cause": "Il manque une phase ou la tension d'entrée est basse.",
+      "hint": "Vérifiez les trois phases d'entrée de {{device}} et acquittez le défaut.",
+      "learn": "Le variateur surveille son bus continu. Sans tension suffisante, il arrête le moteur pour se protéger."
     }
   },
   "simpl": {
@@ -584,7 +907,18 @@
     "led_resistive": "LED : modélisée comme une résistance ; un vrai driver a une puissance presque constante.",
     "fluorescent_ballast": "Fluorescent : impédance R + jX fixe ; démarre au-dessus de 75 % de la tension.",
     "motor1_two_state": "Moteur monophasé : deux états (démarrage et marche) au lieu du glissement continu.",
-    "body_model": "Corps humain : résistance fixe de 1000 Ω ; zones de la CEI 60479-1 approchées."
+    "body_model": "Corps humain : résistance fixe de 1000 Ω ; zones de la CEI 60479-1 approchées.",
+    "analyzer_fundamental": "Analyseur de réseau : ne mesure que le fondamental (50/60 Hz).",
+    "capacitor_ideal": "Batterie de condensateurs : condensateurs idéaux, sans pertes ni gradins automatiques.",
+    "contactor_threshold": "Contacteur : colle à 75 % et retombe à 50 % de Uc, sans temps de fermeture ni rebonds.",
+    "motor3_equivalent": "Moteur triphasé : schéma équivalent avec R1 = R2, calculé à partir de la plaque (In, FP et courant de démarrage).",
+    "motor3_sequence": "Moteur triphasé : couple par les composantes symétriques ; l'impédance inverse propre n'est pas modélisée.",
+    "overload_thermal": "Relais thermique : échauffement I²t au-dessus de 1,12 · Ir et refroidissement simple, sans température ambiante.",
+    "plc_scan": "API : le programme tourne au pas du simulateur (10 à 50 ms) ; entrées 24 V DC seulement.",
+    "pnp_sensor": "Capteur PNP : la sortie est un contact vers le positif, sans chute de tension ni retard.",
+    "soft_starter": "Démarreur progressif : tension réduite par un transformateur idéal, sans les harmoniques des thyristors.",
+    "star_delta_no_gap": "Démarreur étoile-triangle : passage sans temps mort entre étoile et triangle.",
+    "vfd_vf": "Variateur : modèle V/f constant, sans contrôle vectoriel ; harmoniques d'entrée typiques et fixes."
   },
   "ui": {
     "untitled": "Projet sans titre",
@@ -746,6 +1080,33 @@
     "about": {
       "version": "Version {{version}}",
       "simplifications": "Simplifications des modèles"
+    },
+    "ladder": {
+      "title": "Programme (ladder)",
+      "hint": "I entrées, Q sorties, M mémoires, T temporisations, C compteurs. Chaque colonne est un groupe en parallèle.",
+      "empty": "Aucun échelon. Ajoutez le premier.",
+      "rung": "Échelon {{n}}",
+      "removeRung": "Supprimer l'échelon",
+      "removeContact": "Supprimer le contact",
+      "operand": "Opérande",
+      "toggle": "Basculer entre NO et NF",
+      "no": "NO",
+      "nc": "NF",
+      "addParallel": "+ parallèle",
+      "addSeries": "+ série",
+      "addRung": "+ échelon",
+      "coil": "Bobine",
+      "presetTime": "Temps (s)",
+      "presetCount": "Comptage",
+      "kind": {
+        "out": "Sortie",
+        "set": "SET (enclenche)",
+        "reset": "RESET (déclenche)",
+        "ton": "Temporisation TON",
+        "tof": "Temporisation TOF",
+        "ctu": "Compteur CTU",
+        "res": "Remise à zéro T ou C"
+      }
     }
   },
   "example": {
@@ -764,6 +1125,26 @@
     "tt-protection": {
       "title": "Protection des personnes en TT",
       "desc": "Un fer défectueux et une personne qui le touche. Voyez le différentiel couper la fuite, puis ouvrez-le pour comparer."
+    },
+    "dol-start": {
+      "title": "Démarrage direct avec signalisation",
+      "desc": "Moteur de 4 kW avec disjoncteur-moteur, contacteur, relais thermique, auto-maintien et voyants de marche et de défaut."
+    },
+    "reversing": {
+      "title": "Inversion de sens avec verrouillage",
+      "desc": "Deux contacteurs inversent deux phases ; les contacts 21-22 empêchent leur fermeture simultanée."
+    },
+    "star-delta": {
+      "title": "Démarrage étoile-triangle",
+      "desc": "Moteur de 7,5 kW qui démarre en étoile et passe en triangle après 5 s, avec contacteurs et temporisateur."
+    },
+    "vfd-motor": {
+      "title": "Moteur avec variateur de fréquence",
+      "desc": "Le sélecteur commande le variateur par les entrées DI1 et DI2 : rampes de 5 s dans les deux sens."
+    },
+    "plc-pump": {
+      "title": "Pompe à flotteur par API",
+      "desc": "L'automate démarre la pompe quand le flotteur indique le niveau haut et allume le voyant ; S0 l'arrête."
     }
   },
   "wizard": {
@@ -842,6 +1223,21 @@
       "view-3d": "Ouvrez l'onglet Physique 3D pour voir l'installation réelle.",
       "fault": "Revenez au schéma. Placez un Court-circuit entre le L et le N de la lampe et activez-le avec Manœuvrer.",
       "fix": "Le disjoncteur a déclenché. Cliquez sur « Comment corriger », désactivez le court-circuit et réarmez le disjoncteur."
+    },
+    "motor": {
+      "title": "Mon premier démarrage de moteur",
+      "intro": "Vous allez câbler le démarrage direct d'un moteur triphasé. Le circuit de puissance est à gauche, la commande à droite.",
+      "place-grid": "Glissez le Réseau triphasé sur le schéma. Il a trois phases, L1, L2 et L3, le neutre et la terre.",
+      "breaker": "Placez un Disjoncteur-moteur sous le réseau et reliez L1, L2 et L3 aux bornes 1, 3 et 5.",
+      "contactor": "Le contacteur met le moteur en marche et à l'arrêt. Placez-le dessous et reliez les bornes 2, 4 et 6 du disjoncteur aux 1, 3 et 5 du contacteur.",
+      "motor": "Placez le Relais thermique et le Moteur triphasé. Reliez le contacteur au relais (2-1, 4-3, 6-5), le relais au moteur (U1, V1, W1) et la terre au PE.",
+      "control": "Maintenant la commande : de la borne 2 du disjoncteur au 95 du relais, puis 96, bouton arrêt, bouton marche et bobine A1. Reliez A2 au neutre.",
+      "try-start": "Choisissez Manœuvrer, appuyez sur le bouton marche puis relâchez-le. Observez le moteur.",
+      "self-hold": "Le moteur s'est arrêté au relâchement : il manque l'auto-maintien. Reliez K1-13 et K1-14 aux bornes 13 et 14 du bouton marche et redémarrez.",
+      "relay": "Sélectionnez le relais thermique et réglez Ir sur le courant nominal du moteur, 7,7 A.",
+      "phase-loss": "Essai de perte de phase : sélectionnez le câble du relais 6 vers le moteur W1 et cochez « Fil coupé ».",
+      "phase-fix": "Lisez le message, cliquez sur « Comment corriger » et rebranchez le câble coupé.",
+      "done": "Vous avez câblé un démarrage direct avec auto-maintien et relais thermique, et vu comment une perte de phase est expliquée. Ensuite, le premier exercice industriel."
     }
   }
 }

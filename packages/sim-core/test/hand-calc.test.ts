@@ -14,6 +14,7 @@ import {
   fuseTime,
   mcbTripTime,
   motor1Rated,
+  motor3Rated,
   nodeVoltage,
   elementCurrent,
   rms,
@@ -728,6 +729,117 @@ describe('Falhas e «Porque não funciona?»', () => {
   });
 });
 
-describe('Ainda por implementar (Fase 4)', () => {
-  it.todo('motor trifásico 4 kW, FP 0,85, η 0,88 a 400 V = 7,72 A');
+/* ------------------------------------------------------------------ */
+describe('Trifásico (Fase 4): rede de 400 V com Zs em cada fase', () => {
+  const SQ3 = Math.sqrt(3);
+  const U3 = 400;
+  /** Rede trifásica quase ideal e cabos de 10 mm² com 0,1 m (resistência desprezável). */
+  function rig3(Zs = 1e-3) {
+    const P = createProject({ domain: 'industrial', level: 'pro' });
+    const G = addDevice(P, 'grid3ph', { params: { Zs } });
+    const W = (a: Parameters<typeof addWire>[1], ta: string, b: Parameters<typeof addWire>[1], tb: string) => addWire(P, a, ta, b, tb, { section: 10, length: 0.1 });
+    return { P, G, W };
+  }
+
+  it('56. motor trifásico 4 kW, FP 0,85, η 0,88 a 400 V: In = P / (√3 · U · η · cos φ) = 7,72 A', () => {
+    expect(motor3Rated(4, 0.88, 0.85)).toBeCloseTo(7.7186, 3);
+    const { P, G, W } = rig3();
+    const M = addDevice(P, 'motor3ph', { params: { Pm: 4, eta: 0.88, PF: 0.85, load: 100 } });
+    W(G, 'L1', M, 'U1');
+    W(G, 'L2', M, 'V1');
+    W(G, 'L3', M, 'W1');
+    const x = sim(P);
+    x.run(6);
+    rel(x.measure(M.id, 'meas.currentL1'), motor3Rated(4, 0.88, 0.85), 5e-3);
+    rel(x.measure(M.id, 'meas.activePower'), 4000 / 0.88, 5e-3);
+    expect(x.measure(M.id, 'meas.powerFactor')).toBeCloseTo(0.85, 2);
+  });
+
+  it('57. motor trifásico com rotor bloqueado: I = k · In (k = 7)', () => {
+    const { P, G, W } = rig3();
+    const M = addDevice(P, 'motor3ph', { params: { Pm: 4, kStart: 7 }, state: { locked: true } });
+    W(G, 'L1', M, 'U1');
+    W(G, 'L2', M, 'V1');
+    W(G, 'L3', M, 'W1');
+    const x = sim(P);
+    x.step(0.02);
+    rel(x.measure(M.id, 'meas.currentL1'), 7 * motor3Rated(4, 0.88, 0.85), 0.03);
+  });
+
+  it('58. estrela-triângulo: com o rotor parado, I(estrela) = I(triângulo) / 3', () => {
+    const I = (connection: string) => {
+      const { P, G, W } = rig3();
+      const M = addDevice(P, 'motor3ph', { params: { Pm: 7.5, Vn: '400/690', connection }, state: { locked: true } });
+      W(G, 'L1', M, 'U1');
+      W(G, 'L2', M, 'V1');
+      W(G, 'L3', M, 'W1');
+      const x = sim(P);
+      x.step(0.02);
+      return x.measure(M.id, 'meas.currentL1');
+    };
+    rel(I('star') / I('delta'), 1 / 3, 1e-3);
+  });
+
+  it('59. resistências trifásicas 6 kW equilibradas: I = P / (√3 · U) = 8,66 A', () => {
+    const { P, G, W } = rig3();
+    const E = addDevice(P, 'heater3ph', { params: { P: 6 } });
+    W(G, 'L1', E, 'L1');
+    W(G, 'L2', E, 'L2');
+    W(G, 'L3', E, 'L3');
+    const x = sim(P);
+    x.step(0.02);
+    rel(x.measure(E.id, 'meas.current'), 6000 / (SQ3 * U3), 1e-3);
+    expect(x.measure(G.id, 'meas.neutralCurrent')).toBeLessThan(1e-6);
+  });
+
+  it('60. resistências trifásicas sem L3: duas em série a 400 V → P = U² / (2R) = P / 2', () => {
+    const { P, G, W } = rig3();
+    const E = addDevice(P, 'heater3ph', { params: { P: 6 } });
+    W(G, 'L1', E, 'L1');
+    W(G, 'L2', E, 'L2');
+    const x = sim(P);
+    x.step(0.02);
+    rel(x.measure(E.id, 'meas.activePower'), 3000, 1e-3);
+  });
+
+  it('61. bateria de condensadores 10 kvar em triângulo: C = Q / (3 · ω · U²), I = Q / (√3 · U)', () => {
+    const { P, G, W } = rig3();
+    const Cb = addDevice(P, 'capacitorBank', { params: { Q: 10 } });
+    W(G, 'L1', Cb, 'L1');
+    W(G, 'L2', Cb, 'L2');
+    W(G, 'L3', Cb, 'L3');
+    const x = sim(P);
+    x.step(0.02);
+    rel(-x.measure(Cb.id, 'meas.reactivePower'), 10000, 1e-3);
+    rel(x.measure(Cb.id, 'meas.current'), 10000 / (SQ3 * U3), 1e-3);
+  });
+
+  it('62. curto-circuito entre duas fases: Icc2 = U / (2 · Zs) = √3/2 · Icc3', () => {
+    const { P, G, W } = rig3(0.05);
+    const Z = addDevice(P, 'shortCircuit', { state: { active: true } });
+    W(G, 'L1', Z, '1');
+    W(G, 'L2', Z, '2');
+    const x = sim(P);
+    x.step(0.02);
+    const Rl = 2 * Rw(0.1, 10) + 1e-3;
+    rel(x.measure(Z.id, 'meas.faultCurrent'), U3 / (2 * 0.05 + Rl), 1e-3);
+    rel(x.measure(G.id, 'meas.prospectiveIcc3') * (SQ3 / 2), U3 / (2 * 0.05), 1e-9);
+  });
+
+  it('63. relé térmico classe 10 a 1,5 · Ir: t = 400 / (1,5² − 1,12²) = 402 s', () => {
+    const { P, G, W } = rig3();
+    const I = 6000 / (SQ3 * U3);
+    const F = addDevice(P, 'thermalRelay', { params: { Ir: I / 1.5, cls: 10 } });
+    const E = addDevice(P, 'heater3ph', { params: { P: 6 } });
+    W(G, 'L1', F, '1');
+    W(G, 'L2', F, '3');
+    W(G, 'L3', F, '5');
+    W(F, '2', E, 'L1');
+    W(F, '4', E, 'L2');
+    W(F, '6', E, 'L3');
+    const x = sim(P);
+    const t = runUntil(x, () => !!x.device(F.id)!.state.tripped, 600, 0.05);
+    const expected = 400 / (1.5 ** 2 - 1.12 ** 2);
+    expect(Math.abs(t - expected)).toBeLessThan(1);
+  });
 });

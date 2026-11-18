@@ -33,7 +33,7 @@ export interface Topology {
   /** Cabos ligados a cada pino. */
   wiresAt: Wire[][];
   seeds: SourceSeed[];
-  /** Papéis que chegam a cada pino: 'fonteId:papel'. */
+  /** Terminais de fonte que chegam a cada pino: 'fonteId:terminal'. */
   reach: Set<string>[];
   roles: Set<SourceRole>[];
   pin(deviceId: string, terminal: string): number;
@@ -107,7 +107,7 @@ export function buildTopology(P: Project, registry: Registry): Topology {
   const reach: Set<string>[] = Array.from({ length: n }, () => new Set<string>());
   const roles: Set<SourceRole>[] = Array.from({ length: n }, () => new Set<SourceRole>());
   for (const s of seeds) {
-    const tag = `${s.device.id}:${s.role}`;
+    const tag = `${s.device.id}:${s.terminal}`;
     const q = [s.pin];
     reach[s.pin]!.add(tag);
     roles[s.pin]!.add(s.role);

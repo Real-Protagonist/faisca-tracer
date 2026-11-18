@@ -95,14 +95,50 @@ const KIND_TO_CONDUCTOR: Partial<Record<TerminalKind, Conductor>> = {
 };
 const PRIORITY: TerminalKind[] = ['PE', 'N', 'DC-', 'DC+', 'L1', 'L2', 'L3', 'L', 'C'];
 
-/** Condutor (cor) sugerido pelos tipos dos dois terminais. */
+/**
+ * Condutor (cor) sugerido pelos tipos dos dois terminais. Entre dois terminais de passagem
+ * (disjuntor, contactor…), segue o circuito pelos cabos e pólos até um terminal com tipo:
+ * a saída de um disjuntor ligado a L2 dá um cabo preto.
+ */
 export function autoConductor(P: Project, a: { device: string; terminal: string }, b: { device: string; terminal: string }, registry: Registry = defaultRegistry): Conductor {
-  const kinds = [a, b].map((e) => {
+  const kindOf = (e: { device: string; terminal: string }) => {
     const d = P.devices.find((x) => x.id === e.device);
     return d ? registry.get(d.type)?.terminals.find((t) => t.id === e.terminal)?.kind : undefined;
-  });
+  };
+  const kinds = [a, b].map(kindOf);
   for (const k of PRIORITY) if (kinds.includes(k)) return KIND_TO_CONDUCTOR[k]!;
-  return 'L1';
+  return traceConductor(P, a, registry) ?? traceConductor(P, b, registry) ?? 'L1';
+}
+
+/** Procura em largura, pelos cabos e pelas ligações internas, o terminal com tipo mais próximo. */
+function traceConductor(P: Project, start: { device: string; terminal: string }, registry: Registry): Conductor | null {
+  const key = (e: { device: string; terminal: string }) => `${e.device}:${e.terminal}`;
+  const seen = new Set<string>([key(start)]);
+  const queue = [start];
+  while (queue.length && seen.size < 400) {
+    const e = queue.shift()!;
+    const d = P.devices.find((x) => x.id === e.device);
+    const def = d && registry.get(d.type);
+    if (!d || !def) continue;
+    const kind = def.terminals.find((t) => t.id === e.terminal)?.kind;
+    if (kind && kind !== 'any') return KIND_TO_CONDUCTOR[kind] ?? null;
+    const next: { device: string; terminal: string }[] = [];
+    for (const g of def.shorts?.(d) ?? []) if (g.includes(e.terminal)) for (const t of g) next.push({ device: d.id, terminal: t });
+    for (const c of def.conducts?.(d) ?? []) {
+      if (c.a === e.terminal) next.push({ device: d.id, terminal: c.b });
+      if (c.b === e.terminal) next.push({ device: d.id, terminal: c.a });
+    }
+    for (const w of P.wires) {
+      if (w.a.device === e.device && w.a.terminal === e.terminal) next.push(w.b);
+      if (w.b.device === e.device && w.b.terminal === e.terminal) next.push(w.a);
+    }
+    for (const n of next) {
+      if (seen.has(key(n))) continue;
+      seen.add(key(n));
+      queue.push(n);
+    }
+  }
+  return null;
 }
 
 export interface WireOptions {

@@ -193,6 +193,130 @@
     "note": {
       "name": "Note",
       "desc": "Free text for instructions or remarks."
+    },
+    "grid3ph": {
+      "name": "Three-phase supply",
+      "desc": "400/230 V supply with three phases and neutral, for motors and industrial boards."
+    },
+    "mcb3p": {
+      "name": "3-pole circuit breaker",
+      "desc": "Protects the three phases of a three-phase circuit and cuts them together."
+    },
+    "mcb4p": {
+      "name": "4-pole circuit breaker",
+      "desc": "Cuts the three phases and neutral, for three-phase circuits with single-phase loads."
+    },
+    "motorBreaker": {
+      "name": "Motor circuit breaker",
+      "desc": "Protects the motor against short circuit and overload, with Ir set to the motor current."
+    },
+    "thermalRelay": {
+      "name": "Thermal overload relay",
+      "desc": "Opens contact 95-96 when the motor draws too much current for too long."
+    },
+    "phaseMonitor": {
+      "name": "Phase failure and sequence relay",
+      "desc": "Closes contact 11-14 only with all three phases present and in the right order."
+    },
+    "heater3ph": {
+      "name": "Three-phase heater",
+      "desc": "Three heating elements in star, connected to the three phases."
+    },
+    "capacitorBank": {
+      "name": "Capacitor bank",
+      "desc": "Supplies reactive power and improves the power factor of the installation."
+    },
+    "powerAnalyzer": {
+      "name": "Power analyser",
+      "desc": "Measures voltage, current and power factor on each phase, and the total power."
+    },
+    "phaseSequenceMeter": {
+      "name": "Phase rotation meter",
+      "desc": "Shows whether the phases are in direct or reverse order, or one is missing."
+    },
+    "phaseLoss": {
+      "name": "Phase loss",
+      "desc": "Cuts one of the three phases to test what happens to the motor."
+    },
+    "phaseReversal": {
+      "name": "Phase reversal",
+      "desc": "Swaps two phases: the motor turns the other way."
+    },
+    "contactor3p": {
+      "name": "Contactor",
+      "desc": "Coil-operated switch: the main contacts switch the motor and the auxiliaries 13-14 and 21-22 serve the control circuit."
+    },
+    "auxRelay": {
+      "name": "Control relay",
+      "desc": "Control relay with two NO and two NC contacts, without power contacts."
+    },
+    "timerOn": {
+      "name": "On-delay timer",
+      "desc": "Switches contacts 15-16 and 15-18 a set time after the coil is energised."
+    },
+    "timerOff": {
+      "name": "Off-delay timer",
+      "desc": "Keeps the contacts switched for a set time after the coil is de-energised."
+    },
+    "buttonNO": {
+      "name": "NO push button (start)",
+      "desc": "Green push button: closes contact 13-14 only while pressed."
+    },
+    "buttonNC": {
+      "name": "NC push button (stop)",
+      "desc": "Red push button: opens contact 11-12 while pressed."
+    },
+    "emergencyStop": {
+      "name": "Emergency stop",
+      "desc": "Cuts the control circuit and stays latched until it is released."
+    },
+    "selector012": {
+      "name": "0-1-2 selector switch",
+      "desc": "Three-position rotary switch: position 1 closes 13-14 and position 2 closes 23-24."
+    },
+    "pilotLight": {
+      "name": "Pilot light",
+      "desc": "Panel indicator lamp: running, tripped or power present."
+    },
+    "limitSwitch": {
+      "name": "Limit switch",
+      "desc": "Contact operated mechanically when a part reaches the end of its travel."
+    },
+    "floatSwitch": {
+      "name": "Float switch",
+      "desc": "Closes contact 13-14 at high level and 21-22 at low level."
+    },
+    "pressureSwitch": {
+      "name": "Pressure switch",
+      "desc": "Switches the contacts when the pressure passes the set value."
+    },
+    "inductiveSensor": {
+      "name": "Inductive sensor",
+      "desc": "Three-wire PNP sensor: detects metal without contact and puts 24 V on output BK."
+    },
+    "photocell": {
+      "name": "Photoelectric sensor",
+      "desc": "PNP sensor that switches output BK on when an object breaks the light beam."
+    },
+    "motor3ph": {
+      "name": "Three-phase motor",
+      "desc": "Induction motor for industrial machines; connected in star or delta on the terminal board."
+    },
+    "starDeltaStarter": {
+      "name": "Star-delta starter",
+      "desc": "Starts the motor in star at one third of the current, then switches to delta by timer."
+    },
+    "softStarter": {
+      "name": "Soft starter",
+      "desc": "Raises the motor voltage gradually during start-up, then bypasses itself."
+    },
+    "vfd": {
+      "name": "Variable frequency drive",
+      "desc": "Controls the motor speed through frequency, with acceleration and deceleration ramps."
+    },
+    "plc": {
+      "name": "Programmable logic controller (PLC)",
+      "desc": "Reads 8 inputs at 24 V, runs a ladder program and drives 8 relay outputs."
     }
   },
   "param": {
@@ -232,7 +356,26 @@
     "title": "Title",
     "W": "Width",
     "H": "Height",
-    "text": "Text"
+    "text": "Text",
+    "Ir": "Set current Ir",
+    "Q": "Reactive power",
+    "U0": "Initial voltage",
+    "Uc": "Coil voltage",
+    "Un": "Rated voltage",
+    "cls": "Trip class",
+    "color": "Colour",
+    "connection": "Terminal board connection",
+    "fTarget": "Reference frequency",
+    "load": "Mechanical load",
+    "phase": "Lost phase",
+    "poles": "Number of poles",
+    "program": "Program",
+    "resetMode": "Reset",
+    "setpoint": "Set pressure",
+    "t": "Time",
+    "tAcc": "Acceleration ramp",
+    "tDec": "Deceleration ramp",
+    "tRamp": "Ramp time"
   },
   "option": {
     "earthing": {
@@ -277,6 +420,22 @@
       "wet": "Barefoot, wet floor",
       "shoes": "Normal shoes",
       "insulating": "Insulating shoes"
+    },
+    "color": {
+      "green": "Green",
+      "red": "Red",
+      "orange": "Orange",
+      "white": "White",
+      "blue": "Blue"
+    },
+    "connection": {
+      "star": "Star (Y)",
+      "delta": "Delta (Δ)",
+      "external": "External (Y/Δ starter)"
+    },
+    "resetMode": {
+      "auto": "Automatic",
+      "manual": "Manual"
     }
   },
   "meas": {
@@ -326,7 +485,39 @@
     "bodyCurrent": "Body current",
     "touchVoltage": "Touch voltage",
     "bodyZone": "Likely effect (IEC 60479-1)",
-    "exposure": "Exposure time"
+    "exposure": "Exposure time",
+    "currentL1": "Current L1",
+    "currentL2": "Current L2",
+    "currentL3": "Current L3",
+    "voltageL1": "Voltage L1-N",
+    "voltageL2": "Voltage L2-N",
+    "voltageL3": "Voltage L3-N",
+    "powerFactorL1": "PF L1",
+    "powerFactorL2": "PF L2",
+    "powerFactorL3": "PF L3",
+    "counters": "Counters C",
+    "direction": "Direction of rotation",
+    "elapsed": "Elapsed time",
+    "frequency": "Frequency",
+    "h5": "5th harmonic",
+    "h7": "7th harmonic",
+    "inputCurrent": "Input current",
+    "inputs": "Inputs I0–I7",
+    "outputs": "Outputs Q0–Q7",
+    "memory": "Memory bits M",
+    "timers": "Timers T",
+    "lineVoltage": "Line voltage",
+    "phaseVoltage": "Phase-to-neutral voltage",
+    "neutralCurrent": "Neutral current",
+    "output": "Output",
+    "outputCurrent": "Output current",
+    "outputVoltage": "Output voltage",
+    "prospectiveIcc3": "Prospective three-phase Isc",
+    "ratedSlip": "Rated slip",
+    "slip": "Slip",
+    "supplyVoltage": "Supply voltage",
+    "thdI": "Current THD",
+    "torque": "Torque"
   },
   "state": {
     "closed": "Closed (on)",
@@ -373,7 +564,46 @@
     "appliance_microwave": "Microwave",
     "appliance_heater": "Heater",
     "appliance_washer": "Washing machine",
-    "appliance_kettle": "Kettle"
+    "appliance_kettle": "Kettle",
+    "accelerating": "Accelerating",
+    "decelerating": "Decelerating",
+    "actuated": "Actuated",
+    "beam_clear": "Beam clear",
+    "beam_cut": "Beam broken",
+    "bits": "{{bits}}",
+    "coil_burnt": "Coil burnt out",
+    "contact_switched": "Contact switched",
+    "energized": "Energised",
+    "deenergized": "De-energised",
+    "fault": "Fault",
+    "forward": "Forward",
+    "reverse": "Reverse",
+    "none": "Not turning",
+    "idle": "Idle",
+    "latched": "Latched",
+    "level_high": "High level",
+    "level_low": "Low level",
+    "ok": "Phases correct",
+    "phase_loss": "Phase loss",
+    "phase_missing": "A phase is missing",
+    "wrong_sequence": "Wrong sequence",
+    "plc_run": "RUN",
+    "plc_stop": "STOP",
+    "position_0": "Position 0",
+    "pressure_high": "High pressure",
+    "pressure_low": "Low pressure",
+    "sequence_direct": "Direct sequence",
+    "sequence_inverse": "Reverse sequence",
+    "stage_off": "Off",
+    "stage_star": "Star",
+    "stage_delta": "Delta",
+    "stage_ramp": "Ramping",
+    "stage_bypass": "Bypassed",
+    "stalled": "Stalled",
+    "stopping": "Slowing down",
+    "target_absent": "No target",
+    "target_present": "Target detected",
+    "timing": "Timing"
   },
   "action": {
     "open": "Switch off",
@@ -391,7 +621,30 @@
     "activate": "Activate",
     "deactivate": "Deactivate",
     "touch": "Touch",
-    "stop_touching": "Stop touching"
+    "stop_touching": "Stop touching",
+    "actuated": "Actuate",
+    "released": "Release",
+    "beam_cut": "Break the beam",
+    "beam_clear": "Clear the beam",
+    "free_rotor": "Free the rotor",
+    "lock_rotor": "Lock the rotor",
+    "level_high": "High level",
+    "level_low": "Low level",
+    "plc_run": "Set to RUN",
+    "plc_stop": "Set to STOP",
+    "pos_0": "Position 0",
+    "pos_1": "Position 1",
+    "pos_2": "Position 2",
+    "press_latch": "Press (latches)",
+    "unlatch": "Unlatch",
+    "pressure_high": "High pressure",
+    "pressure_low": "Low pressure",
+    "reset_fault": "Reset fault",
+    "run_fwd": "Run forward",
+    "run_rev": "Run reverse",
+    "stop": "Stop",
+    "target_present": "Bring metal close",
+    "target_absent": "Move the metal away"
   },
   "event": {
     "mcb_magnetic_trip": "Magnetic trip: {{current}} ({{ratio}} × In)",
@@ -406,7 +659,17 @@
     "motor_running": "Motor running",
     "motor_stalled": "Motor stalled: only {{voltage}}",
     "body_current": "Danger: {{current}} through the body",
-    "control_unstable": "The control circuit oscillates and does not settle"
+    "control_unstable": "The control circuit oscillates and does not settle",
+    "coil_burnt": "The coil of {{device}} burnt out: it received {{voltage}} and is rated {{rated}}",
+    "contactor_no_hold": "{{device}} dropped out when {{button}} was released: no self-hold",
+    "motor_burnt": "Motor {{device}} burnt out",
+    "motor_overload": "{{device}} tripped on overload ({{current}})",
+    "motor_phase_loss": "A phase is missing at motor {{device}}",
+    "phase_fault": "{{device}} detected a missing or reversed phase",
+    "soft_start_done": "{{device}} finished the ramp and bypassed",
+    "star_delta_switch": "{{device}} switched from star to delta",
+    "timer_elapsed": "{{device}} switched its timed contacts",
+    "vfd_fault": "Drive {{device}} stopped: input voltage {{voltage}}"
   },
   "diag": {
     "source_short": {
@@ -519,9 +782,9 @@
     },
     "control_unstable": {
       "title": "The control circuit oscillates",
-      "cause": "A contact feeds and cuts its own coil without end.",
-      "hint": "Check the NC contacts wired to the coils.",
-      "learn": "If a relay contact switches off its own coil, the relay opens and closes endlessly. The control never settles."
+      "cause": "{{device}} switches on and off endlessly: an NC contact feeds its own coil.",
+      "hint": "Check the NC contacts of {{device}}, such as 21-22.",
+      "learn": "If a relay contact switches off its own coil, the relay opens and closes forever. The control circuit never settles."
     },
     "path_open": {
       "title": "{{device}} does not work",
@@ -570,6 +833,66 @@
       "cause": "This check follows the path from a load to the supply.",
       "hint": "Choose a lamp, socket, motor or another load.",
       "learn": "Loads are the devices that use energy: lamps, sockets, heaters, motors."
+    },
+    "coil_off": {
+      "title": "{{device}} does not work",
+      "cause": "The coil of {{blocker}} has no supply.",
+      "hint": "Press the start button or check why {{blocker}} does not pull in.",
+      "learn": "A contactor closes its contacts only when its coil is energised. Follow the control circuit up to the coil."
+    },
+    "coil_voltage": {
+      "title": "The coil of {{device}} does not pull in",
+      "cause": "{{device}} has a {{rated}} coil and receives {{voltage}}.",
+      "hint": "Replace the coil or supply the control circuit at {{rated}}.",
+      "learn": "The coil must receive its rated voltage. Below it, it does not pull in; far above it, it burns out."
+    },
+    "load_phase_phase": {
+      "title": "{{device}} is connected between two phases",
+      "cause": "It receives {{voltage}} and is rated {{nominal}}.",
+      "hint": "Connect {{device}} between one phase and neutral.",
+      "learn": "Between two phases there are 400 V; between a phase and neutral, 230 V. A 230 V appliance burns out at 400 V."
+    },
+    "motor_no_hold": {
+      "title": "{{device}} stops when {{button}} is released",
+      "cause": "No self-hold: contact {{contact}} of {{contactor}} is not in parallel with {{button}}.",
+      "hint": "Connect {{contactor}}-{{a}} and {{contactor}}-{{b}} to the terminals of {{button}}.",
+      "learn": "The start button closes only while it is pressed. The contactor NO contact, in parallel with the button, keeps the coil energised."
+    },
+    "motor_overheated": {
+      "title": "Motor {{device}} burnt out",
+      "cause": "It ran too long above its rated current of {{rated}}.",
+      "hint": "Replace {{device}} and protect it with a thermal relay set to {{rated}}.",
+      "learn": "The thermal relay switches the motor off before the windings overheat. Without it, the insulation burns."
+    },
+    "motor_overload": {
+      "title": "{{device}} tripped on overload",
+      "cause": "{{motor}} drew {{current}} and {{device}} is set to {{rated}}.",
+      "hint": "Check the load on {{motor}} and reset {{device}} once it has cooled.",
+      "learn": "Overload heats the motor slowly. The thermal relay copies that heating and opens the control circuit before the motor is damaged."
+    },
+    "motor_phase_loss": {
+      "title": "A phase is missing at motor {{device}}",
+      "cause": "Phase {{phase}} is missing at terminal {{terminal}}.",
+      "hint": "Check the cable from {{from}} to {{to}}.",
+      "learn": "With two phases, a stopped motor has no torque to start. The current rises and the windings overheat."
+    },
+    "motor_stalled": {
+      "title": "Motor {{device}} does not start",
+      "cause": "The rotor is locked or the {{load}} load is too high.",
+      "hint": "Free the rotor of {{device}} or reduce the load.",
+      "learn": "At standstill the motor draws 6 to 8 times its rated current. If it does not accelerate, it heats up in seconds."
+    },
+    "overload_phase_loss": {
+      "title": "{{device}} tripped on phase loss",
+      "cause": "{{motor}} was left with two phases and drew {{current}}.",
+      "hint": "Check the three phases of {{motor}} before resetting {{device}}.",
+      "learn": "Without one phase, the other two carry too much current. The thermal relay senses the imbalance and trips faster."
+    },
+    "vfd_undervoltage": {
+      "title": "Drive {{device}} stopped on undervoltage",
+      "cause": "A phase is missing or the input voltage is low.",
+      "hint": "Check the three input phases of {{device}} and reset the fault.",
+      "learn": "The drive monitors its DC bus. Without enough voltage, it stops the motor to protect itself."
     }
   },
   "simpl": {
@@ -584,7 +907,18 @@
     "led_resistive": "LED: modelled as a resistance; a real driver has almost constant power.",
     "fluorescent_ballast": "Fluorescent: fixed R + jX impedance; starts above 75 % of the voltage.",
     "motor1_two_state": "Single-phase motor: two states (starting and running) instead of continuous slip.",
-    "body_model": "Human body: fixed 1000 Ω resistance; IEC 60479-1 zones approximated."
+    "body_model": "Human body: fixed 1000 Ω resistance; IEC 60479-1 zones approximated.",
+    "analyzer_fundamental": "Power analyser: measures only the fundamental (50/60 Hz).",
+    "capacitor_ideal": "Capacitor bank: ideal capacitors, without losses or automatic steps.",
+    "contactor_threshold": "Contactor: pulls in at 75 % and drops out at 50 % of Uc, without closing time or bounce.",
+    "motor3_equivalent": "Three-phase motor: equivalent circuit with R1 = R2, derived from the nameplate (In, PF and starting current).",
+    "motor3_sequence": "Three-phase motor: torque from symmetrical components; the separate negative-sequence impedance is not modelled.",
+    "overload_thermal": "Thermal relay: I²t heating above 1.12 · Ir and simple cooling, without ambient temperature.",
+    "plc_scan": "PLC: the program runs at the simulator step (10 to 50 ms); 24 V DC inputs only.",
+    "pnp_sensor": "PNP sensor: the output is a switch to positive, without voltage drop or delay.",
+    "soft_starter": "Soft starter: voltage reduced by an ideal transformer, without thyristor harmonics.",
+    "star_delta_no_gap": "Star-delta starter: switchover without dead time between star and delta.",
+    "vfd_vf": "Drive: constant V/f model, without vector control; typical fixed input harmonics."
   },
   "ui": {
     "untitled": "Untitled project",
@@ -746,6 +1080,33 @@
     "about": {
       "version": "Version {{version}}",
       "simplifications": "Model simplifications"
+    },
+    "ladder": {
+      "title": "Program (ladder)",
+      "hint": "I inputs, Q outputs, M memory bits, T timers, C counters. Each column is a parallel group.",
+      "empty": "No rungs yet. Add the first one.",
+      "rung": "Rung {{n}}",
+      "removeRung": "Delete rung",
+      "removeContact": "Delete contact",
+      "operand": "Operand",
+      "toggle": "Switch between NO and NC",
+      "no": "NO",
+      "nc": "NC",
+      "addParallel": "+ parallel",
+      "addSeries": "+ series",
+      "addRung": "+ rung",
+      "coil": "Coil",
+      "presetTime": "Time (s)",
+      "presetCount": "Count",
+      "kind": {
+        "out": "Output",
+        "set": "SET (latch)",
+        "reset": "RESET (unlatch)",
+        "ton": "TON timer",
+        "tof": "TOF timer",
+        "ctu": "CTU counter",
+        "res": "Reset T or C"
+      }
     }
   },
   "example": {
@@ -764,6 +1125,26 @@
     "tt-protection": {
       "title": "Protection of people in TT",
       "desc": "A faulty iron and a person touching it. Watch the RCD cut the leak, then switch it off to compare."
+    },
+    "dol-start": {
+      "title": "Direct-on-line start with signalling",
+      "desc": "4 kW motor with motor breaker, contactor, thermal relay, self-hold and running and trip pilot lights."
+    },
+    "reversing": {
+      "title": "Reversing with interlock",
+      "desc": "Two contactors swap two phases; contacts 21-22 stop both from closing at the same time."
+    },
+    "star-delta": {
+      "title": "Star-delta start",
+      "desc": "7.5 kW motor that starts in star and switches to delta after 5 s, with contactors and a timer."
+    },
+    "vfd-motor": {
+      "title": "Motor with frequency drive",
+      "desc": "The selector drives the inverter through inputs DI1 and DI2: 5 s ramps in both directions."
+    },
+    "plc-pump": {
+      "title": "PLC pump with float switch",
+      "desc": "The PLC starts the pump when the float shows high level and lights the indicator; S0 stops it."
     }
   },
   "wizard": {
@@ -842,6 +1223,21 @@
       "view-3d": "Open the Physical 3D tab to see the real installation.",
       "fault": "Go back to the diagram. Place a Short circuit between L and N of the lamp and activate it with Operate.",
       "fix": "The breaker tripped. Click «How to fix» on the message, deactivate the short and reset the breaker."
+    },
+    "motor": {
+      "title": "My first motor start",
+      "intro": "You will build a direct-on-line start for a three-phase motor. The power circuit goes on the left and the control circuit on the right.",
+      "place-grid": "Drag the Three-phase supply onto the diagram. It has three phases, L1, L2 and L3, plus neutral and earth.",
+      "breaker": "Place a Motor circuit breaker below the supply and connect L1, L2 and L3 to terminals 1, 3 and 5.",
+      "contactor": "The contactor switches the motor on and off. Place it below and connect breaker terminals 2, 4 and 6 to contactor 1, 3 and 5.",
+      "motor": "Place the Thermal relay and the Three-phase motor. Connect the contactor to the relay (2-1, 4-3, 6-5), the relay to the motor (U1, V1, W1) and earth to PE.",
+      "control": "Now the control circuit: from breaker terminal 2 to relay 95, then 96, stop button, start button and coil A1. Connect A2 to neutral.",
+      "try-start": "Choose Operate, press the start button and release it. Watch what happens to the motor.",
+      "self-hold": "The motor stopped when you released the button: there is no self-hold. Connect K1-13 and K1-14 to start button terminals 13 and 14 and start again.",
+      "relay": "Select the thermal relay and set Ir to the motor rated current, 7.7 A.",
+      "phase-loss": "Phase loss test: select the cable from relay 6 to motor W1 and tick «Cut wire».",
+      "phase-fix": "Read the message, click «How to fix» and reconnect the cut cable.",
+      "done": "You built a direct-on-line start with self-hold and a thermal relay, and saw how a phase loss is explained. Next comes the first industrial exercise."
     }
   }
 }

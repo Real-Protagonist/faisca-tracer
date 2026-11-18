@@ -1,0 +1,127 @@
+{
+  "id": "industrial-first-motor",
+  "domain": "industrial",
+  "titleKey": "tour.motor.title",
+  "doneTextKey": "tour.motor.done",
+  "steps": [
+    { "id": "intro", "step": 1, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.motor.intro", "waitFor": { "type": "next" } },
+    {
+      "id": "place-grid", "step": 2, "targetSelector": "[data-testid=\"tile-grid3ph\"]", "textKey": "tour.motor.place-grid",
+      "waitFor": { "type": "deviceExists", "params": { "type": "grid3ph" } },
+      "showMeAction": { "type": "place", "params": { "type": "grid3ph", "x": 160, "y": 80 } }
+    },
+    {
+      "id": "breaker", "step": 3, "targetSelector": "[data-testid=\"tile-motorBreaker\"]", "textKey": "tour.motor.breaker",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L1" }, "b": { "type": "motorBreaker", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L2" }, "b": { "type": "motorBreaker", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L3" }, "b": { "type": "motorBreaker", "terminal": "5" } } }
+      ] } },
+      "mistakes": ["WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "place", "params": { "type": "motorBreaker", "x": 120, "y": 230 } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L1" }, "b": { "type": "motorBreaker", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L2" }, "b": { "type": "motorBreaker", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "L3" }, "b": { "type": "motorBreaker", "terminal": "5" } } }
+      ] } }
+    },
+    {
+      "id": "contactor", "step": 4, "targetSelector": "[data-testid=\"tile-contactor3p\"]", "textKey": "tour.motor.contactor",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "2" }, "b": { "type": "contactor3p", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "4" }, "b": { "type": "contactor3p", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "6" }, "b": { "type": "contactor3p", "terminal": "5" } } }
+      ] } },
+      "mistakes": ["WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "place", "params": { "type": "contactor3p", "x": 140, "y": 380 } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "2" }, "b": { "type": "contactor3p", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "4" }, "b": { "type": "contactor3p", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "6" }, "b": { "type": "contactor3p", "terminal": "5" } } }
+      ] } }
+    },
+    {
+      "id": "motor", "step": 5, "targetSelector": ".dock", "textKey": "tour.motor.motor",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "2" }, "b": { "type": "thermalRelay", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "4" }, "b": { "type": "thermalRelay", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "6" }, "b": { "type": "thermalRelay", "terminal": "5" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "2" }, "b": { "type": "motor3ph", "terminal": "U1" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "4" }, "b": { "type": "motor3ph", "terminal": "V1" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "6" }, "b": { "type": "motor3ph", "terminal": "W1" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "PE" }, "b": { "type": "motor3ph", "terminal": "PE" } } }
+      ] } },
+      "mistakes": ["WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "place", "params": { "type": "thermalRelay", "x": 160, "y": 530 } },
+        { "type": "place", "params": { "type": "motor3ph", "x": 140, "y": 700 } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "2" }, "b": { "type": "thermalRelay", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "4" }, "b": { "type": "thermalRelay", "terminal": "3" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "6" }, "b": { "type": "thermalRelay", "terminal": "5" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "2" }, "b": { "type": "motor3ph", "terminal": "U1" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "4" }, "b": { "type": "motor3ph", "terminal": "V1" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "6" }, "b": { "type": "motor3ph", "terminal": "W1" } } },
+        { "type": "wire", "params": { "a": { "type": "grid3ph", "terminal": "PE" }, "b": { "type": "motor3ph", "terminal": "PE" } } }
+      ] } }
+    },
+    {
+      "id": "control", "step": 6, "targetSelector": ".dock", "textKey": "tour.motor.control",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "2" }, "b": { "type": "thermalRelay", "terminal": "95" } } },
+        { "type": "chain", "params": { "chain": [
+          { "type": "thermalRelay", "terminal": "96" }, { "type": "buttonNC" }, { "type": "buttonNO" }, { "type": "contactor3p", "terminal": "A1" }
+        ] } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "A2" }, "b": { "type": "grid3ph", "terminal": "N" } } }
+      ] } },
+      "mistakes": ["SWITCH_ON_NEUTRAL", "SOURCE_SHORT", "LOAD_PHASE_PHASE"],
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "place", "params": { "type": "buttonNC", "x": 520, "y": 260 } },
+        { "type": "place", "params": { "type": "buttonNO", "x": 520, "y": 400 } },
+        { "type": "wire", "params": { "a": { "type": "motorBreaker", "terminal": "2" }, "b": { "type": "thermalRelay", "terminal": "95" } } },
+        { "type": "wire", "params": { "a": { "type": "thermalRelay", "terminal": "96" }, "b": { "type": "buttonNC", "terminal": "11" } } },
+        { "type": "wire", "params": { "a": { "type": "buttonNC", "terminal": "12" }, "b": { "type": "buttonNO", "terminal": "13" } } },
+        { "type": "wire", "params": { "a": { "type": "buttonNO", "terminal": "14" }, "b": { "type": "contactor3p", "terminal": "A1" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "A2" }, "b": { "type": "grid3ph", "terminal": "N" } } }
+      ] } }
+    },
+    {
+      "id": "try-start", "step": 7, "targetSelector": "[data-testid=\"tool-operate\"]", "textKey": "tour.motor.try-start",
+      "waitFor": { "type": "event", "params": { "code": "contactor_no_hold" } },
+      "showMeAction": { "type": "press", "params": { "type": "buttonNO" } }
+    },
+    {
+      "id": "self-hold", "step": 8, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.motor.self-hold",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "13" }, "b": { "type": "buttonNO", "terminal": "13" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "14" }, "b": { "type": "buttonNO", "terminal": "14" } } },
+        { "type": "loadState", "params": { "type": "motor3ph", "state": "running" } }
+      ] } },
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "13" }, "b": { "type": "buttonNO", "terminal": "13" } } },
+        { "type": "wire", "params": { "a": { "type": "contactor3p", "terminal": "14" }, "b": { "type": "buttonNO", "terminal": "14" } } },
+        { "type": "press", "params": { "type": "buttonNO" } }
+      ] } }
+    },
+    {
+      "id": "relay", "step": 9, "targetSelector": "[data-testid=\"properties\"]", "textKey": "tour.motor.relay",
+      "waitFor": { "type": "param", "params": { "type": "thermalRelay", "key": "Ir", "min": 7.5, "max": 7.9 } },
+      "showMeAction": { "type": "param", "params": { "type": "thermalRelay", "key": "Ir", "value": 7.7 } }
+    },
+    {
+      "id": "phase-loss", "step": 10, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.motor.phase-loss",
+      "waitFor": { "type": "diag", "params": { "code": "MOTOR_PHASE_LOSS", "present": true } },
+      "showMeAction": { "type": "wireCut", "params": { "a": { "type": "thermalRelay", "terminal": "6" }, "b": { "type": "motor3ph", "terminal": "W1" }, "cut": true } }
+    },
+    {
+      "id": "phase-fix", "step": 10, "targetSelector": ".error-cards", "textKey": "tour.motor.phase-fix",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "flag", "params": { "flag": "howToFix" } },
+        { "type": "diag", "params": { "code": "MOTOR_PHASE_LOSS", "present": false } }
+      ] } },
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "flag", "params": { "flag": "howToFix" } },
+        { "type": "wireCut", "params": { "a": { "type": "thermalRelay", "terminal": "6" }, "b": { "type": "motor3ph", "terminal": "W1" }, "cut": false } }
+      ] } }
+    }
+  ]
+}

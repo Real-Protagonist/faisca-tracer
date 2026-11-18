@@ -5,6 +5,7 @@
  * example.<id>.title e example.<id>.desc.
  */
 import { addDevice, addWire, createProject, type Device, type Domain, type Level, type Project, type WireOptions } from '../sim-core/index';
+import { dolStart, plcPump, reversing, starDelta, vfdMotor } from './examples-industrial';
 
 export interface ExampleMeta {
   id: string;
@@ -116,6 +117,11 @@ export function buildExamples(): { meta: ExampleMeta; project: Project }[] {
     ['stair-light', stairLight],
     ['house-board', houseBoard],
     ['tt-protection', ttProtection],
+    ['dol-start', dolStart],
+    ['reversing', reversing],
+    ['star-delta', starDelta],
+    ['vfd-motor', vfdMotor],
+    ['plc-pump', plcPump],
   ];
   return list.map(([id, f]) => {
     const project = f();
