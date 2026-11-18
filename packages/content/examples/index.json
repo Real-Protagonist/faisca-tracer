@@ -1,0 +1,26 @@
+[
+  {
+    "id": "light-point",
+    "file": "light-point.faisca",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "stair-light",
+    "file": "stair-light.faisca",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "house-board",
+    "file": "house-board.faisca",
+    "domain": "domestic",
+    "level": "pro"
+  },
+  {
+    "id": "tt-protection",
+    "file": "tt-protection.faisca",
+    "domain": "domestic",
+    "level": "pro"
+  }
+]

@@ -1,0 +1,100 @@
+{
+  "id": "domestic-first-light",
+  "domain": "domestic",
+  "titleKey": "tour.light.title",
+  "steps": [
+    { "id": "screen-canvas", "step": 1, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.light.screen-canvas", "waitFor": { "type": "next" } },
+    { "id": "screen-library", "step": 1, "targetSelector": ".dock", "textKey": "tour.light.screen-library", "waitFor": { "type": "next" } },
+    { "id": "screen-props", "step": 1, "targetSelector": "[data-testid=\"properties\"]", "textKey": "tour.light.screen-props", "waitFor": { "type": "next" } },
+    { "id": "screen-sim", "step": 1, "targetSelector": ".toolbar .sim", "textKey": "tour.light.screen-sim", "waitFor": { "type": "next" } },
+    {
+      "id": "place-grid", "step": 2, "targetSelector": "[data-testid=\"tile-grid1ph\"]", "textKey": "tour.light.place-grid",
+      "waitFor": { "type": "deviceExists", "params": { "type": "grid1ph" } },
+      "showMeAction": { "type": "place", "params": { "type": "grid1ph", "x": 120, "y": 80 } }
+    },
+    {
+      "id": "place-mcb", "step": 3, "targetSelector": "[data-testid=\"tile-mcb1pn\"]", "textKey": "tour.light.place-mcb",
+      "waitFor": { "type": "deviceExists", "params": { "type": "mcb1pn" } },
+      "showMeAction": { "type": "place", "params": { "type": "mcb1pn", "x": 120, "y": 270 } }
+    },
+    {
+      "id": "wire-phase", "step": 4, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.light.wire-phase",
+      "waitFor": { "type": "wire", "params": { "a": { "type": "grid1ph", "terminal": "L" }, "b": { "type": "mcb1pn", "terminal": "1" }, "conductor": "L1" } },
+      "mistakes": ["WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "wire", "params": { "a": { "type": "grid1ph", "terminal": "L" }, "b": { "type": "mcb1pn", "terminal": "1" } } }
+    },
+    {
+      "id": "wire-neutral", "step": 5, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.light.wire-neutral",
+      "waitFor": { "type": "wire", "params": { "a": { "type": "grid1ph", "terminal": "N" }, "b": { "type": "mcb1pn", "terminal": "3" }, "conductor": "N" } },
+      "mistakes": ["WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "wire", "params": { "a": { "type": "grid1ph", "terminal": "N" }, "b": { "type": "mcb1pn", "terminal": "3" } } }
+    },
+    {
+      "id": "place-switch-lamp", "step": 6, "targetSelector": ".dock", "textKey": "tour.light.place-switch-lamp",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "deviceExists", "params": { "type": "switch1" } },
+        { "type": "deviceExists", "params": { "type": "lampIncandescent" } }
+      ] } },
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "place", "params": { "type": "switch1", "x": 320, "y": 270 } },
+        { "type": "place", "params": { "type": "lampIncandescent", "x": 480, "y": 270 } }
+      ] } }
+    },
+    {
+      "id": "phase-path", "step": 7, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.light.phase-path",
+      "waitFor": { "type": "chain", "params": { "chain": [
+        { "type": "mcb1pn", "terminal": "2" }, { "type": "switch1" }, { "type": "lampIncandescent", "terminal": "L" }
+      ] } },
+      "mistakes": ["SWITCH_ON_NEUTRAL", "WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "wire", "params": { "a": { "type": "mcb1pn", "terminal": "2" }, "b": { "type": "switch1", "terminal": "1" } } },
+        { "type": "wire", "params": { "a": { "type": "switch1", "terminal": "2" }, "b": { "type": "lampIncandescent", "terminal": "L" } } }
+      ] } }
+    },
+    {
+      "id": "neutral-return", "step": 8, "targetSelector": "[data-testid=\"canvas\"]", "textKey": "tour.light.neutral-return",
+      "waitFor": { "type": "wire", "params": { "a": { "type": "mcb1pn", "terminal": "4" }, "b": { "type": "lampIncandescent", "terminal": "N" }, "conductor": "N" } },
+      "mistakes": ["SWITCH_ON_NEUTRAL", "WIRE_COLOR", "SOURCE_SHORT"],
+      "showMeAction": { "type": "wire", "params": { "a": { "type": "mcb1pn", "terminal": "4" }, "b": { "type": "lampIncandescent", "terminal": "N" } } }
+    },
+    {
+      "id": "switch-on", "step": 9, "targetSelector": "[data-testid=\"tool-operate\"]", "textKey": "tour.light.switch-on",
+      "waitFor": { "type": "loadState", "params": { "type": "lampIncandescent", "state": "lit" } },
+      "showMeAction": { "type": "operate", "params": { "type": "switch1", "action": "switch_on" } }
+    },
+    {
+      "id": "measure", "step": 10, "targetSelector": "[data-testid=\"tool-probe\"]", "textKey": "tour.light.measure",
+      "waitFor": { "type": "probe", "params": { "type": "lampIncandescent", "min": 200, "max": 250 } },
+      "showMeAction": { "type": "probe", "params": { "type": "lampIncandescent" } }
+    },
+    {
+      "id": "view-3d", "step": 11, "targetSelector": ".toolbar .tabs", "textKey": "tour.light.view-3d",
+      "waitFor": { "type": "tab", "params": { "tab": "physical" } },
+      "showMeAction": { "type": "tab", "params": { "tab": "physical" } }
+    },
+    {
+      "id": "fault", "step": 12, "targetSelector": "[data-testid=\"tile-shortCircuit\"]", "textKey": "tour.light.fault",
+      "waitFor": { "type": "event", "params": { "code": "mcb_magnetic_trip" } },
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "tab", "params": { "tab": "logic" } },
+        { "type": "place", "params": { "type": "shortCircuit", "x": 640, "y": 160 } },
+        { "type": "wire", "params": { "a": { "type": "shortCircuit", "terminal": "1" }, "b": { "type": "lampIncandescent", "terminal": "L" } } },
+        { "type": "wire", "params": { "a": { "type": "shortCircuit", "terminal": "2" }, "b": { "type": "lampIncandescent", "terminal": "N" } } },
+        { "type": "operate", "params": { "type": "shortCircuit", "action": "activate" } }
+      ] } }
+    },
+    {
+      "id": "fix", "step": 12, "targetSelector": ".error-cards", "textKey": "tour.light.fix",
+      "waitFor": { "type": "all", "params": { "conditions": [
+        { "type": "flag", "params": { "flag": "howToFix" } },
+        { "type": "deviceState", "params": { "type": "shortCircuit", "key": "active", "value": false } },
+        { "type": "deviceState", "params": { "type": "mcb1pn", "key": "closed", "value": true } }
+      ] } },
+      "showMeAction": { "type": "sequence", "params": { "actions": [
+        { "type": "flag", "params": { "flag": "howToFix" } },
+        { "type": "operate", "params": { "type": "shortCircuit", "action": "deactivate" } },
+        { "type": "operate", "params": { "type": "mcb1pn", "action": "reset" } }
+      ] } }
+    }
+  ]
+}

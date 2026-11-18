@@ -20,6 +20,15 @@ export function preferredLang(): Lang {
   return sys === 'en' || sys === 'fr' ? sys : 'pt';
 }
 
+/** Já houve uma primeira abertura (o idioma foi escolhido)? */
+export function hasLangPref(): boolean {
+  try {
+    return !!localStorage.getItem(PREF_KEY);
+  } catch {
+    return false;
+  }
+}
+
 export function rememberLang(l: Lang) {
   try {
     localStorage.setItem(PREF_KEY, l);

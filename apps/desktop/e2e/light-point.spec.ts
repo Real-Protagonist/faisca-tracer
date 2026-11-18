@@ -4,38 +4,7 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
-
-/** Arrasta um equipamento da biblioteca para o ponto (x, y) da área de trabalho. */
-async function dragFromLibrary(page: Page, type: string, x: number, y: number) {
-  const canvas = page.getByTestId('canvas');
-  await page.getByTestId(`tile-${type}`).dragTo(canvas, { targetPosition: { x, y } });
-}
-
-/** Coloca um equipamento com dois cliques: azulejo e depois o esquema. */
-async function clickPlace(page: Page, type: string, x: number, y: number) {
-  await page.getByTestId(`tile-${type}`).click();
-  await page.getByTestId('canvas').click({ position: { x, y } });
-}
-
-async function deviceId(page: Page, type: string) {
-  return (await page.locator(`[data-type="${type}"]`).first().getAttribute('data-device'))!;
-}
-
-async function centre(page: Page, sel: string) {
-  const b = (await page.locator(sel).first().boundingBox())!;
-  return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
-}
-
-/** Liga dois terminais arrastando o rato de um para o outro. */
-async function wire(page: Page, a: string, b: string) {
-  const pa = await centre(page, `[data-term="${a}"] .term-hit`);
-  const pb = await centre(page, `[data-term="${b}"] .term-hit`);
-  await page.mouse.move(pa.x, pa.y);
-  await page.mouse.down();
-  await page.mouse.move((pa.x + pb.x) / 2, (pa.y + pb.y) / 2, { steps: 4 });
-  await page.mouse.move(pb.x, pb.y, { steps: 4 });
-  await page.mouse.up();
-}
+import { clickPlace, deviceId, dragFromLibrary, wire } from './helpers';
 
 const project = (page: Page) => page.evaluate(() => (window as any).faisca.useApp.getState().project);
 
@@ -151,7 +120,16 @@ test('desfazer e refazer, rodar, copiar e colar com os cabos internos', async ({
 test('modo passo a passo: o tempo pára e ⏭ avança 0,1 s', async ({ page }) => {
   await page.getByTestId('mode-step').click();
   const clock = page.getByTestId('clock');
-  const t1 = await clock.textContent();
+  // Um passo que já estava em curso ainda pode chegar: espera que o relógio pare.
+  let t1 = await clock.textContent();
+  await expect
+    .poll(async () => {
+      const prev = t1;
+      await page.waitForTimeout(300);
+      t1 = await clock.textContent();
+      return t1 === prev;
+    })
+    .toBe(true);
   await page.waitForTimeout(400);
   expect(await clock.textContent()).toBe(t1);
   await page.getByTestId('step').click();

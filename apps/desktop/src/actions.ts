@@ -2,7 +2,7 @@
 import { createProject, parseProject, ProjectFileError, serializeProject } from '@faisca/sim-core';
 import { i18n } from './i18n';
 import { clearRecovery, openFile, openPath, pushRecent, readRecovery, saveFile, writeRecovery } from './platform/files';
-import { loadProject, ui, useApp } from './store';
+import { loadProject, openWizard, ui, useApp } from './store';
 
 const t = (k: string, o: Record<string, unknown> = {}) => i18n.t(k, o);
 
@@ -10,10 +10,15 @@ function confirmDiscard(): boolean {
   return !useApp.getState().dirty || window.confirm(t('ui.confirm.discard'));
 }
 
+/** «Novo projecto» abre o assistente (área e nível). */
 export function newProject() {
   if (!confirmDiscard()) return;
-  const { project } = useApp.getState();
-  loadProject(createProject({ domain: project.domain, level: project.level, lang: useApp.getState().lang }));
+  openWizard(false);
+}
+
+/** Projecto vazio com a área e o nível dados, sem passar pelo assistente. */
+export function blankProject(domain: 'domestic' | 'industrial', level: 'beginner' | 'pro') {
+  loadProject(createProject({ domain, level, lang: useApp.getState().lang }));
 }
 
 function openText(text: string, path: string | null, name: string) {

@@ -164,12 +164,14 @@ describe('cobertura da interface', () => {
     };
     walk(join(__dirname, '../../../apps/desktop/src'));
     const keys = new Set<string>();
-    for (const f of files) for (const m of readFileSync(f, 'utf-8').matchAll(/['`](ui\.[a-zA-Z0-9_.]+)['`]/g)) keys.add(m[1]!);
+    for (const f of files) for (const m of readFileSync(f, 'utf-8').matchAll(/['`]((?:ui|wizard|cards|tour\.ui)\.[a-zA-Z0-9_.-]+)['`]/g)) keys.add(m[1]!);
     // Chaves construídas em tempo de execução.
-    for (const k of ['file', 'edit', 'view', 'simulation', 'exercises', 'tools', 'help']) keys.add(`ui.menu.${k}`);
+    for (const k of ['file', 'edit', 'view', 'project', 'simulation', 'exercises', 'tools', 'help']) keys.add(`ui.menu.${k}`);
     for (const k of ['select', 'operate', 'wire', 'probe', 'clamp', 'delete']) keys.add(`ui.tool.${k}`);
     for (const k of ['library', 'events', 'problems', 'matrix']) keys.add(`ui.dock.${k}`);
     for (const k of ['A1', 'B1', 'C']) keys.add(`ui.method.${k}`);
+    for (const k of ['domestic', 'industrial']) keys.add(`wizard.area.${k}`);
+    for (const k of ['beginner', 'pro']) keys.add(`wizard.level.${k}`);
     expect(keys.size).toBeGreaterThan(100);
     for (const lang of Object.keys(FLAT)) expect([...keys].filter((k) => !(k in FLAT[lang]!)), lang).toEqual([]);
   });

@@ -630,7 +630,11 @@
       "fit": "Ver tudo",
       "soon": "Disponível numa próxima versão",
       "tour": "Tour guiado",
-      "about": "Sobre o Faísca"
+      "about": "Sobre o Faísca",
+      "project": "Projecto",
+      "area": "Área: {{area}}",
+      "level": "Nível: {{level}}",
+      "wizard": "Assistente de novo projecto…"
     },
     "tool": {
       "select": "Seleccionar",
@@ -742,6 +746,102 @@
     "about": {
       "version": "Versão {{version}}",
       "simplifications": "Simplificações dos modelos"
+    }
+  },
+  "example": {
+    "light-point": {
+      "title": "Ponto de luz simples",
+      "desc": "Disjuntor, interruptor na fase e uma lâmpada. Ligue S1 com a ferramenta Operar."
+    },
+    "stair-light": {
+      "title": "Comando de escada",
+      "desc": "Dois comutadores acendem e apagam a mesma lâmpada de dois sítios."
+    },
+    "house-board": {
+      "title": "Quadro de habitação",
+      "desc": "Interruptor geral, diferencial de 30 mA e três circuitos: iluminação, tomadas e aquecimento."
+    },
+    "tt-protection": {
+      "title": "Protecção de pessoas em TT",
+      "desc": "Um ferro com defeito e uma pessoa a tocar-lhe. Veja o diferencial cortar a fuga e depois desligue-o para comparar."
+    }
+  },
+  "wizard": {
+    "title": "Novo projecto",
+    "step": "Passo {{n}} de {{total}}",
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "lang": {
+      "title": "Escolha o idioma",
+      "hint": "Pode mudá-lo depois nas Preferências ou na barra de título."
+    },
+    "area": {
+      "title": "Em que área vai trabalhar?",
+      "domestic": "Habitações, escritórios e comércio: iluminação, tomadas, quadros de entrada, diferenciais, terra, solar.",
+      "industrial": "Motores, comando por contactores, estrela-triângulo, variadores, autómatos, quadros de potência, correcção do factor de potência.",
+      "industrialSoon": "Os equipamentos industriais chegam na Fase 4. Por agora tem os básicos."
+    },
+    "level": {
+      "title": "Qual é o seu nível?",
+      "beginner": "Interface simplificada, explicações em cada equipamento, tour guiado e mensagens com dica.",
+      "pro": "Todos os parâmetros, corrente de curto-circuito, curvas de disparo, relatórios e matriz de cálculo."
+    },
+    "start": {
+      "title": "Como quer começar?",
+      "empty": "Projecto vazio",
+      "emptyBeginner": "Comece do zero. O tour guiado mostra-lhe como montar o primeiro circuito.",
+      "emptyPro": "Comece do zero com a biblioteca completa.",
+      "example": "Abrir um exemplo",
+      "exampleHint": "Circuitos completos e a funcionar para explorar.",
+      "exercise": "Começar um exercício",
+      "exerciseSoon": "Os exercícios chegam numa próxima versão."
+    },
+    "examples": {
+      "title": "Escolha um exemplo",
+      "none": "Ainda não há exemplos para esta área e nível."
+    }
+  },
+  "cards": {
+    "title": "Mensagens",
+    "show": "Mostrar",
+    "howToFix": "Como corrigir",
+    "learnMore": "Saber mais",
+    "close": "Fechar mensagem",
+    "values": "Valores",
+    "more": "E mais {{count}} no painel Problemas"
+  },
+  "tour": {
+    "ui": {
+      "progress": "Passo {{n}} de {{total}}",
+      "next": "Seguinte",
+      "showMe": "Mostrar-me",
+      "exit": "Sair do tour",
+      "done": {
+        "title": "Montou o seu primeiro circuito!",
+        "text": "Montou, mediu e protegeu um ponto de luz. O próximo passo é o primeiro exercício do mesmo tema.",
+        "exercise": "Primeiro exercício (em breve)",
+        "close": "Continuar a explorar"
+      },
+      "mistake": "Ainda não está certo"
+    },
+    "light": {
+      "title": "O meu primeiro ponto de luz",
+      "screen-canvas": "Este é o esquema: aqui monta o circuito, peça a peça.",
+      "screen-library": "Na biblioteca estão os equipamentos. Arraste-os para o esquema.",
+      "screen-props": "Nas propriedades vê e muda o aparelho seleccionado, e as suas medições.",
+      "screen-sim": "A simulação corre sempre. Aqui pode pausar, avançar passo a passo e mudar a velocidade.",
+      "place-grid": "Arraste a Rede monofásica para o esquema. É a fonte de energia.",
+      "place-mcb": "O disjuntor protege o cabo. Arraste um Disjuntor 1P+N para baixo da rede.",
+      "wire-phase": "Ligue a fase: arraste do terminal L da rede até ao terminal 1 do disjuntor. O cabo fica castanho.",
+      "wire-neutral": "Agora o neutro: do terminal N da rede ao terminal N de cima do disjuntor. O cabo fica azul.",
+      "place-switch-lamp": "Coloque um Interruptor simples e uma Lâmpada incandescente à direita do disjuntor.",
+      "phase-path": "A fase passa pelo interruptor antes da lâmpada. Ligue o 2 do disjuntor ao interruptor e o interruptor ao L da lâmpada.",
+      "neutral-return": "Feche o circuito pelo neutro: ligue o N de baixo do disjuntor ao N da lâmpada.",
+      "switch-on": "Escolha a ferramenta Operar e clique no interruptor para o ligar.",
+      "measure": "Meça a tensão: escolha a Sonda e clique nos terminais L e N da lâmpada.",
+      "view-3d": "Abra o separador Físico 3D para ver a instalação real.",
+      "fault": "Volte ao esquema. Coloque um Curto-circuito entre o L e o N da lâmpada e active-o com Operar.",
+      "fix": "O disjuntor disparou. Clique em «Como corrigir» na mensagem, desactive o curto e rearme o disjuntor."
     }
   }
 }

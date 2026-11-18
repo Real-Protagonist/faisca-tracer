@@ -62,6 +62,16 @@ export interface AppState {
   clipboard: { devices: Device[]; wires: Wire[] } | null;
   /** Projecto antes de um arrasto (para um único passo de desfazer). */
   dragBase: Project | null;
+  /** Assistente de arranque aberto; `firstRun` inclui o ecrã do idioma. */
+  wizard: { open: boolean; firstRun: boolean };
+  /** Tour em curso: id e índice do passo. */
+  tour: { id: string; index: number } | null;
+  /** Acções da interface que o tour verifica (ex.: «howToFix»). */
+  flags: string[];
+  /** Cartões de erro fechados pelo utilizador (código + alvos). */
+  dismissed: string[];
+  /** Momento da última edição do esquema (ms), para não interromper quem está a montar. */
+  lastEdit: number;
 }
 
 const HISTORY_LIMIT = 1000;
@@ -96,6 +106,11 @@ export const useApp = create<AppState>(() => ({
   matrix: null,
   clipboard: null,
   dragBase: null,
+  wizard: { open: false, firstRun: false },
+  tour: null,
+  flags: [],
+  dismissed: [],
+  lastEdit: 0,
 }));
 
 const get = () => useApp.getState();
@@ -113,7 +128,7 @@ export function commit(mutate: (P: Project) => void) {
   mutate(P);
   const past = [...get().past, before];
   if (past.length > HISTORY_LIMIT) past.shift();
-  set({ project: P, past, future: [], dirty: true });
+  set({ project: P, past, future: [], dirty: true, lastEdit: Date.now() });
   sync(P);
 }
 
@@ -140,7 +155,7 @@ const prune = (P: Project, s: Selection): Selection => ({
 
 /** Substitui o projecto inteiro (novo, abrir, recuperar). */
 export function loadProject(P: Project, filePath: string | null = null, dirty = false) {
-  set({ project: P, filePath, dirty, past: [], future: [], selection: { devices: [], wires: [] }, events: [], whyNot: null, matrix: null, probes: { red: null, black: null, clamp: null } });
+  set({ project: P, filePath, dirty, past: [], future: [], selection: { devices: [], wires: [] }, events: [], whyNot: null, matrix: null, probes: { red: null, black: null, clamp: null }, dismissed: [], snapshot: null, tab: 'logic' });
   bridge?.reset();
   sync(P);
   bridge?.probes(get().probes);
@@ -153,12 +168,18 @@ export function setLang(lang: Lang) {
 
 /* ---------------- edição ---------------- */
 
+/** Rede por omissão de cada área: doméstica 230 V TT, industrial TN-S. */
+function domainDefaults(P: Project, type: string): Record<string, string> {
+  if (type === 'grid1ph') return { earthing: P.domain === 'industrial' ? 'TN-S' : 'TT' };
+  return {};
+}
+
 export function placeDevice(type: string, at: Pt): string {
   const def = registry.require(type);
   let id = '';
   commit((P) => {
     const { w, h } = def.size;
-    const d = addDevice(P, type, { x: snap(at.x - w / 2), y: snap(at.y - h / 2) }, registry);
+    const d = addDevice(P, type, { x: snap(at.x - w / 2), y: snap(at.y - h / 2), params: domainDefaults(P, type) }, registry);
     id = d.id;
   });
   set({ selection: { devices: [id], wires: [] } });
@@ -422,6 +443,31 @@ export function setWhyNot(r: AppState['whyNot']) {
 }
 export function setMatrix(m: AppState['matrix']) {
   set({ matrix: m });
+}
+
+export function setFlag(flag: string) {
+  if (!get().flags.includes(flag)) set({ flags: [...get().flags, flag] });
+}
+
+export function dismissCard(key: string) {
+  set({ dismissed: [...get().dismissed, key] });
+}
+
+/** Esquece os cartões fechados cuja falha já desapareceu (se voltar, o cartão volta). */
+export function pruneDismissed(active: string[]) {
+  const d = get().dismissed.filter((k) => active.includes(k));
+  if (d.length !== get().dismissed.length) set({ dismissed: d });
+}
+
+export function openWizard(firstRun = false) {
+  set({ wizard: { open: true, firstRun } });
+}
+export function closeWizard() {
+  set({ wizard: { open: false, firstRun: false } });
+}
+
+export function setTour(tour: AppState['tour']) {
+  set({ tour, ...(tour && tour.index === 0 ? { flags: [] } : {}) });
 }
 
 export const ui = {

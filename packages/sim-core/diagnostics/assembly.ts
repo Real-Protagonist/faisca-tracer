@@ -16,7 +16,13 @@ export function assemblyDiagnostics(P: Project, registry: Registry, fmt: Fmt, to
     if (s.role !== 'phase') continue;
     const neutral = topo.seeds.find((x) => x.device.id === s.device.id && x.role === 'neutral');
     if (!neutral) continue;
-    const path = findPath(topo, s.pin, new Set([neutral.pin]), true);
+    // As protecções contam como fechadas: abrem precisamente por causa do curto.
+    const protective = (e: { kind: string; id: string }) => {
+      if (e.kind !== 'contact') return false;
+      const d = P.devices.find((x) => x.id === e.id);
+      return !!d && !!registry.get(d.type)?.forceClosed;
+    };
+    const path = findPath(topo, s.pin, new Set([neutral.pin]), true, protective);
     if (path) {
       const wires = path.filter((e) => e.kind === 'wire').map((e) => wire(e.id));
       out.push(diag('SOURCE_SHORT', 'error', [dev(s.device.id), ...wires], { device: s.device.name }, s.device.id));

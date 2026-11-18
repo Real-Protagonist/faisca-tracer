@@ -9,6 +9,9 @@ import { About } from './panels/About';
 import { Canvas } from './editor/Canvas';
 import { Meter } from './editor/Meter';
 import { Physical3D } from './view3d/Physical3D';
+import { ErrorCards } from './messages/ErrorCards';
+import { Wizard } from './onboarding/Wizard';
+import { TourOverlay } from './tour/TourOverlay';
 import { newProject, openProject, pendingRecovery, restoreRecovery, discardRecovery, saveProject } from './actions';
 import {
   commit,
@@ -132,11 +135,14 @@ export function App() {
         <div className="stage">
           {tab === 'logic' ? <Canvas /> : <Physical3D />}
           {tab === 'logic' && <Meter />}
+          {tab === 'logic' && <ErrorCards />}
         </div>
         <Properties />
       </main>
       <Dock />
       {about && <About onClose={() => setAbout(false)} />}
+      <Wizard />
+      <TourOverlay />
     </div>
   );
 }

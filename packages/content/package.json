@@ -3,5 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Exemplos, exercícios e passos do tour (JSON)."
+  "description": "Exemplos, exercícios e passos do tour (JSON).",
+  "main": "index.ts",
+  "types": "index.ts"
 }

@@ -10,7 +10,7 @@ Simulador didáctico de instalações eléctricas: monte circuitos com equipamen
 | --- | --- |
 | `packages/sim-core` | Núcleo de simulação em TypeScript puro, sem DOM. Ver o [README](packages/sim-core/README.md). |
 | `packages/i18n` | Traduções `pt.json`, `en.json`, `fr.json` |
-| `packages/content` | Exemplos, exercícios e passos do tour (a partir da Fase 3) |
+| `packages/content` | Exemplos (`examples/*.faisca`) e tours (`tours/*.json`) em JSON |
 | `apps/desktop` | Interface: React 18, Vite, Zustand, i18next |
 | `src-tauri` | Aplicação de desktop Tauri 2 |
 
@@ -24,6 +24,10 @@ npm run dev        # interface no navegador em http://localhost:1420
 npm run check      # tipos e testes unitários (Vitest)
 npm run e2e        # testes de interface (Playwright)
 ```
+
+Os exemplos são gerados a partir de `packages/content/examples.ts` com `npm run content`. Um teste falha se os JSON ficarem desactualizados.
+
+Os tours são JSON editáveis: cada passo tem `{ id, step, targetSelector, textKey, waitFor, mistakes?, showMeAction }`. As condições e as acções disponíveis estão em `packages/content/tour-types.ts`; os textos ficam nas traduções.
 
 Antes do primeiro `npm run e2e`, instale o navegador de testes com `npx playwright install chromium`.
 

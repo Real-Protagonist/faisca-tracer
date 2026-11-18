@@ -294,6 +294,19 @@ describe('outros diagnósticos de montagem', () => {
     const { P, Q } = lampCircuit();
     addWire(P, Q, '2', Q, '4');
     expect(find(assemblyDiagnostics(P, createRegistry(), formatter('pt')), 'SOURCE_SHORT')?.values.device).toBe('G1');
+    // Depois de o disjuntor disparar por causa do curto, o aviso continua.
+    const sim = new Simulator(P);
+    sim.step(0.02);
+    expect(sim.device('Q1')!.state.trip).toBe('magnetic');
+    expect(find(allDiagnostics(sim), 'SOURCE_SHORT')).toBeDefined();
+  });
+
+  it('SOURCE_SHORT: um interruptor aberto entre fase e neutro não é um curto (ainda)', () => {
+    const { P, Q } = lampCircuit();
+    const S = addDevice(P, 'switch1');
+    addWire(P, Q, '2', S, '1');
+    addWire(P, S, '2', Q, '4');
+    expect(find(assemblyDiagnostics(P, createRegistry(), formatter('pt')), 'SOURCE_SHORT')).toBeUndefined();
   });
 
   it('TERMINAL_UNCONNECTED: lâmpada com o neutro ligado mas a fase livre', () => {

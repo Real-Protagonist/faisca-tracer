@@ -15,11 +15,13 @@
     "build": "npm run build -w @faisca/desktop",
     "e2e": "npm run e2e -w @faisca/desktop",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "tauri:build": "tauri build",
+    "content": "tsx scripts/build-content.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
     "i18next": "^27.1.5",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.1.1"
   }

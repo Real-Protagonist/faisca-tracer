@@ -630,7 +630,11 @@
       "fit": "Fit to window",
       "soon": "Available in a later version",
       "tour": "Guided tour",
-      "about": "About Faísca"
+      "about": "About Faísca",
+      "project": "Project",
+      "area": "Area: {{area}}",
+      "level": "Level: {{level}}",
+      "wizard": "New project wizard…"
     },
     "tool": {
       "select": "Select",
@@ -742,6 +746,102 @@
     "about": {
       "version": "Version {{version}}",
       "simplifications": "Model simplifications"
+    }
+  },
+  "example": {
+    "light-point": {
+      "title": "Simple light point",
+      "desc": "Circuit breaker, switch on the line and one lamp. Switch S1 on with the Operate tool."
+    },
+    "stair-light": {
+      "title": "Two-way lighting",
+      "desc": "Two two-way switches turn the same lamp on and off from two places."
+    },
+    "house-board": {
+      "title": "Home distribution board",
+      "desc": "Main switch, 30 mA RCD and three circuits: lighting, sockets and heating."
+    },
+    "tt-protection": {
+      "title": "Protection of people in TT",
+      "desc": "A faulty iron and a person touching it. Watch the RCD cut the leak, then switch it off to compare."
+    }
+  },
+  "wizard": {
+    "title": "New project",
+    "step": "Step {{n}} of {{total}}",
+    "back": "Back",
+    "cancel": "Cancel",
+    "lang": {
+      "title": "Choose the language",
+      "hint": "You can change it later in Preferences or in the title bar."
+    },
+    "area": {
+      "title": "Which area will you work in?",
+      "domestic": "Homes, offices and shops: lighting, sockets, incoming boards, RCDs, earthing, solar.",
+      "industrial": "Motors, contactor control, star-delta, drives, PLCs, power boards, power factor correction.",
+      "industrialSoon": "Industrial equipment arrives in Phase 4. For now you get the basics."
+    },
+    "level": {
+      "title": "What is your level?",
+      "beginner": "Simplified interface, explanations on every device, guided tour and messages with hints.",
+      "pro": "All parameters, short-circuit current, tripping curves, reports and the calculation matrix."
+    },
+    "start": {
+      "title": "How do you want to start?",
+      "empty": "Empty project",
+      "emptyBeginner": "Start from scratch. The guided tour shows you how to build your first circuit.",
+      "emptyPro": "Start from scratch with the full library.",
+      "example": "Open an example",
+      "exampleHint": "Complete, working circuits to explore.",
+      "exercise": "Start an exercise",
+      "exerciseSoon": "Exercises arrive in a later version."
+    },
+    "examples": {
+      "title": "Choose an example",
+      "none": "There are no examples for this area and level yet."
+    }
+  },
+  "cards": {
+    "title": "Messages",
+    "show": "Show",
+    "howToFix": "How to fix",
+    "learnMore": "Learn more",
+    "close": "Close message",
+    "values": "Values",
+    "more": "And {{count}} more in the Problems panel"
+  },
+  "tour": {
+    "ui": {
+      "progress": "Step {{n}} of {{total}}",
+      "next": "Next",
+      "showMe": "Show me",
+      "exit": "Exit the tour",
+      "done": {
+        "title": "You built your first circuit!",
+        "text": "You built, measured and protected a light point. The next step is the first exercise on the same topic.",
+        "exercise": "First exercise (coming soon)",
+        "close": "Keep exploring"
+      },
+      "mistake": "Not quite right yet"
+    },
+    "light": {
+      "title": "My first light point",
+      "screen-canvas": "This is the diagram: you build the circuit here, piece by piece.",
+      "screen-library": "The library holds the devices. Drag them onto the diagram.",
+      "screen-props": "Properties show the selected device, its settings and its measurements.",
+      "screen-sim": "The simulation always runs. Here you can pause, step through and change the speed.",
+      "place-grid": "Drag the Single-phase supply onto the diagram. It is the power source.",
+      "place-mcb": "The circuit breaker protects the cable. Drag a 1P+N circuit breaker below the supply.",
+      "wire-phase": "Connect the line: drag from terminal L of the supply to terminal 1 of the breaker. The wire turns brown.",
+      "wire-neutral": "Now the neutral: from terminal N of the supply to the top N terminal of the breaker. The wire turns blue.",
+      "place-switch-lamp": "Place a One-way switch and an Incandescent lamp to the right of the breaker.",
+      "phase-path": "The line goes through the switch before the lamp. Connect breaker terminal 2 to the switch, and the switch to lamp terminal L.",
+      "neutral-return": "Close the circuit through the neutral: connect the bottom N of the breaker to N of the lamp.",
+      "switch-on": "Choose the Operate tool and click the switch to turn it on.",
+      "measure": "Measure the voltage: choose the Probe and click terminals L and N of the lamp.",
+      "view-3d": "Open the Physical 3D tab to see the real installation.",
+      "fault": "Go back to the diagram. Place a Short circuit between L and N of the lamp and activate it with Operate.",
+      "fix": "The breaker tripped. Click «How to fix» on the message, deactivate the short and reset the breaker."
     }
   }
 }

@@ -1,0 +1,226 @@
+{
+  "app": "faisca",
+  "version": 1,
+  "domain": "domestic",
+  "level": "pro",
+  "lang": "pt",
+  "frequency": 50,
+  "devices": [
+    {
+      "id": "d1",
+      "type": "grid1ph",
+      "name": "G1",
+      "x": 40,
+      "y": 20,
+      "rot": 0,
+      "params": {
+        "V": 230,
+        "earthing": "TT",
+        "Zs": 0.15,
+        "Rb": 2
+      },
+      "state": {
+        "on": true
+      }
+    },
+    {
+      "id": "d2",
+      "type": "rcd2p",
+      "name": "Q1",
+      "x": 60,
+      "y": 200,
+      "rot": 0,
+      "params": {
+        "IDn": 30,
+        "In": 40,
+        "rcdType": "A"
+      },
+      "state": {
+        "closed": true,
+        "trip": null
+      }
+    },
+    {
+      "id": "d3",
+      "type": "mcb1pn",
+      "name": "Q2",
+      "x": 60,
+      "y": 360,
+      "rot": 0,
+      "params": {
+        "In": 16,
+        "curve": "C",
+        "Icn": 6
+      },
+      "state": {
+        "closed": true,
+        "trip": null
+      }
+    },
+    {
+      "id": "d4",
+      "type": "socket",
+      "name": "X1",
+      "x": 300,
+      "y": 380,
+      "rot": 0,
+      "params": {
+        "appliance": "iron",
+        "defect": "strong"
+      },
+      "state": {
+        "on": true
+      }
+    },
+    {
+      "id": "d5",
+      "type": "earthElectrode",
+      "name": "E1",
+      "x": 480,
+      "y": 460,
+      "rot": 0,
+      "params": {
+        "Ra": 50
+      },
+      "state": {}
+    },
+    {
+      "id": "d6",
+      "type": "person",
+      "name": "Z1",
+      "x": 300,
+      "y": 520,
+      "rot": 0,
+      "params": {
+        "floor": "shoes",
+        "Rbody": 1000
+      },
+      "state": {
+        "active": true
+      }
+    }
+  ],
+  "wires": [
+    {
+      "id": "w7",
+      "a": {
+        "device": "d1",
+        "terminal": "L"
+      },
+      "b": {
+        "device": "d2",
+        "terminal": "1"
+      },
+      "conductor": "L1",
+      "section": 1.5,
+      "length": 1,
+      "material": "Cu"
+    },
+    {
+      "id": "w8",
+      "a": {
+        "device": "d1",
+        "terminal": "N"
+      },
+      "b": {
+        "device": "d2",
+        "terminal": "3"
+      },
+      "conductor": "N",
+      "section": 1.5,
+      "length": 1,
+      "material": "Cu"
+    },
+    {
+      "id": "w9",
+      "a": {
+        "device": "d2",
+        "terminal": "2"
+      },
+      "b": {
+        "device": "d3",
+        "terminal": "1"
+      },
+      "conductor": "L1",
+      "section": 1.5,
+      "length": 0.5,
+      "material": "Cu"
+    },
+    {
+      "id": "w10",
+      "a": {
+        "device": "d2",
+        "terminal": "4"
+      },
+      "b": {
+        "device": "d3",
+        "terminal": "3"
+      },
+      "conductor": "N",
+      "section": 1.5,
+      "length": 0.5,
+      "material": "Cu"
+    },
+    {
+      "id": "w11",
+      "a": {
+        "device": "d3",
+        "terminal": "2"
+      },
+      "b": {
+        "device": "d4",
+        "terminal": "L"
+      },
+      "conductor": "L1",
+      "section": 2.5,
+      "length": 8,
+      "material": "Cu"
+    },
+    {
+      "id": "w12",
+      "a": {
+        "device": "d3",
+        "terminal": "4"
+      },
+      "b": {
+        "device": "d4",
+        "terminal": "N"
+      },
+      "conductor": "N",
+      "section": 2.5,
+      "length": 8,
+      "material": "Cu"
+    },
+    {
+      "id": "w13",
+      "a": {
+        "device": "d4",
+        "terminal": "PE"
+      },
+      "b": {
+        "device": "d5",
+        "terminal": "PE"
+      },
+      "conductor": "PE",
+      "section": 2.5,
+      "length": 6,
+      "material": "Cu"
+    },
+    {
+      "id": "w14",
+      "a": {
+        "device": "d6",
+        "terminal": "M"
+      },
+      "b": {
+        "device": "d4",
+        "terminal": "PE"
+      },
+      "conductor": "PE",
+      "section": 1.5,
+      "length": 1,
+      "material": "Cu"
+    }
+  ],
+  "seq": 15
+}

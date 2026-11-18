@@ -143,7 +143,7 @@ export function buildTopology(P: Project, registry: Registry): Topology {
  * Caminho entre dois pinos com o menor número de elementos abertos (BFS 0-1).
  * Devolve as arestas pela ordem de `from` para `to`, ou null se não houver ligação.
  */
-export function findPath(topo: Topology, from: number, to: Set<number>, closedOnly = false): Edge[] | null {
+export function findPath(topo: Topology, from: number, to: Set<number>, closedOnly = false, treatClosed?: (e: Edge) => boolean): Edge[] | null {
   if (from < 0) return null;
   const dist = new Array<number>(topo.pinCount).fill(Infinity);
   const prev = new Array<Edge | null>(topo.pinCount).fill(null);
@@ -162,7 +162,7 @@ export function findPath(topo: Topology, from: number, to: Set<number>, closedOn
       return path.reverse();
     }
     for (const e of topo.adj[p]!) {
-      if (closedOnly && !e.closed) continue;
+      if (closedOnly && !e.closed && !treatClosed?.(e)) continue;
       const o = e.a === p ? e.b : e.a;
       const w = e.closed ? 0 : 1;
       if (dist[p]! + w < dist[o]!) {

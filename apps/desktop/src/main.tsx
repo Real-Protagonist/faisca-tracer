@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createProject } from '@faisca/sim-core';
+import * as core from '@faisca/sim-core';
 import { App } from './App';
-import { i18n, preferredLang } from './i18n';
-import { loadProject, useApp } from './store';
+import { hasLangPref, i18n, preferredLang } from './i18n';
+import { lastChoice } from './onboarding/Wizard';
+import { loadProject, openWizard, useApp } from './store';
 import { startSimulation } from './sim/client';
 import { startAutosave } from './actions';
 import './styles.css';
@@ -15,10 +16,12 @@ i18n.on('languageChanged', (l) => (document.documentElement.lang = l));
 
 startSimulation();
 startAutosave();
-loadProject(createProject({ lang }));
+loadProject(core.createProject({ lang, ...lastChoice() }));
+// Primeira abertura: assistente com a escolha do idioma.
+if (!hasLangPref()) openWizard(true);
 
 // Acesso para os testes de interface (Playwright).
-(window as unknown as { faisca: unknown }).faisca = { useApp };
+(window as unknown as { faisca: unknown }).faisca = { useApp, core, loadProject };
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

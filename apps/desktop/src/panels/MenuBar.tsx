@@ -3,10 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Lang } from '@faisca/sim-core';
 import { newProject, openProject, openRecent, saveProject } from '../actions';
+import { startTour } from '../tour/TourOverlay';
 import { isTauri, recentFiles } from '../platform/files';
 import { rememberLang } from '../i18n';
 import {
   align,
+  commit,
   copySelection,
   deleteSelection,
   groupInFrame,
@@ -26,6 +28,8 @@ import { fitView, zoomBy } from '../view';
 
 interface Item {
   key: string;
+  /** Texto já traduzido (quando depende de valores). */
+  label?: string;
   shortcut?: string;
   run?: () => void;
   disabled?: boolean;
@@ -103,6 +107,15 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.sim.reset', run: resetSim },
       ],
     },
+    {
+      key: 'project',
+      items: [
+        { key: 'ui.menu.area', label: t('ui.menu.area', { area: t(`domain.${project.domain === 'domestic' ? 'industrial' : 'domestic'}`) }), run: () => commit((P) => (P.domain = P.domain === 'domestic' ? 'industrial' : 'domestic')) },
+        { key: 'ui.menu.level', label: t('ui.menu.level', { level: t(`level.${project.level === 'beginner' ? 'pro' : 'beginner'}`) }), run: () => commit((P) => (P.level = P.level === 'beginner' ? 'pro' : 'beginner')) },
+        { key: 'sep1', sep: true },
+        { key: 'ui.menu.wizard', run: newProject },
+      ],
+    },
     { key: 'exercises', items: [{ key: 'ui.menu.soon', disabled: true }] },
     {
       key: 'tools',
@@ -115,7 +128,7 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.tool.delete', shortcut: 'D', run: () => ui.setTool('delete') },
       ],
     },
-    { key: 'help', items: [{ key: 'ui.menu.tour', disabled: true }, { key: 'ui.menu.about', run: onAbout }] },
+    { key: 'help', items: [{ key: 'ui.menu.tour', run: () => startTour('domestic-first-light') }, { key: 'ui.menu.about', run: onAbout }] },
   ];
 
   const changeLang = (l: Lang) => {
@@ -150,7 +163,7 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
                       it.run?.();
                     }}
                   >
-                    <span>{it.key.startsWith('ui.') ? t(it.key) : it.key}</span>
+                    <span>{it.label ?? (it.key.startsWith('ui.') ? t(it.key) : it.key)}</span>
                     {it.shortcut && <kbd>{it.shortcut}</kbd>}
                   </button>
                 ),
