@@ -1,0 +1,577 @@
+{
+  "app": {
+    "name": "Faísca",
+    "disclaimer": "Faísca est un outil pédagogique. Il ne remplace pas la conception d'une installation selon la réglementation."
+  },
+  "domain": {
+    "domestic": "Électricité domestique",
+    "industrial": "Électricité industrielle"
+  },
+  "level": {
+    "beginner": "Débutant",
+    "pro": "Professionnel"
+  },
+  "severity": {
+    "error": "Erreur",
+    "warning": "Avertissement",
+    "info": "Information"
+  },
+  "file": {
+    "error": {
+      "not_faisca": "Ce fichier n'est pas un projet Faísca.",
+      "newer_version": "Ce projet a été créé avec une version plus récente de Faísca. Mettez à jour l'application.",
+      "no_migration": "Impossible de convertir ce projet vers la version actuelle.",
+      "invalid": "Le projet est endommagé et ne peut pas être ouvert.",
+      "unknown_device": "Le projet utilise un équipement inconnu de cette version."
+    }
+  },
+  "category": {
+    "sources": "Sources",
+    "protection": "Protection",
+    "control": "Commande",
+    "sensors": "Capteurs",
+    "loads": "Récepteurs",
+    "motors": "Moteurs et entraînements",
+    "measurement": "Mesure",
+    "distribution": "Distribution et matériel",
+    "faults": "Défauts et essais",
+    "annotations": "Annotations"
+  },
+  "color": {
+    "L1": "marron",
+    "L2": "noir",
+    "L3": "gris",
+    "N": "bleu",
+    "PE": "vert-jaune",
+    "C": "rouge",
+    "DC+": "rouge",
+    "DC-": "noir"
+  },
+  "role": {
+    "L1": "un conducteur de phase",
+    "L2": "un conducteur de phase",
+    "L3": "un conducteur de phase",
+    "N": "le neutre",
+    "PE": "le conducteur de protection (terre)",
+    "C": "un conducteur de commande",
+    "DC+": "positif",
+    "DC-": "négatif"
+  },
+  "device": {
+    "grid1ph": {
+      "name": "Réseau monophasé",
+      "desc": "Alimentation publique basse tension : phase, neutre et, en TN-S, conducteur de protection."
+    },
+    "battery": {
+      "name": "Batterie",
+      "desc": "Source de courant continu. Elle se décharge sur les récepteurs et se recharge par panneaux solaires."
+    },
+    "solarPanel": {
+      "name": "Panneau photovoltaïque",
+      "desc": "Convertit la lumière du soleil en courant continu. Le courant suit l'irradiance."
+    },
+    "transformer1ph": {
+      "name": "Transformateur monophasé",
+      "desc": "Change la tension entre deux circuits isolés, par exemple 230/12 V pour une sonnerie."
+    },
+    "mcb1p": {
+      "name": "Disjoncteur 1P",
+      "desc": "Protège le câble contre les surcharges et les courts-circuits. Il coupe un seul pôle."
+    },
+    "mcb1pn": {
+      "name": "Disjoncteur phase-neutre",
+      "desc": "Protège la phase et coupe aussi le neutre. Le plus utilisé dans les logements."
+    },
+    "fuseGG": {
+      "name": "Fusible gG",
+      "desc": "Fond quand le courant est excessif. Une fois fondu, il faut le remplacer."
+    },
+    "rcd2p": {
+      "name": "Interrupteur différentiel 2P",
+      "desc": "Détecte le courant qui fuit vers la terre et coupe le circuit. À 30 mA il protège les personnes."
+    },
+    "rcbo": {
+      "name": "Disjoncteur différentiel",
+      "desc": "Réunit disjoncteur et différentiel : il protège le câble et les personnes."
+    },
+    "mainSwitch2p": {
+      "name": "Interrupteur général 2P",
+      "desc": "Coupe toute l'installation. Il ne protège pas contre les surintensités."
+    },
+    "switch1": {
+      "name": "Interrupteur simple",
+      "desc": "Allume et éteint un récepteur. Il doit toujours couper la phase."
+    },
+    "switch2p": {
+      "name": "Interrupteur bipolaire",
+      "desc": "Coupe la phase et le neutre ensemble, par exemple sur un chauffe-eau."
+    },
+    "stairSwitch": {
+      "name": "Va-et-vient",
+      "desc": "Relie le commun C à la borne 1 ou 2. Deux va-et-vient commandent une lampe de deux endroits."
+    },
+    "intermediateSwitch": {
+      "name": "Permutateur",
+      "desc": "Se place entre deux va-et-vient pour commander une lampe de trois endroits ou plus."
+    },
+    "pushButton": {
+      "name": "Bouton-poussoir",
+      "desc": "Ne ferme son contact que lorsqu'il est appuyé. Utilisé pour la sonnerie et le télérupteur."
+    },
+    "impulseRelay": {
+      "name": "Télérupteur",
+      "desc": "Chaque impulsion sur la bobine change l'état du contact. Plusieurs boutons en parallèle commandent la lumière."
+    },
+    "lampIncandescent": {
+      "name": "Lampe à incandescence",
+      "desc": "Récepteur purement résistif. L'éclat suit la puissance."
+    },
+    "lampLed": {
+      "name": "Lampe LED",
+      "desc": "Éclairage efficace. Son driver garde l'éclat malgré une chute de tension."
+    },
+    "lampFluorescent": {
+      "name": "Tube fluorescent",
+      "desc": "Tube avec ballast inductif : facteur de puissance faible, il lui faut assez de tension pour démarrer."
+    },
+    "socket": {
+      "name": "Prise de courant avec terre",
+      "desc": "Prise avec phase, neutre et terre. Choisissez l'appareil branché et, pour les essais, un défaut."
+    },
+    "heater": {
+      "name": "Radiateur",
+      "desc": "Récepteur résistif de forte puissance à carcasse métallique (classe I)."
+    },
+    "bell": {
+      "name": "Sonnerie",
+      "desc": "Avertisseur sonore, alimenté en général sous 8–24 V par un transformateur."
+    },
+    "motor1ph": {
+      "name": "Moteur monophasé",
+      "desc": "Moteur de pompes et compresseurs. Au démarrage il absorbe plusieurs fois son courant nominal."
+    },
+    "voltmeter": {
+      "name": "Voltmètre",
+      "desc": "Mesure la tension entre deux points. Il se branche en parallèle."
+    },
+    "ammeter": {
+      "name": "Ampèremètre",
+      "desc": "Mesure le courant qui le traverse. Il se branche en série."
+    },
+    "energyMeter1ph": {
+      "name": "Compteur d'énergie monophasé",
+      "desc": "Mesure tension, courant, puissances et facteur de puissance, et cumule l'énergie en kWh."
+    },
+    "junction": {
+      "name": "Borne de connexion",
+      "desc": "Réunit plusieurs conducteurs au même point électrique."
+    },
+    "busbar": {
+      "name": "Barre de distribution",
+      "desc": "Distribue une phase, le neutre ou la terre vers plusieurs départs."
+    },
+    "earthElectrode": {
+      "name": "Prise de terre",
+      "desc": "Relie l'installation à la terre par la résistance Ra. Obligatoire en schéma TT."
+    },
+    "shortCircuit": {
+      "name": "Court-circuit",
+      "desc": "Relie deux points sans résistance pour tester les protections."
+    },
+    "earthFault": {
+      "name": "Défaut à la terre",
+      "desc": "Simule un défaut d'isolement d'un conducteur vers la terre."
+    },
+    "person": {
+      "name": "Personne en contact",
+      "desc": "Une personne touche un point. Montre le courant dans le corps et son effet."
+    }
+  },
+  "param": {
+    "V": "Tension nominale",
+    "earthing": "Schéma de liaison à la terre",
+    "Zs": "Impédance du réseau par conducteur",
+    "Rb": "Résistance de terre du neutre (Rb)",
+    "Ah": "Capacité",
+    "soc0": "Charge initiale",
+    "Ri": "Résistance interne",
+    "Voc": "Tension à vide",
+    "Isc": "Courant de court-circuit",
+    "irr": "Irradiance",
+    "V1": "Tension primaire",
+    "V2": "Tension secondaire",
+    "S": "Puissance nominale",
+    "In": "Courant nominal (In)",
+    "curve": "Courbe de déclenchement",
+    "Icn": "Pouvoir de coupure (Icn)",
+    "IDn": "Sensibilité (IΔn)",
+    "rcdType": "Type",
+    "Vc": "Tension de la bobine",
+    "P": "Puissance",
+    "Vn": "Tension nominale",
+    "PF": "Facteur de puissance",
+    "appliance": "Appareil branché",
+    "defect": "Défaut d'isolement",
+    "Pm": "Puissance mécanique",
+    "eta": "Rendement",
+    "kStart": "Courant de démarrage (× In)",
+    "inertia": "Inertie de la charge",
+    "bus": "Conducteur",
+    "Ra": "Résistance de terre (Ra)",
+    "Rf": "Résistance du défaut",
+    "floor": "Contact avec le sol",
+    "Rbody": "Résistance du corps"
+  },
+  "option": {
+    "earthing": {
+      "TT": "TT (prise de terre propre)",
+      "TN-S": "TN-S (terre fournie par le réseau)"
+    },
+    "curve": {
+      "B": "B (magnétique jusqu'à 5 × In)",
+      "C": "C (magnétique jusqu'à 10 × In)",
+      "D": "D (magnétique jusqu'à 20 × In)"
+    },
+    "appliance": {
+      "none": "Rien de branché",
+      "charger": "Chargeur (20 W)",
+      "laptop": "Ordinateur portable (65 W)",
+      "tv": "Téléviseur (150 W)",
+      "fridge": "Réfrigérateur (200 W)",
+      "iron": "Fer à repasser (1200 W)",
+      "microwave": "Micro-ondes (1300 W)",
+      "heater": "Radiateur (2000 W)",
+      "washer": "Lave-linge (2200 W)",
+      "kettle": "Bouilloire (2200 W)"
+    },
+    "defect": {
+      "none": "Sans défaut",
+      "slight": "Fuite légère (50 kΩ)",
+      "leak": "Fuite (5 kΩ)",
+      "strong": "Fuite forte (500 Ω)",
+      "frank": "Phase à la masse (0,5 Ω)"
+    },
+    "inertia": {
+      "low": "Faible (démarrage 0,3 s)",
+      "medium": "Moyenne (démarrage 0,8 s)",
+      "high": "Élevée (démarrage 2 s)"
+    },
+    "bus": {
+      "L": "Phase",
+      "N": "Neutre",
+      "PE": "Terre (PE)"
+    },
+    "floor": {
+      "wet": "Pieds nus, sol mouillé",
+      "shoes": "Chaussures normales",
+      "insulating": "Chaussures isolantes"
+    }
+  },
+  "meas": {
+    "state": "État",
+    "voltage": "Tension",
+    "current": "Courant",
+    "activePower": "Puissance active",
+    "reactivePower": "Puissance réactive",
+    "apparentPower": "Puissance apparente",
+    "powerFactor": "Facteur de puissance",
+    "power": "Puissance",
+    "prospectiveIcc": "Courant de court-circuit présumé",
+    "mode": "Mode",
+    "soc": "État de charge",
+    "autonomy": "Autonomie",
+    "irradiance": "Irradiance",
+    "primaryVoltage": "Tension primaire",
+    "secondaryVoltage": "Tension secondaire",
+    "primaryCurrent": "Courant primaire",
+    "secondaryCurrent": "Courant secondaire",
+    "loadPercent": "Charge",
+    "loadRatio": "Charge (I/In)",
+    "thermal": "Échauffement thermique",
+    "tripTime": "Temps de déclenchement thermique à ce courant",
+    "residualCurrent": "Courant différentiel",
+    "sensitivity": "Sensibilité IΔn",
+    "position": "Position",
+    "contact": "Contact",
+    "coilVoltage": "Tension de la bobine",
+    "brightness": "Éclat",
+    "appliance": "Appareil",
+    "applianceSwitch": "Interrupteur de l'appareil",
+    "leakCurrent": "Courant de fuite",
+    "enclosureVoltage": "Tension carcasse-terre",
+    "thermostat": "Thermostat",
+    "speed": "Vitesse",
+    "ratedCurrent": "Courant nominal",
+    "reading": "Lecture",
+    "acComponent": "Composante alternative",
+    "dcComponent": "Composante continue",
+    "energy": "Énergie",
+    "earthCurrent": "Courant vers la terre",
+    "earthVoltage": "Tension PE–terre",
+    "earthResistance": "Résistance de terre Ra",
+    "faultCurrent": "Courant de défaut",
+    "touching": "En contact",
+    "bodyCurrent": "Courant dans le corps",
+    "touchVoltage": "Tension de contact",
+    "bodyZone": "Effet probable (CEI 60479-1)",
+    "exposure": "Durée d'exposition"
+  },
+  "state": {
+    "closed": "Fermé (enclenché)",
+    "open": "Ouvert (déclenché)",
+    "tripped_magnetic": "Déclenché (magnétique)",
+    "tripped_thermal": "Déclenché (thermique)",
+    "tripped_residual": "Déclenché (différentiel)",
+    "powered": "Sous tension",
+    "no_power": "Hors tension",
+    "charging": "En charge",
+    "discharging": "En décharge",
+    "blown": "Fondu",
+    "in_service": "En service",
+    "on": "Allumé",
+    "off": "Éteint",
+    "position_1": "C → 1",
+    "position_2": "C → 2",
+    "direct": "Droit (A–C, B–D)",
+    "crossed": "Croisé (A–D, B–C)",
+    "pressed": "Appuyé",
+    "released": "Relâché",
+    "lit": "Allumée",
+    "unlit": "Éteinte",
+    "burnt": "Grillée",
+    "ringing": "Sonne",
+    "silent": "Silencieuse",
+    "stopped": "À l'arrêt",
+    "starting": "En démarrage",
+    "running": "En marche",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "yes": "Oui",
+    "no": "Non",
+    "zone_AC1": "AC-1 : imperceptible",
+    "zone_AC2": "AC-2 : perceptible, sans effet dangereux",
+    "zone_AC3": "AC-3 : contractions musculaires, lâcher difficile",
+    "zone_AC4": "AC-4 : risque de fibrillation ventriculaire",
+    "appliance_none": "Rien de branché",
+    "appliance_charger": "Chargeur",
+    "appliance_laptop": "Ordinateur portable",
+    "appliance_tv": "Téléviseur",
+    "appliance_fridge": "Réfrigérateur",
+    "appliance_iron": "Fer à repasser",
+    "appliance_microwave": "Micro-ondes",
+    "appliance_heater": "Radiateur",
+    "appliance_washer": "Lave-linge",
+    "appliance_kettle": "Bouilloire"
+  },
+  "action": {
+    "open": "Couper",
+    "close": "Enclencher",
+    "reset": "Réarmer",
+    "test": "Bouton test (T)",
+    "replace": "Remplacer",
+    "power_on": "Rétablir le courant",
+    "power_off": "Simuler une coupure",
+    "switch_on": "Allumer",
+    "switch_off": "Éteindre",
+    "toggle": "Basculer",
+    "press": "Appuyer (maintenir)",
+    "reset_energy": "Remettre le compteur à zéro",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "touch": "Toucher",
+    "stop_touching": "Ne plus toucher"
+  },
+  "event": {
+    "mcb_magnetic_trip": "Déclenchement magnétique : {{current}} ({{ratio}} × In)",
+    "mcb_thermal_trip": "Déclenchement thermique : {{current}} ({{ratio}} × In)",
+    "mcb_breaking_capacity": "Pouvoir de coupure dépassé : {{current}} au-dessus de {{icn}}",
+    "fuse_blown": "Fusible fondu : {{current}} ({{ratio}} × In)",
+    "rcd_trip": "Déclenchement différentiel : fuite de {{current}} sur {{location}}",
+    "overvoltage_damage": "Panne par surtension : {{voltage}} sur un appareil de {{nominal}}",
+    "battery_empty": "Batterie déchargée",
+    "impulse_on": "Impulsion : contact fermé",
+    "impulse_off": "Impulsion : contact ouvert",
+    "motor_running": "Moteur en marche",
+    "motor_stalled": "Moteur bloqué : seulement {{voltage}}",
+    "body_current": "Danger : {{current}} dans le corps",
+    "control_unstable": "La commande oscille et ne se stabilise pas"
+  },
+  "diag": {
+    "source_short": {
+      "title": "La source {{device}} est en court-circuit",
+      "cause": "La phase et le neutre de {{device}} sont reliés sans récepteur entre eux.",
+      "hint": "Retirez le câble qui relie la phase directement au neutre.",
+      "learn": "Un court-circuit est un chemin presque sans résistance entre la phase et le neutre. Le courant monte à des milliers d'ampères et la protection déclenche. Il faut toujours un récepteur entre la phase et le neutre."
+    },
+    "load_no_return": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "La borne {{terminal}} de {{device}} n'arrive pas au neutre : le courant ne revient pas.",
+      "hint": "Reliez la borne {{terminal}} de {{device}} au neutre (câble bleu).",
+      "learn": "Le courant part de la source par la phase, traverse le récepteur et revient par le neutre. Sans chemin de retour, le circuit est ouvert et aucun courant ne passe."
+    },
+    "terminal_unconnected": {
+      "title": "La borne {{terminal}} de {{device}} est libre",
+      "cause": "Aucun câble n'est relié à la borne {{terminal}} de {{device}}.",
+      "hint": "Reliez un câble à la borne {{terminal}} de {{device}}.",
+      "learn": "Chaque récepteur a besoin de deux conducteurs : la phase, qui amène le courant, et le neutre, qui le ramène."
+    },
+    "switch_on_neutral": {
+      "title": "L'interrupteur {{device}} est sur le neutre",
+      "cause": "Avec {{device}} ouvert, le récepteur reste sous tension : danger au changement de lampe.",
+      "hint": "Placez {{device}} sur le conducteur de phase (marron).",
+      "learn": "L'interrupteur doit couper la phase. S'il coupe le neutre, la lampe s'éteint mais la douille reste reliée à la phase et peut électrocuter."
+    },
+    "pe_missing": {
+      "title": "La carcasse de {{device}} n'est pas à la terre",
+      "cause": "En cas de défaut, la carcasse de {{device}} est sous tension.",
+      "hint": "Reliez la borne PE de {{device}} à la barrette de terre (vert-jaune).",
+      "learn": "Sur un appareil de classe I, la terre écoule le courant de défaut loin des personnes et fait fonctionner la protection."
+    },
+    "cable_unprotected": {
+      "title": "Le câble de {{from}} à {{to}} n'est pas protégé",
+      "cause": "{{device}} fait {{rated}} et le câble de {{section}} ne supporte que {{iz}}.",
+      "hint": "Utilisez un câble de {{nextSection}} ou un disjoncteur de {{lowerRating}}.",
+      "learn": "La protection sert à protéger le câble. Son courant nominal ne doit pas dépasser le courant admissible du câble (In ≤ Iz)."
+    },
+    "wire_color": {
+      "title": "Mauvaise couleur sur le câble de {{from}} à {{to}}",
+      "cause": "Ce conducteur est $t(role.{{expected}}), mais le câble est $t(color.{{actual}}).",
+      "hint": "Utilisez un câble $t(color.{{expected}}) pour ce conducteur.",
+      "learn": "Les couleurs indiquent le rôle de chaque conducteur : marron, noir et gris pour les phases, bleu pour le neutre, vert-jaune uniquement pour la terre."
+    },
+    "mcb_magnetic_trip": {
+      "title": "Le disjoncteur {{device}} a déclenché",
+      "cause": "Court-circuit : {{current}} sont passés, {{ratio}} fois son courant nominal.",
+      "hint": "Cherchez le court-circuit entre phase et neutre et supprimez-le avant de réarmer.",
+      "learn": "Le déclenchement magnétique est instantané. Il agit quand le courant atteint plusieurs fois le courant nominal, ce qui n'arrive qu'en court-circuit."
+    },
+    "mcb_thermal_trip": {
+      "title": "Le disjoncteur {{device}} a déclenché sur surcharge",
+      "cause": "Les appareils branchés demandent {{current}} et {{device}} fait {{rated}}.",
+      "hint": "Répartissez les récepteurs sur deux circuits ou réduisez la puissance.",
+      "learn": "Le déclenchement thermique est lent. Un bilame chauffe avec le courant et déclenche si la surcharge dure trop longtemps."
+    },
+    "mcb_breaking_capacity": {
+      "title": "{{device}} ne peut pas couper ce court-circuit",
+      "cause": "{{current}} sont passés et le pouvoir de coupure de {{device}} est {{icn}}.",
+      "hint": "Choisissez un disjoncteur au pouvoir de coupure supérieur à {{current}}.",
+      "learn": "Le pouvoir de coupure est le plus grand courant que le disjoncteur peut interrompre sans se détruire. Il doit dépasser le courant de court-circuit à cet endroit."
+    },
+    "fuse_blown": {
+      "title": "Le fusible {{device}} a fondu",
+      "cause": "{{current}} sont passés, {{ratio}} fois son calibre de {{rated}}.",
+      "hint": "Supprimez la cause et remplacez le fusible {{device}}.",
+      "learn": "Le fusible contient un fil calibré qui fond sous l'effet de la chaleur. Plus le courant est fort, plus il fond vite."
+    },
+    "rcd_trip": {
+      "title": "Le différentiel {{device}} a déclenché",
+      "cause": "{{current}} fuient vers la terre sur {{location}}.",
+      "hint": "Débranchez l'appareil de {{location}} et vérifiez son isolement.",
+      "learn": "Le différentiel compare le courant qui part par la phase et celui qui revient par le neutre. S'il en manque, il fuit vers la terre, peut-être à travers une personne."
+    },
+    "wrong_voltage": {
+      "title": "{{device}} est en panne",
+      "cause": "Il a reçu {{voltage}} et il est prévu pour {{nominal}}.",
+      "hint": "Alimentez {{device}} en {{nominal}} et remplacez-le.",
+      "learn": "Chaque appareil est prévu pour une tension. Au double de la tension, la puissance est quatre fois plus grande et l'appareil grille."
+    },
+    "voltage_drop": {
+      "title": "Chute de tension de {{drop}} sur {{device}}",
+      "cause": "Le câble de {{section}} mesure {{length}} ; la limite est {{limit}}.",
+      "hint": "Augmentez la section du câble ou rapprochez le tableau.",
+      "learn": "Les câbles ont une résistance et consomment une partie de la tension. La limite est de 3 % en éclairage et 5 % sur les autres circuits."
+    },
+    "cable_overload": {
+      "title": "Le câble de {{from}} à {{to}} est surchargé",
+      "cause": "{{current}} circulent et le câble de {{section}} ne supporte que {{iz}}.",
+      "hint": "Augmentez la section du câble ou réduisez la charge.",
+      "learn": "Un câble surchargé chauffe et son isolant vieillit vite. Il peut provoquer un incendie."
+    },
+    "loose_connection": {
+      "title": "Connexion desserrée sur le câble de {{from}} à {{to}}",
+      "cause": "Le contact mal serré dissipe {{power}} et chauffe.",
+      "hint": "Resserrez la connexion du câble de {{from}} à {{to}}.",
+      "learn": "Une connexion mal serrée a une résistance. Avec le courant, elle chauffe et peut faire fondre la borne."
+    },
+    "body_current": {
+      "title": "Courant dangereux dans {{device}} : {{current}}",
+      "cause": "La carcasse de {{location}} est à {{voltage}} et rien n'a coupé le circuit.",
+      "hint": "Installez un différentiel 30 mA et reliez la terre.",
+      "learn": "Au-delà de 30 mA, le courant dans le corps peut arrêter le cœur. Un différentiel 30 mA et la mise à la terre coupent le circuit à temps."
+    },
+    "battery_empty": {
+      "title": "La batterie {{device}} est déchargée",
+      "cause": "La charge de {{device}} est arrivée à zéro.",
+      "hint": "Rechargez {{device}} ou réduisez la consommation.",
+      "learn": "L'autonomie est la capacité en Ah divisée par le courant. Une charge plus forte vide la batterie plus vite."
+    },
+    "control_unstable": {
+      "title": "Le circuit de commande oscille",
+      "cause": "Un contact alimente et coupe sa propre bobine sans fin.",
+      "hint": "Vérifiez les contacts NF reliés aux bobines.",
+      "learn": "Si le contact d'un relais coupe sa propre bobine, le relais s'ouvre et se ferme sans fin. La commande ne se stabilise jamais."
+    },
+    "path_open": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "{{blocker}} est ouvert et coupe le circuit.",
+      "hint": "Fermez {{blocker}} avec l'outil Manœuvrer.",
+      "learn": "Le courant ne passe que si le circuit est fermé de la source au récepteur, par la phase et par le neutre."
+    },
+    "load_no_supply": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "La borne {{terminal}} de {{device}} n'arrive pas à la phase.",
+      "hint": "Reliez la borne {{terminal}} de {{device}} à la phase (câble marron).",
+      "learn": "La phase amène le courant de la source au récepteur. Sans phase, le récepteur n'a pas de tension."
+    },
+    "wire_cut": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "Le câble de {{from}} à {{to}} est coupé.",
+      "hint": "Remplacez le câble de {{from}} à {{to}}.",
+      "learn": "Un fil coupé ouvre le circuit comme un interrupteur ouvert, mais ne se voit pas. Mesurez au multimètre : tension d'un côté, rien de l'autre."
+    },
+    "source_off": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "La source {{source}} est hors tension.",
+      "hint": "Rétablissez le courant sur {{source}}.",
+      "learn": "Sans source d'énergie, il n'y a de tension nulle part dans l'installation."
+    },
+    "load_switched_off": {
+      "title": "{{device}} est éteint",
+      "cause": "L'interrupteur intégré de {{device}} est ouvert.",
+      "hint": "Allumez {{device}} avec l'outil Manœuvrer.",
+      "learn": "Beaucoup d'appareils ont leur propre interrupteur ou thermostat, qui coupe aussi le courant."
+    },
+    "low_voltage": {
+      "title": "{{device}} reçoit trop peu de tension",
+      "cause": "Il arrive {{voltage}} et {{device}} a besoin de {{nominal}}.",
+      "hint": "Vérifiez la source et les chutes de tension dans les câbles.",
+      "learn": "Une tension basse peut venir d'une source faible, de câbles longs ou fins, ou de récepteurs en série."
+    },
+    "load_ok": {
+      "title": "{{device}} fonctionne",
+      "cause": "Le circuit de {{device}} est fermé et la tension suffit.",
+      "hint": "Coupez un appareil en amont pour voir l'effet.",
+      "learn": "Un circuit fonctionne quand il existe un chemin fermé de la phase, à travers le récepteur, jusqu'au neutre, avec assez de tension."
+    },
+    "not_a_load": {
+      "title": "{{device}} n'est pas un récepteur",
+      "cause": "Cette vérification suit le chemin d'un récepteur jusqu'à la source.",
+      "hint": "Choisissez une lampe, une prise, un moteur ou un autre récepteur.",
+      "learn": "Les récepteurs sont les appareils qui consomment de l'énergie : lampes, prises, radiateurs, moteurs."
+    }
+  },
+  "simpl": {
+    "grid_ideal": "Réseau : source de tension idéale avec une impédance résistive par conducteur.",
+    "battery_linear": "Batterie : tension linéaire avec l'état de charge ; sans effet de la température ni du vieillissement.",
+    "solar_linear": "Panneau solaire : source avec résistance interne (sans courbe I-V ni MPPT).",
+    "transformer_linear": "Transformateur : idéal, avec 5 % d'impédance résistive et 2 % de pertes fer ; sans saturation.",
+    "mcb_thermal": "Disjoncteur : thermique par I²t à partir de 1,13 · In avec t = 150 / ((I/In)² − 1,13²) s ; magnétique à la limite haute de la courbe.",
+    "fuse_table": "Fusible gG : courbe moyenne indicative de la CEI 60269, interpolée ; sans tolérances de fabrication.",
+    "rcd_type": "Différentiel : ne mesure que la composante alternative ; les types AC et A se comportent de même.",
+    "lamp_resistance": "Lampe : résistance constante (à froid la résistance réelle est plus faible).",
+    "led_resistive": "LED : modélisée comme une résistance ; un vrai driver a une puissance presque constante.",
+    "fluorescent_ballast": "Fluorescent : impédance R + jX fixe ; démarre au-dessus de 75 % de la tension.",
+    "motor1_two_state": "Moteur monophasé : deux états (démarrage et marche) au lieu du glissement continu.",
+    "body_model": "Corps humain : résistance fixe de 1000 Ω ; zones de la CEI 60479-1 approchées."
+  }
+}

@@ -1,0 +1,577 @@
+{
+  "app": {
+    "name": "Faísca",
+    "disclaimer": "Faísca is a teaching tool. It does not replace the design of an installation according to the regulations."
+  },
+  "domain": {
+    "domestic": "Domestic electricity",
+    "industrial": "Industrial electricity"
+  },
+  "level": {
+    "beginner": "Beginner",
+    "pro": "Professional"
+  },
+  "severity": {
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "file": {
+    "error": {
+      "not_faisca": "This file is not a Faísca project.",
+      "newer_version": "This project was created with a newer version of Faísca. Update the application.",
+      "no_migration": "This project cannot be converted to the current version.",
+      "invalid": "The project is damaged and cannot be opened.",
+      "unknown_device": "The project uses equipment this version does not know."
+    }
+  },
+  "category": {
+    "sources": "Sources",
+    "protection": "Protection",
+    "control": "Control",
+    "sensors": "Sensors",
+    "loads": "Loads",
+    "motors": "Motors and drives",
+    "measurement": "Measurement",
+    "distribution": "Distribution and materials",
+    "faults": "Faults and tests",
+    "annotations": "Annotations"
+  },
+  "color": {
+    "L1": "brown",
+    "L2": "black",
+    "L3": "grey",
+    "N": "blue",
+    "PE": "green-yellow",
+    "C": "red",
+    "DC+": "red",
+    "DC-": "black"
+  },
+  "role": {
+    "L1": "a line conductor",
+    "L2": "a line conductor",
+    "L3": "a line conductor",
+    "N": "the neutral",
+    "PE": "the protective conductor (earth)",
+    "C": "a control conductor",
+    "DC+": "positive",
+    "DC-": "negative"
+  },
+  "device": {
+    "grid1ph": {
+      "name": "Single-phase supply",
+      "desc": "Public low-voltage supply: line, neutral and, in TN-S, the protective conductor."
+    },
+    "battery": {
+      "name": "Battery",
+      "desc": "Direct current source. It discharges when feeding loads and charges from solar panels."
+    },
+    "solarPanel": {
+      "name": "Photovoltaic panel",
+      "desc": "Converts sunlight into direct current. The current follows the irradiance."
+    },
+    "transformer1ph": {
+      "name": "Single-phase transformer",
+      "desc": "Changes the voltage between two isolated circuits, for example 230/12 V for a bell."
+    },
+    "mcb1p": {
+      "name": "Circuit breaker 1P",
+      "desc": "Protects the cable against overloads and short circuits. It breaks a single pole."
+    },
+    "mcb1pn": {
+      "name": "Circuit breaker 1P+N",
+      "desc": "Protects the line and also breaks the neutral. The most common breaker in homes."
+    },
+    "fuseGG": {
+      "name": "Fuse gG",
+      "desc": "Melts when the current is too high. After it blows it must be replaced."
+    },
+    "rcd2p": {
+      "name": "Residual current device 2P",
+      "desc": "Detects current leaking to earth and breaks the circuit. At 30 mA it protects people."
+    },
+    "rcbo": {
+      "name": "RCBO",
+      "desc": "Combines a circuit breaker and an RCD: it protects the cable and people."
+    },
+    "mainSwitch2p": {
+      "name": "Main switch 2P",
+      "desc": "Switches off the whole installation. It gives no overcurrent protection."
+    },
+    "switch1": {
+      "name": "One-way switch",
+      "desc": "Switches a load on and off. It must always break the line."
+    },
+    "switch2p": {
+      "name": "Double-pole switch",
+      "desc": "Breaks line and neutral together, for example on a water heater."
+    },
+    "stairSwitch": {
+      "name": "Two-way switch",
+      "desc": "Connects common C to terminal 1 or 2. Two of them control a lamp from two places."
+    },
+    "intermediateSwitch": {
+      "name": "Intermediate switch",
+      "desc": "Goes between two two-way switches to control a lamp from three or more places."
+    },
+    "pushButton": {
+      "name": "Push button",
+      "desc": "Closes its contact only while pressed. Used for bells and impulse relays."
+    },
+    "impulseRelay": {
+      "name": "Impulse relay",
+      "desc": "Each pulse on the coil changes the contact state. Several buttons in parallel control the light."
+    },
+    "lampIncandescent": {
+      "name": "Incandescent lamp",
+      "desc": "A purely resistive load. Its brightness follows the power."
+    },
+    "lampLed": {
+      "name": "LED lamp",
+      "desc": "Efficient lighting. Its driver keeps the brightness despite some voltage drop."
+    },
+    "lampFluorescent": {
+      "name": "Fluorescent lamp",
+      "desc": "Tube with an inductive ballast: low power factor, needs enough voltage to start."
+    },
+    "socket": {
+      "name": "Socket outlet with earth",
+      "desc": "Outlet with line, neutral and earth. Choose the appliance and, for tests, a fault."
+    },
+    "heater": {
+      "name": "Heater",
+      "desc": "High-power resistive load with a metal enclosure (class I)."
+    },
+    "bell": {
+      "name": "Bell",
+      "desc": "Sound signal, usually fed at 8–24 V through a transformer."
+    },
+    "motor1ph": {
+      "name": "Single-phase motor",
+      "desc": "Motor for pumps and compressors. At start-up it draws several times its rated current."
+    },
+    "voltmeter": {
+      "name": "Voltmeter",
+      "desc": "Measures the voltage between two points. Connect it in parallel."
+    },
+    "ammeter": {
+      "name": "Ammeter",
+      "desc": "Measures the current flowing through it. Connect it in series."
+    },
+    "energyMeter1ph": {
+      "name": "Single-phase energy meter",
+      "desc": "Measures voltage, current, powers and power factor, and adds up energy in kWh."
+    },
+    "junction": {
+      "name": "Junction terminal",
+      "desc": "Joins several conductors at the same electrical point."
+    },
+    "busbar": {
+      "name": "Busbar",
+      "desc": "Distributes a line, the neutral or earth to several outputs."
+    },
+    "earthElectrode": {
+      "name": "Earth electrode",
+      "desc": "Connects the installation to earth through resistance Ra. Required in the TT system."
+    },
+    "shortCircuit": {
+      "name": "Short circuit",
+      "desc": "Connects two points with no resistance to test the protective devices."
+    },
+    "earthFault": {
+      "name": "Earth fault",
+      "desc": "Simulates an insulation fault from a conductor to earth."
+    },
+    "person": {
+      "name": "Person touching",
+      "desc": "A person touches a point. Shows the current through the body and its effect."
+    }
+  },
+  "param": {
+    "V": "Rated voltage",
+    "earthing": "Earthing system",
+    "Zs": "Supply impedance per conductor",
+    "Rb": "Neutral earth resistance (Rb)",
+    "Ah": "Capacity",
+    "soc0": "Initial charge",
+    "Ri": "Internal resistance",
+    "Voc": "Open-circuit voltage",
+    "Isc": "Short-circuit current",
+    "irr": "Irradiance",
+    "V1": "Primary voltage",
+    "V2": "Secondary voltage",
+    "S": "Rated power",
+    "In": "Rated current (In)",
+    "curve": "Tripping curve",
+    "Icn": "Breaking capacity (Icn)",
+    "IDn": "Sensitivity (IΔn)",
+    "rcdType": "Type",
+    "Vc": "Coil voltage",
+    "P": "Power",
+    "Vn": "Rated voltage",
+    "PF": "Power factor",
+    "appliance": "Connected appliance",
+    "defect": "Insulation fault",
+    "Pm": "Mechanical power",
+    "eta": "Efficiency",
+    "kStart": "Starting current (× In)",
+    "inertia": "Load inertia",
+    "bus": "Conductor",
+    "Ra": "Earth resistance (Ra)",
+    "Rf": "Fault resistance",
+    "floor": "Contact with the floor",
+    "Rbody": "Body resistance"
+  },
+  "option": {
+    "earthing": {
+      "TT": "TT (own earth electrode)",
+      "TN-S": "TN-S (earth provided by the supply)"
+    },
+    "curve": {
+      "B": "B (magnetic up to 5 × In)",
+      "C": "C (magnetic up to 10 × In)",
+      "D": "D (magnetic up to 20 × In)"
+    },
+    "appliance": {
+      "none": "Nothing plugged in",
+      "charger": "Charger (20 W)",
+      "laptop": "Laptop (65 W)",
+      "tv": "Television (150 W)",
+      "fridge": "Fridge (200 W)",
+      "iron": "Iron (1200 W)",
+      "microwave": "Microwave (1300 W)",
+      "heater": "Heater (2000 W)",
+      "washer": "Washing machine (2200 W)",
+      "kettle": "Kettle (2200 W)"
+    },
+    "defect": {
+      "none": "No fault",
+      "slight": "Slight leak (50 kΩ)",
+      "leak": "Leak (5 kΩ)",
+      "strong": "Strong leak (500 Ω)",
+      "frank": "Line to enclosure (0.5 Ω)"
+    },
+    "inertia": {
+      "low": "Low (0.3 s start)",
+      "medium": "Medium (0.8 s start)",
+      "high": "High (2 s start)"
+    },
+    "bus": {
+      "L": "Line",
+      "N": "Neutral",
+      "PE": "Earth (PE)"
+    },
+    "floor": {
+      "wet": "Barefoot, wet floor",
+      "shoes": "Normal shoes",
+      "insulating": "Insulating shoes"
+    }
+  },
+  "meas": {
+    "state": "State",
+    "voltage": "Voltage",
+    "current": "Current",
+    "activePower": "Active power",
+    "reactivePower": "Reactive power",
+    "apparentPower": "Apparent power",
+    "powerFactor": "Power factor",
+    "power": "Power",
+    "prospectiveIcc": "Prospective short-circuit current",
+    "mode": "Mode",
+    "soc": "State of charge",
+    "autonomy": "Autonomy",
+    "irradiance": "Irradiance",
+    "primaryVoltage": "Primary voltage",
+    "secondaryVoltage": "Secondary voltage",
+    "primaryCurrent": "Primary current",
+    "secondaryCurrent": "Secondary current",
+    "loadPercent": "Load",
+    "loadRatio": "Load (I/In)",
+    "thermal": "Thermal heating",
+    "tripTime": "Thermal trip time at this current",
+    "residualCurrent": "Residual current",
+    "sensitivity": "Sensitivity IΔn",
+    "position": "Position",
+    "contact": "Contact",
+    "coilVoltage": "Coil voltage",
+    "brightness": "Brightness",
+    "appliance": "Appliance",
+    "applianceSwitch": "Appliance switch",
+    "leakCurrent": "Leakage current",
+    "enclosureVoltage": "Enclosure-to-earth voltage",
+    "thermostat": "Thermostat",
+    "speed": "Speed",
+    "ratedCurrent": "Rated current",
+    "reading": "Reading",
+    "acComponent": "AC component",
+    "dcComponent": "DC component",
+    "energy": "Energy",
+    "earthCurrent": "Current to earth",
+    "earthVoltage": "PE-to-earth voltage",
+    "earthResistance": "Earth resistance Ra",
+    "faultCurrent": "Fault current",
+    "touching": "Touching",
+    "bodyCurrent": "Body current",
+    "touchVoltage": "Touch voltage",
+    "bodyZone": "Likely effect (IEC 60479-1)",
+    "exposure": "Exposure time"
+  },
+  "state": {
+    "closed": "Closed (on)",
+    "open": "Open (off)",
+    "tripped_magnetic": "Tripped (magnetic)",
+    "tripped_thermal": "Tripped (thermal)",
+    "tripped_residual": "Tripped (residual current)",
+    "powered": "Powered",
+    "no_power": "No power",
+    "charging": "Charging",
+    "discharging": "Discharging",
+    "blown": "Blown",
+    "in_service": "In service",
+    "on": "On",
+    "off": "Off",
+    "position_1": "C → 1",
+    "position_2": "C → 2",
+    "direct": "Straight (A–C, B–D)",
+    "crossed": "Crossed (A–D, B–C)",
+    "pressed": "Pressed",
+    "released": "Released",
+    "lit": "Lit",
+    "unlit": "Off",
+    "burnt": "Failed",
+    "ringing": "Ringing",
+    "silent": "Silent",
+    "stopped": "Stopped",
+    "starting": "Starting",
+    "running": "Running",
+    "active": "Active",
+    "inactive": "Inactive",
+    "yes": "Yes",
+    "no": "No",
+    "zone_AC1": "AC-1: not perceptible",
+    "zone_AC2": "AC-2: perceptible, no harmful effects",
+    "zone_AC3": "AC-3: muscle contractions, hard to let go",
+    "zone_AC4": "AC-4: risk of ventricular fibrillation",
+    "appliance_none": "Nothing plugged in",
+    "appliance_charger": "Charger",
+    "appliance_laptop": "Laptop",
+    "appliance_tv": "Television",
+    "appliance_fridge": "Fridge",
+    "appliance_iron": "Iron",
+    "appliance_microwave": "Microwave",
+    "appliance_heater": "Heater",
+    "appliance_washer": "Washing machine",
+    "appliance_kettle": "Kettle"
+  },
+  "action": {
+    "open": "Switch off",
+    "close": "Switch on",
+    "reset": "Reset",
+    "test": "Test button (T)",
+    "replace": "Replace",
+    "power_on": "Restore power",
+    "power_off": "Simulate power cut",
+    "switch_on": "Switch on",
+    "switch_off": "Switch off",
+    "toggle": "Toggle",
+    "press": "Press (hold)",
+    "reset_energy": "Reset energy counter",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "touch": "Touch",
+    "stop_touching": "Stop touching"
+  },
+  "event": {
+    "mcb_magnetic_trip": "Magnetic trip: {{current}} ({{ratio}} × In)",
+    "mcb_thermal_trip": "Thermal trip: {{current}} ({{ratio}} × In)",
+    "mcb_breaking_capacity": "Breaking capacity exceeded: {{current}} above {{icn}}",
+    "fuse_blown": "Fuse blown: {{current}} ({{ratio}} × In)",
+    "rcd_trip": "RCD trip: {{current}} leaking at {{location}}",
+    "overvoltage_damage": "Overvoltage damage: {{voltage}} on a {{nominal}} device",
+    "battery_empty": "Battery empty",
+    "impulse_on": "Pulse: contact closed",
+    "impulse_off": "Pulse: contact open",
+    "motor_running": "Motor running",
+    "motor_stalled": "Motor stalled: only {{voltage}}",
+    "body_current": "Danger: {{current}} through the body",
+    "control_unstable": "The control circuit oscillates and does not settle"
+  },
+  "diag": {
+    "source_short": {
+      "title": "Supply {{device}} is short-circuited",
+      "cause": "Line and neutral of {{device}} are joined with no load between them.",
+      "hint": "Remove the wire that joins line directly to neutral.",
+      "learn": "A short circuit is a path with almost no resistance between line and neutral. The current rises to thousands of amperes and the protective device trips. There must always be a load between line and neutral."
+    },
+    "load_no_return": {
+      "title": "{{device}} does not work",
+      "cause": "Terminal {{terminal}} of {{device}} does not reach the neutral: the current cannot return.",
+      "hint": "Connect terminal {{terminal}} of {{device}} to the neutral (blue wire).",
+      "learn": "Current leaves the supply on the line, flows through the load and returns on the neutral. With no return path the circuit is open and no current flows."
+    },
+    "terminal_unconnected": {
+      "title": "Terminal {{terminal}} of {{device}} is free",
+      "cause": "No wire is connected to terminal {{terminal}} of {{device}}.",
+      "hint": "Connect a wire to terminal {{terminal}} of {{device}}.",
+      "learn": "Every load needs two conductors: the line, which brings the current, and the neutral, which takes it back."
+    },
+    "switch_on_neutral": {
+      "title": "Switch {{device}} is on the neutral",
+      "cause": "With {{device}} off, the load is still live: danger when changing the lamp.",
+      "hint": "Connect {{device}} in the line conductor (brown).",
+      "learn": "A switch must break the line. If it breaks the neutral, the lamp goes out but the lampholder stays connected to the line and can give a shock."
+    },
+    "pe_missing": {
+      "title": "The enclosure of {{device}} is not earthed",
+      "cause": "In a fault, the enclosure of {{device}} becomes live.",
+      "hint": "Connect the PE terminal of {{device}} to the earth bar (green-yellow).",
+      "learn": "On a class I appliance, the earth carries the fault current away from people and makes the protective device operate."
+    },
+    "cable_unprotected": {
+      "title": "The cable from {{from}} to {{to}} is not protected",
+      "cause": "{{device}} is rated {{rated}} and the {{section}} cable only carries {{iz}}.",
+      "hint": "Use {{nextSection}} cable or a {{lowerRating}} circuit breaker.",
+      "learn": "The protective device is there to protect the cable. Its rated current must not exceed what the cable can carry (In ≤ Iz)."
+    },
+    "wire_color": {
+      "title": "Wrong colour on the cable from {{from}} to {{to}}",
+      "cause": "This conductor is $t(role.{{expected}}), but the cable is $t(color.{{actual}}).",
+      "hint": "Use a $t(color.{{expected}}) cable for this conductor.",
+      "learn": "Colours show what each conductor does: brown, black and grey for lines, blue for neutral, green-yellow only for earth."
+    },
+    "mcb_magnetic_trip": {
+      "title": "Circuit breaker {{device}} tripped",
+      "cause": "Short circuit: {{current}} flowed, {{ratio}} times its rated current.",
+      "hint": "Find the line-to-neutral short and remove it before resetting.",
+      "learn": "The magnetic trip is instantaneous. It acts when the current reaches several times the rated current, which only happens in a short circuit."
+    },
+    "mcb_thermal_trip": {
+      "title": "Circuit breaker {{device}} tripped on overload",
+      "cause": "The connected appliances draw {{current}} and {{device}} is rated {{rated}}.",
+      "hint": "Split the loads over two circuits or reduce the power.",
+      "learn": "The thermal trip is slow. A bimetal strip heats with the current and trips when the overload lasts too long."
+    },
+    "mcb_breaking_capacity": {
+      "title": "{{device}} cannot break this short circuit",
+      "cause": "{{current}} flowed and the breaking capacity of {{device}} is {{icn}}.",
+      "hint": "Choose a circuit breaker with a breaking capacity above {{current}}.",
+      "learn": "The breaking capacity is the largest current the breaker can interrupt without being destroyed. It must exceed the short-circuit current at that point."
+    },
+    "fuse_blown": {
+      "title": "Fuse {{device}} has blown",
+      "cause": "{{current}} flowed, {{ratio}} times its {{rated}} rating.",
+      "hint": "Remove the cause and replace fuse {{device}}.",
+      "learn": "A fuse has a calibrated wire that melts with the heat of the current. The higher the current, the faster it melts."
+    },
+    "rcd_trip": {
+      "title": "RCD {{device}} tripped",
+      "cause": "{{current}} is leaking to earth at {{location}}.",
+      "hint": "Unplug the appliance at {{location}} and check its insulation.",
+      "learn": "The RCD compares the current going out on the line with the current coming back on the neutral. If some is missing, it is leaking to earth, maybe through a person."
+    },
+    "wrong_voltage": {
+      "title": "{{device}} has failed",
+      "cause": "It received {{voltage}} and is rated {{nominal}}.",
+      "hint": "Supply {{device}} at {{nominal}} and replace it.",
+      "learn": "Each appliance is made for one voltage. At twice the voltage, the power is four times higher and the appliance burns out."
+    },
+    "voltage_drop": {
+      "title": "Voltage drop of {{drop}} at {{device}}",
+      "cause": "The {{section}} cable is {{length}} long; the limit is {{limit}}.",
+      "hint": "Increase the cable size or move the board closer.",
+      "learn": "Cables have resistance and use part of the voltage. The limit is 3 % for lighting and 5 % for other circuits."
+    },
+    "cable_overload": {
+      "title": "The cable from {{from}} to {{to}} is overloaded",
+      "cause": "{{current}} flows and the {{section}} cable only carries {{iz}}.",
+      "hint": "Increase the cable size or reduce the load.",
+      "learn": "An overloaded cable heats up and its insulation ages quickly. It can start a fire."
+    },
+    "loose_connection": {
+      "title": "Loose connection on the cable from {{from}} to {{to}}",
+      "cause": "The poorly tightened contact dissipates {{power}} and heats up.",
+      "hint": "Tighten the connection of the cable from {{from}} to {{to}}.",
+      "learn": "A loose connection has resistance. With current it heats up and can melt the terminal."
+    },
+    "body_current": {
+      "title": "Dangerous current through {{device}}: {{current}}",
+      "cause": "The enclosure of {{location}} is at {{voltage}} and nothing broke the circuit.",
+      "hint": "Install a 30 mA RCD and connect the earth.",
+      "learn": "Above 30 mA the current through the body can stop the heart. A 30 mA RCD and the earth connection break the circuit in time."
+    },
+    "battery_empty": {
+      "title": "Battery {{device}} is empty",
+      "cause": "The charge of {{device}} has reached zero.",
+      "hint": "Recharge {{device}} or reduce the consumption.",
+      "learn": "Autonomy is the capacity in Ah divided by the current. A bigger load drains the battery faster."
+    },
+    "control_unstable": {
+      "title": "The control circuit oscillates",
+      "cause": "A contact feeds and cuts its own coil without end.",
+      "hint": "Check the NC contacts wired to the coils.",
+      "learn": "If a relay contact switches off its own coil, the relay opens and closes endlessly. The control never settles."
+    },
+    "path_open": {
+      "title": "{{device}} does not work",
+      "cause": "{{blocker}} is off and breaks the circuit.",
+      "hint": "Switch {{blocker}} on with the Operate tool.",
+      "learn": "Current only flows when the circuit is closed from the supply to the load, on both line and neutral."
+    },
+    "load_no_supply": {
+      "title": "{{device}} does not work",
+      "cause": "Terminal {{terminal}} of {{device}} does not reach the line.",
+      "hint": "Connect terminal {{terminal}} of {{device}} to the line (brown wire).",
+      "learn": "The line brings current from the supply to the load. Without it, the load gets no voltage."
+    },
+    "wire_cut": {
+      "title": "{{device}} does not work",
+      "cause": "The cable from {{from}} to {{to}} is cut.",
+      "hint": "Replace the cable from {{from}} to {{to}}.",
+      "learn": "A cut wire opens the circuit like a switch that is off, but you cannot see it. Measure with the multimeter: voltage on one side, nothing on the other."
+    },
+    "source_off": {
+      "title": "{{device}} does not work",
+      "cause": "Supply {{source}} has no power.",
+      "hint": "Restore power at {{source}}.",
+      "learn": "Without a power source there is no voltage anywhere in the installation."
+    },
+    "load_switched_off": {
+      "title": "{{device}} is switched off",
+      "cause": "The built-in switch of {{device}} is off.",
+      "hint": "Switch {{device}} on with the Operate tool.",
+      "learn": "Many appliances have their own switch or thermostat, which also cuts the current."
+    },
+    "low_voltage": {
+      "title": "{{device}} gets too little voltage",
+      "cause": "{{voltage}} arrives and {{device}} needs {{nominal}}.",
+      "hint": "Check the supply and the voltage drops on the cables.",
+      "learn": "Low voltage can come from a weak supply, long or thin cables, or loads in series."
+    },
+    "load_ok": {
+      "title": "{{device}} is working",
+      "cause": "The circuit of {{device}} is closed and the voltage is enough.",
+      "hint": "Switch off a device upstream to see the effect.",
+      "learn": "A circuit works when there is a closed path from the line, through the load, to the neutral, with enough voltage."
+    },
+    "not_a_load": {
+      "title": "{{device}} is not a load",
+      "cause": "This check follows the path from a load to the supply.",
+      "hint": "Choose a lamp, socket, motor or another load.",
+      "learn": "Loads are the devices that use energy: lamps, sockets, heaters, motors."
+    }
+  },
+  "simpl": {
+    "grid_ideal": "Supply: ideal voltage source with a resistive impedance per conductor.",
+    "battery_linear": "Battery: voltage linear with state of charge; no temperature or ageing effects.",
+    "solar_linear": "Solar panel: source with internal resistance (no I-V curve or MPPT).",
+    "transformer_linear": "Transformer: ideal, with 5 % resistive impedance and 2 % iron losses; no saturation.",
+    "mcb_thermal": "Circuit breaker: thermal by I²t from 1.13 · In with t = 150 / ((I/In)² − 1.13²) s; magnetic at the upper limit of the curve.",
+    "fuse_table": "gG fuse: indicative average IEC 60269 curve, interpolated; no manufacturing tolerances.",
+    "rcd_type": "RCD: measures only the AC component; types AC and A behave the same.",
+    "lamp_resistance": "Lamp: constant resistance (the real cold resistance is lower).",
+    "led_resistive": "LED: modelled as a resistance; a real driver has almost constant power.",
+    "fluorescent_ballast": "Fluorescent: fixed R + jX impedance; starts above 75 % of the voltage.",
+    "motor1_two_state": "Single-phase motor: two states (starting and running) instead of continuous slip.",
+    "body_model": "Human body: fixed 1000 Ω resistance; IEC 60479-1 zones approximated."
+  }
+}

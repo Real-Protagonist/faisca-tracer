@@ -1,0 +1,577 @@
+{
+  "app": {
+    "name": "Faísca",
+    "disclaimer": "O Faísca é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento."
+  },
+  "domain": {
+    "domestic": "Electricidade doméstica",
+    "industrial": "Electricidade industrial"
+  },
+  "level": {
+    "beginner": "Iniciante",
+    "pro": "Profissional"
+  },
+  "severity": {
+    "error": "Erro",
+    "warning": "Aviso",
+    "info": "Informação"
+  },
+  "file": {
+    "error": {
+      "not_faisca": "Este ficheiro não é um projecto do Faísca.",
+      "newer_version": "Este projecto foi criado numa versão mais recente do Faísca. Actualize a aplicação.",
+      "no_migration": "Não é possível converter este projecto para a versão actual.",
+      "invalid": "O projecto está danificado e não pode ser aberto.",
+      "unknown_device": "O projecto usa um equipamento que esta versão não conhece."
+    }
+  },
+  "category": {
+    "sources": "Fontes",
+    "protection": "Protecção",
+    "control": "Comando",
+    "sensors": "Sensores",
+    "loads": "Cargas",
+    "motors": "Motores e accionamentos",
+    "measurement": "Medição",
+    "distribution": "Distribuição e materiais",
+    "faults": "Falhas e ensaios",
+    "annotations": "Anotações"
+  },
+  "color": {
+    "L1": "castanho",
+    "L2": "preto",
+    "L3": "cinzento",
+    "N": "azul",
+    "PE": "verde-amarelo",
+    "C": "vermelho",
+    "DC+": "vermelho",
+    "DC-": "preto"
+  },
+  "role": {
+    "L1": "de fase",
+    "L2": "de fase",
+    "L3": "de fase",
+    "N": "de neutro",
+    "PE": "de protecção (terra)",
+    "C": "de comando",
+    "DC+": "positivo",
+    "DC-": "negativo"
+  },
+  "device": {
+    "grid1ph": {
+      "name": "Rede monofásica",
+      "desc": "Alimentação pública em baixa tensão: fase, neutro e, em TN-S, condutor de protecção."
+    },
+    "battery": {
+      "name": "Bateria",
+      "desc": "Fonte de corrente contínua. Descarrega ao alimentar cargas e carrega com painéis solares."
+    },
+    "solarPanel": {
+      "name": "Painel fotovoltaico",
+      "desc": "Converte a luz do sol em corrente contínua. A corrente acompanha a irradiância."
+    },
+    "transformer1ph": {
+      "name": "Transformador monofásico",
+      "desc": "Muda a tensão entre dois circuitos isolados, por exemplo 230/12 V para uma campainha."
+    },
+    "mcb1p": {
+      "name": "Disjuntor 1P",
+      "desc": "Protege o cabo contra sobrecargas e curto-circuitos. Corta um só pólo."
+    },
+    "mcb1pn": {
+      "name": "Disjuntor 1P+N",
+      "desc": "Protege a fase e corta também o neutro. É o mais usado nos circuitos de habitação."
+    },
+    "fuseGG": {
+      "name": "Fusível gG",
+      "desc": "Funde quando a corrente é excessiva. Depois de fundir tem de ser substituído."
+    },
+    "rcd2p": {
+      "name": "Interruptor diferencial 2P",
+      "desc": "Detecta correntes que fogem para a terra e corta o circuito. Com 30 mA protege pessoas."
+    },
+    "rcbo": {
+      "name": "Disjuntor diferencial",
+      "desc": "Junta disjuntor e diferencial: protege o cabo e protege as pessoas."
+    },
+    "mainSwitch2p": {
+      "name": "Interruptor geral 2P",
+      "desc": "Corta toda a instalação. Não protege contra sobreintensidades."
+    },
+    "switch1": {
+      "name": "Interruptor simples",
+      "desc": "Liga e desliga uma carga. Deve cortar sempre a fase."
+    },
+    "switch2p": {
+      "name": "Interruptor bipolar",
+      "desc": "Corta a fase e o neutro ao mesmo tempo, por exemplo num termoacumulador."
+    },
+    "stairSwitch": {
+      "name": "Comutador de escada",
+      "desc": "Liga o comum C ao borne 1 ou 2. Dois comutadores comandam uma lâmpada de dois sítios."
+    },
+    "intermediateSwitch": {
+      "name": "Inversor de escada",
+      "desc": "Fica entre dois comutadores para comandar uma lâmpada de três ou mais sítios."
+    },
+    "pushButton": {
+      "name": "Botão de pressão",
+      "desc": "Só fecha o contacto enquanto está premido. Usado na campainha e no telerruptor."
+    },
+    "impulseRelay": {
+      "name": "Telerruptor",
+      "desc": "Cada impulso na bobina muda o estado do contacto. Vários botões em paralelo comandam a luz."
+    },
+    "lampIncandescent": {
+      "name": "Lâmpada incandescente",
+      "desc": "Carga resistiva pura. O brilho acompanha a potência."
+    },
+    "lampLed": {
+      "name": "Lâmpada LED",
+      "desc": "Iluminação eficiente. O driver mantém o brilho mesmo com alguma queda de tensão."
+    },
+    "lampFluorescent": {
+      "name": "Lâmpada fluorescente",
+      "desc": "Tubo com balastro indutivo: factor de potência baixo e precisa de tensão para arrancar."
+    },
+    "socket": {
+      "name": "Tomada com terra",
+      "desc": "Tomada com fase, neutro e terra. Escolha o aparelho ligado e, para ensaios, um defeito."
+    },
+    "heater": {
+      "name": "Aquecedor",
+      "desc": "Carga resistiva de grande potência com carcaça metálica (classe I)."
+    },
+    "bell": {
+      "name": "Campainha",
+      "desc": "Avisador sonoro, normalmente alimentado a 8–24 V por um transformador."
+    },
+    "motor1ph": {
+      "name": "Motor monofásico",
+      "desc": "Motor de bombas e compressores. No arranque absorve várias vezes a corrente nominal."
+    },
+    "voltmeter": {
+      "name": "Voltímetro",
+      "desc": "Mede a tensão entre dois pontos. Liga-se em paralelo."
+    },
+    "ammeter": {
+      "name": "Amperímetro",
+      "desc": "Mede a corrente que o atravessa. Liga-se em série."
+    },
+    "energyMeter1ph": {
+      "name": "Contador de energia monofásico",
+      "desc": "Mede tensão, corrente, potências e factor de potência, e soma a energia em kWh."
+    },
+    "junction": {
+      "name": "Ligador",
+      "desc": "Une vários condutores no mesmo ponto eléctrico."
+    },
+    "busbar": {
+      "name": "Barramento",
+      "desc": "Distribui uma fase, o neutro ou a terra por várias saídas."
+    },
+    "earthElectrode": {
+      "name": "Eléctrodo de terra",
+      "desc": "Liga a instalação à terra através da resistência Ra. Obrigatório no esquema TT."
+    },
+    "shortCircuit": {
+      "name": "Curto-circuito",
+      "desc": "Liga dois pontos sem resistência para ensaiar as protecções."
+    },
+    "earthFault": {
+      "name": "Defeito à terra",
+      "desc": "Simula uma falha de isolamento de um condutor para a terra."
+    },
+    "person": {
+      "name": "Pessoa em contacto",
+      "desc": "Uma pessoa toca num ponto. Mostra a corrente no corpo e o seu efeito."
+    }
+  },
+  "param": {
+    "V": "Tensão nominal",
+    "earthing": "Esquema de ligação à terra",
+    "Zs": "Impedância da rede por condutor",
+    "Rb": "Resistência de terra do neutro (Rb)",
+    "Ah": "Capacidade",
+    "soc0": "Carga inicial",
+    "Ri": "Resistência interna",
+    "Voc": "Tensão em circuito aberto",
+    "Isc": "Corrente de curto-circuito",
+    "irr": "Irradiância",
+    "V1": "Tensão do primário",
+    "V2": "Tensão do secundário",
+    "S": "Potência nominal",
+    "In": "Corrente nominal (In)",
+    "curve": "Curva de disparo",
+    "Icn": "Poder de corte (Icn)",
+    "IDn": "Sensibilidade (IΔn)",
+    "rcdType": "Tipo",
+    "Vc": "Tensão da bobina",
+    "P": "Potência",
+    "Vn": "Tensão nominal",
+    "PF": "Factor de potência",
+    "appliance": "Aparelho ligado",
+    "defect": "Defeito de isolamento",
+    "Pm": "Potência mecânica",
+    "eta": "Rendimento",
+    "kStart": "Corrente de arranque (× In)",
+    "inertia": "Inércia da carga",
+    "bus": "Condutor",
+    "Ra": "Resistência de terra (Ra)",
+    "Rf": "Resistência do defeito",
+    "floor": "Contacto com o chão",
+    "Rbody": "Resistência do corpo"
+  },
+  "option": {
+    "earthing": {
+      "TT": "TT (eléctrodo próprio)",
+      "TN-S": "TN-S (terra fornecida pela rede)"
+    },
+    "curve": {
+      "B": "B (magnético até 5 × In)",
+      "C": "C (magnético até 10 × In)",
+      "D": "D (magnético até 20 × In)"
+    },
+    "appliance": {
+      "none": "Nada ligado",
+      "charger": "Carregador (20 W)",
+      "laptop": "Portátil (65 W)",
+      "tv": "Televisor (150 W)",
+      "fridge": "Frigorífico (200 W)",
+      "iron": "Ferro de engomar (1200 W)",
+      "microwave": "Micro-ondas (1300 W)",
+      "heater": "Aquecedor (2000 W)",
+      "washer": "Máquina de lavar (2200 W)",
+      "kettle": "Chaleira (2200 W)"
+    },
+    "defect": {
+      "none": "Sem defeito",
+      "slight": "Fuga ligeira (50 kΩ)",
+      "leak": "Fuga (5 kΩ)",
+      "strong": "Fuga forte (500 Ω)",
+      "frank": "Fase à massa (0,5 Ω)"
+    },
+    "inertia": {
+      "low": "Baixa (arranque 0,3 s)",
+      "medium": "Média (arranque 0,8 s)",
+      "high": "Alta (arranque 2 s)"
+    },
+    "bus": {
+      "L": "Fase",
+      "N": "Neutro",
+      "PE": "Terra (PE)"
+    },
+    "floor": {
+      "wet": "Descalço, chão molhado",
+      "shoes": "Calçado normal",
+      "insulating": "Calçado isolante"
+    }
+  },
+  "meas": {
+    "state": "Estado",
+    "voltage": "Tensão",
+    "current": "Corrente",
+    "activePower": "Potência activa",
+    "reactivePower": "Potência reactiva",
+    "apparentPower": "Potência aparente",
+    "powerFactor": "Factor de potência",
+    "power": "Potência",
+    "prospectiveIcc": "Corrente de curto-circuito presumida",
+    "mode": "Modo",
+    "soc": "Estado de carga",
+    "autonomy": "Autonomia",
+    "irradiance": "Irradiância",
+    "primaryVoltage": "Tensão no primário",
+    "secondaryVoltage": "Tensão no secundário",
+    "primaryCurrent": "Corrente no primário",
+    "secondaryCurrent": "Corrente no secundário",
+    "loadPercent": "Carga",
+    "loadRatio": "Carga (I/In)",
+    "thermal": "Aquecimento térmico",
+    "tripTime": "Tempo de disparo térmico a esta corrente",
+    "residualCurrent": "Corrente diferencial",
+    "sensitivity": "Sensibilidade IΔn",
+    "position": "Posição",
+    "contact": "Contacto",
+    "coilVoltage": "Tensão na bobina",
+    "brightness": "Brilho",
+    "appliance": "Aparelho",
+    "applianceSwitch": "Interruptor do aparelho",
+    "leakCurrent": "Corrente de fuga",
+    "enclosureVoltage": "Tensão da carcaça à terra",
+    "thermostat": "Termóstato",
+    "speed": "Velocidade",
+    "ratedCurrent": "Corrente nominal",
+    "reading": "Leitura",
+    "acComponent": "Componente alternada",
+    "dcComponent": "Componente contínua",
+    "energy": "Energia",
+    "earthCurrent": "Corrente para a terra",
+    "earthVoltage": "Tensão PE–terra",
+    "earthResistance": "Resistência de terra Ra",
+    "faultCurrent": "Corrente de defeito",
+    "touching": "A tocar",
+    "bodyCurrent": "Corrente no corpo",
+    "touchVoltage": "Tensão de contacto",
+    "bodyZone": "Efeito provável (IEC 60479-1)",
+    "exposure": "Tempo de exposição"
+  },
+  "state": {
+    "closed": "Fechado (ligado)",
+    "open": "Aberto (desligado)",
+    "tripped_magnetic": "Disparado (magnético)",
+    "tripped_thermal": "Disparado (térmico)",
+    "tripped_residual": "Disparado (diferencial)",
+    "powered": "Com energia",
+    "no_power": "Sem energia",
+    "charging": "A carregar",
+    "discharging": "A descarregar",
+    "blown": "Fundido",
+    "in_service": "Em serviço",
+    "on": "Ligado",
+    "off": "Desligado",
+    "position_1": "C → 1",
+    "position_2": "C → 2",
+    "direct": "Directo (A–C, B–D)",
+    "crossed": "Cruzado (A–D, B–C)",
+    "pressed": "Premido",
+    "released": "Em repouso",
+    "lit": "Acesa",
+    "unlit": "Apagada",
+    "burnt": "Avariada",
+    "ringing": "A tocar",
+    "silent": "Em silêncio",
+    "stopped": "Parado",
+    "starting": "A arrancar",
+    "running": "Em marcha",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "yes": "Sim",
+    "no": "Não",
+    "zone_AC1": "AC-1: imperceptível",
+    "zone_AC2": "AC-2: perceptível, sem efeitos perigosos",
+    "zone_AC3": "AC-3: contracções musculares, difícil largar",
+    "zone_AC4": "AC-4: risco de fibrilhação ventricular",
+    "appliance_none": "Nada ligado",
+    "appliance_charger": "Carregador",
+    "appliance_laptop": "Portátil",
+    "appliance_tv": "Televisor",
+    "appliance_fridge": "Frigorífico",
+    "appliance_iron": "Ferro de engomar",
+    "appliance_microwave": "Micro-ondas",
+    "appliance_heater": "Aquecedor",
+    "appliance_washer": "Máquina de lavar",
+    "appliance_kettle": "Chaleira"
+  },
+  "action": {
+    "open": "Desligar",
+    "close": "Ligar",
+    "reset": "Rearmar",
+    "test": "Botão de teste (T)",
+    "replace": "Substituir",
+    "power_on": "Repor energia",
+    "power_off": "Simular falha de energia",
+    "switch_on": "Ligar",
+    "switch_off": "Desligar",
+    "toggle": "Comutar",
+    "press": "Premir (manter)",
+    "reset_energy": "Repor contador a zero",
+    "activate": "Activar",
+    "deactivate": "Desactivar",
+    "touch": "Tocar",
+    "stop_touching": "Deixar de tocar"
+  },
+  "event": {
+    "mcb_magnetic_trip": "Disparo magnético: {{current}} ({{ratio}} × In)",
+    "mcb_thermal_trip": "Disparo térmico: {{current}} ({{ratio}} × In)",
+    "mcb_breaking_capacity": "Poder de corte excedido: {{current}} acima de {{icn}}",
+    "fuse_blown": "Fusível fundido: {{current}} ({{ratio}} × In)",
+    "rcd_trip": "Disparo diferencial: fuga de {{current}} em {{location}}",
+    "overvoltage_damage": "Avaria por sobretensão: {{voltage}} num aparelho de {{nominal}}",
+    "battery_empty": "Bateria descarregada",
+    "impulse_on": "Impulso: contacto fechado",
+    "impulse_off": "Impulso: contacto aberto",
+    "motor_running": "Motor em marcha",
+    "motor_stalled": "Motor bloqueado: só {{voltage}}",
+    "body_current": "Perigo: {{current}} no corpo",
+    "control_unstable": "O comando oscila e não estabiliza"
+  },
+  "diag": {
+    "source_short": {
+      "title": "A fonte {{device}} está em curto-circuito",
+      "cause": "A fase e o neutro de {{device}} estão ligados sem carga entre eles.",
+      "hint": "Retire o cabo que liga a fase directamente ao neutro.",
+      "learn": "Um curto-circuito é um caminho quase sem resistência entre a fase e o neutro. A corrente sobe a milhares de amperes e a protecção dispara. Entre a fase e o neutro tem de haver sempre uma carga."
+    },
+    "load_no_return": {
+      "title": "{{device}} não funciona",
+      "cause": "O terminal {{terminal}} de {{device}} não chega ao neutro: a corrente não volta.",
+      "hint": "Ligue o terminal {{terminal}} de {{device}} ao neutro (cabo azul).",
+      "learn": "A corrente sai da fonte pela fase, atravessa a carga e volta pelo neutro. Sem caminho de volta, o circuito fica aberto e não passa corrente."
+    },
+    "terminal_unconnected": {
+      "title": "O terminal {{terminal}} de {{device}} está livre",
+      "cause": "Nenhum cabo está ligado ao terminal {{terminal}} de {{device}}.",
+      "hint": "Ligue um cabo ao terminal {{terminal}} de {{device}}.",
+      "learn": "Cada carga precisa de dois condutores: a fase, que traz a corrente, e o neutro, que a leva de volta."
+    },
+    "switch_on_neutral": {
+      "title": "O interruptor {{device}} está no neutro",
+      "cause": "Com {{device}} desligado, a carga continua sob tensão: perigo ao trocar a lâmpada.",
+      "hint": "Ligue {{device}} no condutor de fase (castanho).",
+      "learn": "O interruptor deve cortar a fase. Se cortar o neutro, a lâmpada apaga, mas o casquilho continua ligado à fase e pode dar choque."
+    },
+    "pe_missing": {
+      "title": "A carcaça de {{device}} não tem terra",
+      "cause": "Num defeito, a carcaça de {{device}} fica sob tensão.",
+      "hint": "Ligue o terminal PE de {{device}} à barra de terra (verde-amarelo).",
+      "learn": "Num aparelho de classe I, a terra leva a corrente de defeito para longe da pessoa e faz actuar a protecção."
+    },
+    "cable_unprotected": {
+      "title": "O cabo de {{from}} para {{to}} não está protegido",
+      "cause": "{{device}} é de {{rated}} e o cabo de {{section}} só aguenta {{iz}}.",
+      "hint": "Use cabo de {{nextSection}} ou um disjuntor de {{lowerRating}}.",
+      "learn": "A protecção existe para proteger o cabo. A sua corrente nominal não pode ser maior que a corrente que o cabo aguenta (In ≤ Iz)."
+    },
+    "wire_color": {
+      "title": "Cor errada no cabo de {{from}} para {{to}}",
+      "cause": "Este condutor é $t(role.{{expected}}), mas o cabo é $t(color.{{actual}}).",
+      "hint": "Use um cabo $t(color.{{expected}}) neste condutor.",
+      "learn": "As cores mostram a função de cada condutor: castanho, preto e cinzento para as fases, azul para o neutro, verde-amarelo só para a terra."
+    },
+    "mcb_magnetic_trip": {
+      "title": "O disjuntor {{device}} disparou",
+      "cause": "Curto-circuito: passaram {{current}}, {{ratio}} vezes a sua corrente nominal.",
+      "hint": "Procure o curto entre fase e neutro e retire-o antes de rearmar.",
+      "learn": "O disparo magnético é instantâneo. Actua quando a corrente passa várias vezes a corrente nominal, o que só acontece num curto-circuito."
+    },
+    "mcb_thermal_trip": {
+      "title": "O disjuntor {{device}} disparou por sobrecarga",
+      "cause": "Os aparelhos ligados pedem {{current}} e {{device}} é de {{rated}}.",
+      "hint": "Divida as cargas por dois circuitos ou reduza a potência.",
+      "learn": "O disparo térmico é lento. Uma lâmina aquece com a corrente e dispara quando a sobrecarga dura demasiado tempo."
+    },
+    "mcb_breaking_capacity": {
+      "title": "{{device}} não consegue cortar este curto-circuito",
+      "cause": "Passaram {{current}} e o poder de corte de {{device}} é {{icn}}.",
+      "hint": "Escolha um disjuntor com poder de corte acima de {{current}}.",
+      "learn": "O poder de corte é a maior corrente que o disjuntor consegue interromper sem se destruir. Tem de ser maior que a corrente de curto-circuito no local."
+    },
+    "fuse_blown": {
+      "title": "O fusível {{device}} fundiu",
+      "cause": "Passaram {{current}}, {{ratio}} vezes o seu calibre de {{rated}}.",
+      "hint": "Elimine a causa e substitua o fusível {{device}}.",
+      "learn": "O fusível tem um fio calibrado que funde com o calor da corrente. Quanto maior a corrente, mais depressa funde."
+    },
+    "rcd_trip": {
+      "title": "O diferencial {{device}} disparou",
+      "cause": "Há {{current}} a fugir para a terra em {{location}}.",
+      "hint": "Desligue o aparelho de {{location}} e verifique o isolamento.",
+      "learn": "O diferencial compara a corrente que vai pela fase com a que volta pelo neutro. Se faltar corrente, ela está a fugir para a terra, talvez por uma pessoa."
+    },
+    "wrong_voltage": {
+      "title": "{{device}} avariou",
+      "cause": "Recebeu {{voltage}} e é de {{nominal}}.",
+      "hint": "Ligue {{device}} a uma tensão de {{nominal}} e substitua-o.",
+      "learn": "Cada aparelho é feito para uma tensão. Com o dobro da tensão, a potência fica quatro vezes maior e o aparelho queima."
+    },
+    "voltage_drop": {
+      "title": "Queda de tensão de {{drop}} em {{device}}",
+      "cause": "O cabo de {{section}} tem {{length}}; o limite é {{limit}}.",
+      "hint": "Aumente a secção do cabo ou aproxime o quadro.",
+      "learn": "Os cabos têm resistência e consomem parte da tensão. O limite é 3 % na iluminação e 5 % nos outros circuitos."
+    },
+    "cable_overload": {
+      "title": "O cabo de {{from}} para {{to}} está sobrecarregado",
+      "cause": "Passam {{current}} e o cabo de {{section}} só aguenta {{iz}}.",
+      "hint": "Aumente a secção do cabo ou reduza a carga.",
+      "learn": "Um cabo sobrecarregado aquece e o isolamento envelhece depressa. Pode provocar um incêndio."
+    },
+    "loose_connection": {
+      "title": "Ligação solta no cabo de {{from}} para {{to}}",
+      "cause": "O contacto mal apertado dissipa {{power}} e aquece.",
+      "hint": "Aperte a ligação do cabo de {{from}} para {{to}}.",
+      "learn": "Uma ligação mal apertada tem resistência. Com a corrente, aquece e pode derreter o borne."
+    },
+    "body_current": {
+      "title": "Corrente perigosa em {{device}}: {{current}}",
+      "cause": "A carcaça de {{location}} está a {{voltage}} e nada cortou o circuito.",
+      "hint": "Instale um diferencial de 30 mA e ligue a terra.",
+      "learn": "Acima de 30 mA a corrente no corpo pode parar o coração. O diferencial de 30 mA e a ligação à terra cortam o circuito a tempo."
+    },
+    "battery_empty": {
+      "title": "A bateria {{device}} está descarregada",
+      "cause": "A carga de {{device}} chegou a zero.",
+      "hint": "Recarregue {{device}} ou reduza o consumo.",
+      "learn": "A autonomia é a capacidade em Ah a dividir pela corrente. Uma carga maior gasta a bateria mais depressa."
+    },
+    "control_unstable": {
+      "title": "O circuito de comando oscila",
+      "cause": "Um contacto alimenta e corta a própria bobina sem parar.",
+      "hint": "Reveja os contactos NF ligados às bobinas.",
+      "learn": "Se o contacto de um relé desligar a sua própria bobina, o relé abre e fecha sem fim. O comando nunca fica estável."
+    },
+    "path_open": {
+      "title": "{{device}} não funciona",
+      "cause": "{{blocker}} está desligado e corta o circuito.",
+      "hint": "Ligue {{blocker}} com a ferramenta Operar.",
+      "learn": "A corrente só passa se o circuito estiver fechado da fonte até à carga, pela fase e pelo neutro."
+    },
+    "load_no_supply": {
+      "title": "{{device}} não funciona",
+      "cause": "O terminal {{terminal}} de {{device}} não chega à fase.",
+      "hint": "Ligue o terminal {{terminal}} de {{device}} à fase (cabo castanho).",
+      "learn": "A fase traz a corrente da fonte até à carga. Sem fase, a carga não recebe tensão."
+    },
+    "wire_cut": {
+      "title": "{{device}} não funciona",
+      "cause": "O cabo de {{from}} para {{to}} está cortado.",
+      "hint": "Substitua o cabo de {{from}} para {{to}}.",
+      "learn": "Um fio cortado abre o circuito como um interruptor desligado, mas não se vê. Mede-se com o multímetro: tensão de um lado, nada do outro."
+    },
+    "source_off": {
+      "title": "{{device}} não funciona",
+      "cause": "A fonte {{source}} está sem energia.",
+      "hint": "Reponha a energia em {{source}}.",
+      "learn": "Sem fonte de energia não há tensão em nenhum ponto da instalação."
+    },
+    "load_switched_off": {
+      "title": "{{device}} está desligado",
+      "cause": "O interruptor próprio de {{device}} está desligado.",
+      "hint": "Ligue {{device}} com a ferramenta Operar.",
+      "learn": "Muitos aparelhos têm o seu próprio interruptor ou termóstato, que também corta a corrente."
+    },
+    "low_voltage": {
+      "title": "{{device}} recebe pouca tensão",
+      "cause": "Chegam {{voltage}} e {{device}} precisa de {{nominal}}.",
+      "hint": "Verifique a fonte e as quedas de tensão nos cabos.",
+      "learn": "Uma tensão baixa pode vir de uma fonte fraca, de cabos longos ou finos, ou de cargas em série."
+    },
+    "load_ok": {
+      "title": "{{device}} está a funcionar",
+      "cause": "O circuito de {{device}} está fechado e a tensão chega.",
+      "hint": "Desligue um aparelho a montante para ver o efeito.",
+      "learn": "Um circuito funciona quando há um caminho fechado da fase, pela carga, até ao neutro, com tensão suficiente."
+    },
+    "not_a_load": {
+      "title": "{{device}} não é uma carga",
+      "cause": "Esta verificação segue o caminho de uma carga até à fonte.",
+      "hint": "Escolha uma lâmpada, tomada, motor ou outra carga.",
+      "learn": "Cargas são os aparelhos que consomem energia: lâmpadas, tomadas, aquecedores, motores."
+    }
+  },
+  "simpl": {
+    "grid_ideal": "Rede: fonte de tensão ideal com impedância resistiva por condutor.",
+    "battery_linear": "Bateria: tensão linear com o estado de carga; sem efeito da temperatura nem do envelhecimento.",
+    "solar_linear": "Painel solar: fonte com resistência interna (sem curva I-V nem MPPT).",
+    "transformer_linear": "Transformador: ideal, com 5 % de impedância resistiva e 2 % de perdas no ferro; sem saturação.",
+    "mcb_thermal": "Disjuntor: térmico por I²t a partir de 1,13 · In com t = 150 / ((I/In)² − 1,13²) s; magnético no limite superior da curva.",
+    "fuse_table": "Fusível gG: curva média indicativa da IEC 60269, interpolada; sem tolerâncias de fabrico.",
+    "rcd_type": "Diferencial: só mede a componente alternada; tipos AC e A comportam-se igual.",
+    "lamp_resistance": "Lâmpada: resistência constante (a frio a resistência real é menor).",
+    "led_resistive": "LED: modelado como resistência; o driver real tem potência quase constante.",
+    "fluorescent_ballast": "Fluorescente: impedância R + jX fixa; arranca acima de 75 % da tensão.",
+    "motor1_two_state": "Motor monofásico: dois estados (arranque e marcha) em vez do escorregamento contínuo.",
+    "body_model": "Corpo humano: resistência fixa de 1000 Ω; zonas da IEC 60479-1 aproximadas."
+  }
+}

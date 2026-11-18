@@ -1,0 +1,19 @@
+/** @faisca/sim-core — núcleo de simulação, sem DOM. */
+export * from './solver/complex';
+export * from './solver/mna';
+export { SparseComplexSystem } from './solver/sparse';
+export { buildNetwork, makeView, CONTACT_R, type BuiltNetwork } from './solver/network';
+export * from './project/types';
+export * from './project/project';
+export * from './devices/types';
+export { Registry } from './devices/registry';
+export { BUILTIN_DEVICES, createRegistry, defaultRegistry } from './devices';
+export * from './devices/common';
+export { motor1Rated, START_TIME } from './devices/motors';
+export { APPLIANCES, DEFECTS } from './devices/loads';
+export { FLOOR } from './devices/faults';
+export * from './diagnostics';
+export * from './checks/tables';
+export * from './format';
+export { Simulator, MAX_ITERATIONS, type SimEvent, type SimOptions, type SolveResult } from './simulator';
+export * from './worker';
