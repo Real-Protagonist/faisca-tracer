@@ -2,6 +2,7 @@
 import { rms } from '../solver/complex';
 import { m, ms, p, sel } from './common';
 import type { DeviceDef, TerminalDef } from './types';
+import { Ci, L, pole, Re, Pa } from './symbols';
 
 const T2: TerminalDef[] = [
   { id: '1', x: 30, y: 0, kind: 'any', label: '1' },
@@ -218,3 +219,22 @@ export const impulseRelay: DeviceDef<ImpulseRT> = {
 };
 
 export const control = [switch1, switch2p, stairSwitch, intermediateSwitch, pushButton, impulseRelay];
+
+/* ---------------- Símbolos ---------------- */
+
+switch1.symbol = (d) => pole(30, 0, 80, !!d.state.on);
+switch2p.symbol = (d) => [...pole(20, 0, 80, !!d.state.on), ...pole(60, 0, 80, !!d.state.on), L(14, 40, 54, 40, 'sl dash')];
+stairSwitch.symbol = (d) => {
+  const tx = d.state.pos === 2 ? 60 : 20;
+  return [L(40, 0, 40, 26), Ci(40, 28, 2.5, 'dot'), L(40, 28, tx, 52, 'sl on'), L(20, 54, 20, 80), L(60, 54, 60, 80), Ci(20, 54, 2, 'dot'), Ci(60, 54, 2, 'dot')];
+};
+intermediateSwitch.symbol = (d) => [
+  L(20, 0, 20, 22), L(60, 0, 60, 22), L(20, 58, 20, 80), L(60, 58, 60, 80),
+  ...(d.state.crossed ? [L(20, 22, 60, 58, 'sl on'), L(60, 22, 20, 58, 'sl on')] : [L(20, 22, 20, 58, 'sl on'), L(60, 22, 60, 58, 'sl on')]),
+  Re(10, 18, 60, 44, 'sl dash'),
+];
+pushButton.symbol = (d) => pole(30, 0, 80, !!d.state.pressed, { push: true });
+impulseRelay.symbol = (d) => [
+  L(20, 0, 20, 38), L(20, 62, 20, 100), Re(8, 38, 24, 24, d.state.on ? 'sl coil on' : 'sl coil'),
+  Pa('M12 46 h6 v8 h6 v-8', 'sl thin'), ...pole(70, 0, 100, !!d.state.on), L(32, 50, 64, 50, 'sl dash'),
+];

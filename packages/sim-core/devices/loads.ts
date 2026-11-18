@@ -4,6 +4,7 @@ import { diag, dev, type Diagnostic } from '../diagnostics/types';
 import { clamp, loadImpedance, loadReading, m, ms, num, overvoltageBurn, p, ps, sel } from './common';
 import type { Device } from '../project/types';
 import type { DeviceDef, TerminalDef } from './types';
+import { Ci, glow, L, Pa, Re, Tx, type Prim } from './symbols';
 
 const LN: TerminalDef[] = [
   { id: 'L', x: 20, y: 0, kind: 'L', label: 'L' },
@@ -282,3 +283,46 @@ export const bell: DeviceDef<BurnRT> = {
 };
 
 export const loads = [lampIncandescent, lampLed, lampFluorescent, socket, heater, bell];
+
+/* ---------------- Símbolos ---------------- */
+
+const bulb = (fill: string, burnt: boolean): Prim[] => [
+  Pa('M20 0 V22 L25 34'), Pa('M60 0 V22 L55 34'),
+  Ci(40, 46, 15, 'sl', burnt ? '#dddddd' : fill),
+  L(29.4, 35.4, 50.6, 56.6, burnt ? 'sl off' : 'sl'), L(50.6, 35.4, 29.4, 56.6, burnt ? 'sl off' : 'sl'),
+];
+lampIncandescent.symbol = (d, look, n) => [...bulb(glow(look.num('brightness') / 100), !!d.state.burnt), Tx(40, 75, `${n(p(d, 'P'))} W`)];
+lampLed.symbol = (d, look, n) => [
+  ...bulb(`rgba(220,240,255,${(look.num('brightness') / 100).toFixed(2)})`, !!d.state.burnt),
+  Pa('M34 54 L40 44 L46 54 Z', 'sl thin'), Tx(40, 75, `LED ${n(p(d, 'P'))} W`, 'txt xs'),
+];
+lampFluorescent.symbol = (d, look, n) => [
+  L(20, 0, 20, 30), L(80, 0, 80, 30),
+  Re(14, 30, 72, 14, 'sl', look.state === 'lit' ? 'rgba(235,245,255,1)' : '#f2f4f7'), L(14, 37, 86, 37, 'sl thin'),
+  Tx(50, 60, `${n(p(d, 'P'))} W`),
+];
+socket.symbol = (d) => [
+  L(20, 0, 20, 18), L(40, 0, 40, 18), L(60, 0, 60, 18),
+  Ci(40, 40, 19, 'sl fill'), Ci(33, 40, 3, 'dot'), Ci(47, 40, 3, 'dot'), Re(37, 20, 6, 4, 'dot'), Re(37, 56, 6, 4, 'dot'),
+  ...(ps(d, 'defect') !== 'none' ? [Pa('M64 30 l-6 9 h5 l-5 9', 'sl off w2')] : []),
+  ...(ps(d, 'appliance') !== 'none' && d.state.on ? [Ci(66, 66, 5, 'sl on')] : []),
+];
+heater.symbol = (d, look, n) => {
+  const b = Math.min(1, look.num('activePower') / p(d, 'P'));
+  return [
+    L(20, 0, 20, 24), L(40, 0, 40, 24), L(60, 0, 60, 24),
+    Re(12, 24, 56, 30, 'sl', `rgba(255,90,40,${(0.55 * Math.max(0, b)).toFixed(2)})`),
+    Pa('M18 39 l5 -7 l6 14 l6 -14 l6 14 l6 -14 l6 14 l5 -7'),
+    ...(ps(d, 'defect') !== 'none' ? [Pa('M70 26 l-6 9 h5 l-5 9', 'sl off w2')] : []),
+    Tx(40, 72, `${n(p(d, 'P'))} W`),
+  ];
+};
+bell.symbol = (d, look, n) => {
+  const ring = look.state === 'ringing';
+  return [
+    L(20, 0, 20, 44), L(60, 0, 60, 44), Pa('M20 44 H26'), Pa('M60 44 H54'),
+    Pa('M26 44 A14 14 0 0 1 54 44 Z', ring ? 'sl ring' : d.state.burnt ? 'sl off' : 'sl'),
+    ...(ring ? [Pa('M17 22 a14 14 0 0 1 6 -8 M63 22 a14 14 0 0 0 -6 -8', 'sl on')] : []),
+    Tx(40, 62, `${n(p(d, 'Vn'))} V`),
+  ];
+};

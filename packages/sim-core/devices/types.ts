@@ -11,6 +11,7 @@
 import type { Quantity } from '../solver/complex';
 import type { Device, Domain, Level, ParamValue, Project } from '../project/types';
 import type { Diagnostic, Severity } from '../diagnostics/types';
+import type { Look, NumFmt, Prim } from './symbols';
 
 export type Category =
   | 'sources'
@@ -179,6 +180,8 @@ export interface DeviceDef<RT extends object = any> {
   prefix: string;
   /** Tamanho do símbolo 2D (px). */
   size: { w: number; h: number };
+  /** Tamanho variável (moldura); por omissão `size`. */
+  sizeOf?(d: Device): { w: number; h: number };
   terminals: TerminalDef[];
   params: ParamDef[];
   initialState(): Record<string, unknown>;
@@ -207,6 +210,10 @@ export interface DeviceDef<RT extends object = any> {
   leakage?(d: Device, sol: SolutionView): number;
   /** Repõe o estado de serviço (rearmar, substituir) para o cálculo de Icc. */
   forceClosed?(d: Device): void;
+  /** Símbolo 2D IEC 60617, como dados (ver `symbols.ts`). */
+  symbol?(d: Device, look: Look, n: NumFmt): Prim[];
+  /** Equipamento sem efeito eléctrico (moldura, nota). */
+  annotation?: boolean;
   /** Modelo 3D (Fase 5). */
   model3d?: string;
   /** Chaves `simpl.*` das simplificações do modelo físico. */

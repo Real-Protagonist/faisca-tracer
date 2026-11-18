@@ -3,3 +3,6 @@ dist/
 coverage/
 *.log
 src-tauri/target/
+test-results/
+playwright-report/
+e2e-out/

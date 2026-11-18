@@ -2,6 +2,7 @@
 import { rms } from '../solver/complex';
 import { loadReading, m, ms, num, p, ps, sel } from './common';
 import type { DeviceDef } from './types';
+import { Ci, L, Tx } from './symbols';
 
 type Phase = 'stopped' | 'starting' | 'running';
 
@@ -102,3 +103,15 @@ export const motor1ph: DeviceDef<MotorRT> = {
 };
 
 export const motors = [motor1ph];
+
+/* ---------------- Símbolos ---------------- */
+
+motor1ph.symbol = (d, look, n) => [
+  L(20, 0, 20, 22), L(40, 0, 40, 32), L(60, 0, 60, 22),
+  Ci(40, 54, 22, 'sl fill'), Tx(40, 58, 'M', 'txt big'), Tx(40, 70, '1~', 'txt xs'),
+  { t: 'rotor', cx: 40, cy: 54, spin: look.num('speed') / 1450, dir: 1, items: [0, 120, 240].map((a) => {
+    const s = Math.sin((a * Math.PI) / 180), c = Math.cos((a * Math.PI) / 180);
+    return L(40 + s * 22, 54 - c * 22, 40 + s * 29, 54 - c * 29, 'sl rot');
+  }) },
+  Tx(76, 88, `${n(p(d, 'Pm'))} kW`, 'txt xs', 'end'),
+];

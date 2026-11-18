@@ -12,7 +12,7 @@ import {
   mcbTripTime,
   ms,
   p,
-
+  ps,
   rcdTestResistance,
   residualLogic,
   sel,
@@ -22,6 +22,7 @@ import {
 } from './common';
 
 import type { ActionDef, DeviceDef, Measurement, TerminalDef } from './types';
+import { indicator, L, Pa, pole, Tx } from './symbols';
 
 const mcbParams = () => [
   sel('In', MCB_RATINGS, 10, 'A'),
@@ -310,3 +311,27 @@ export const mainSwitch2p: DeviceDef = {
 
 export const protection = [mcb1p, mcb1pn, fuseGG, rcd2p, rcbo, mainSwitch2p];
 
+
+/* ---------------- Símbolos ---------------- */
+
+const cl = (d: { state: Record<string, unknown> }) => !!d.state.closed;
+const rcdRing = (cx: number, rx: number) => ({ t: 'ellipse' as const, cx, cy: 78, rx, ry: 6, cls: 'sl' });
+
+mcb1p.symbol = (d, _l, n) => [...pole(30, 0, 100, cl(d), { breaker: true }), Tx(46, 56, `${ps(d, 'curve')}${n(p(d, 'In'))}`, 'txt sm', 'start'), indicator(44, 14, d.state)];
+mcb1pn.symbol = (d, _l, n) => [
+  ...pole(20, 0, 100, cl(d), { breaker: true }), ...pole(60, 0, 100, cl(d)),
+  L(14, 50, 54, 50, 'sl dash'), Tx(40, 30, `${ps(d, 'curve')}${n(p(d, 'In'))}`), indicator(68, 44, d.state),
+];
+fuseGG.symbol = (d, _l, n) => [...pole(30, 0, 100, !d.state.blown, { fuse: true }), Tx(44, 56, `${n(p(d, 'In'))} A`, 'txt sm', 'start')];
+rcd2p.symbol = (d, _l, n) => [
+  ...pole(20, 0, 100, cl(d)), ...pole(60, 0, 100, cl(d)), L(14, 50, 54, 50, 'sl dash'), rcdRing(40, 27),
+  Tx(40, 24, `IΔ ${n(p(d, 'IDn'))} mA`), indicator(68, 44, d.state),
+];
+rcbo.symbol = (d, _l, n) => [
+  ...pole(20, 0, 100, cl(d), { breaker: true }), ...pole(60, 0, 100, cl(d)), L(14, 50, 54, 50, 'sl dash'), rcdRing(40, 27),
+  Tx(40, 20, `${ps(d, 'curve')}${n(p(d, 'In'))}`), Tx(40, 31, `${n(p(d, 'IDn'))} mA`, 'txt xs'), indicator(68, 44, d.state),
+];
+mainSwitch2p.symbol = (d, _l, n) => [
+  ...pole(20, 0, 100, cl(d)), ...pole(60, 0, 100, cl(d)), L(14, 50, 54, 50, 'sl dash'),
+  Pa('M14 36 h6'), Tx(40, 24, `${n(p(d, 'In'))} A`),
+];

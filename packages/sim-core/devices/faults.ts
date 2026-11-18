@@ -4,6 +4,7 @@ import { bodyZone, IEC_RULES } from '../checks/tables';
 import { diag, dev, wire } from '../diagnostics/types';
 import { m, ms, num, p, ps, sel } from './common';
 import type { DeviceDef } from './types';
+import { L, Pa, Tx } from './symbols';
 
 const toggleActive = (d: { state: Record<string, unknown> }, a: string) => {
   if (a === 'activate') d.state.active = true;
@@ -132,3 +133,20 @@ export const person: DeviceDef<PersonRT> = {
 };
 
 export const faults = [shortCircuit, earthFault, person];
+
+/* ---------------- Símbolos ---------------- */
+
+shortCircuit.symbol = (d) => [L(20, 0, 20, 20), L(60, 0, 60, 20), Pa('M20 20 H32 l8 -8 v16 l8 -8 H60', d.state.active ? 'sl off w3' : 'sl dash')];
+earthFault.symbol = (d, _l, n) => {
+  const c = d.state.active ? 'sl off w2' : 'sl dash';
+  return [L(30, 0, 30, 12), Pa('M30 12 l-6 10 h12 l-6 10', c), L(30, 32, 30, 40), L(18, 40, 42, 40, 'sl w3'), L(22, 46, 38, 46, 'sl w3'), L(26, 52, 34, 52, 'sl w3'), Tx(30, 66, `${n(p(d, 'Rf'))} Ω`, 'txt xs')];
+};
+person.symbol = (d, look) => {
+  const z = look.num('bodyCurrent');
+  const cls = !d.state.active ? 'person idle' : z > 0.03 ? 'person bad' : z > 0.01 ? 'person warn' : 'person';
+  return [
+    { t: 'circle', cx: 30, cy: 24, r: 7, cls },
+    Pa('M30 31 V60 M30 60 L21 82 M30 60 L39 82 M30 38 L30 4 M30 40 L18 54', cls),
+    L(6, 86, 54, 86, 'sl thin'),
+  ];
+};

@@ -185,6 +185,14 @@
     "person": {
       "name": "Person touching",
       "desc": "A person touches a point. Shows the current through the body and its effect."
+    },
+    "frame": {
+      "name": "Board frame",
+      "desc": "Groups the devices of a board visually. It has no electrical effect."
+    },
+    "note": {
+      "name": "Note",
+      "desc": "Free text for instructions or remarks."
     }
   },
   "param": {
@@ -220,7 +228,11 @@
     "Ra": "Earth resistance (Ra)",
     "Rf": "Fault resistance",
     "floor": "Contact with the floor",
-    "Rbody": "Body resistance"
+    "Rbody": "Body resistance",
+    "title": "Title",
+    "W": "Width",
+    "H": "Height",
+    "text": "Text"
   },
   "option": {
     "earthing": {
@@ -573,5 +585,163 @@
     "fluorescent_ballast": "Fluorescent: fixed R + jX impedance; starts above 75 % of the voltage.",
     "motor1_two_state": "Single-phase motor: two states (starting and running) instead of continuous slip.",
     "body_model": "Human body: fixed 1000 Ω resistance; IEC 60479-1 zones approximated."
+  },
+  "ui": {
+    "untitled": "Untitled project",
+    "recovered": "Recovered project",
+    "close": "Close",
+    "lang": "Language",
+    "toolbar": "Toolbar",
+    "canvas": {
+      "label": "Logic diagram"
+    },
+    "confirm": {
+      "discard": "There are unsaved changes. Continue and lose them?"
+    },
+    "project": {
+      "areaLevel": "Project area and level"
+    },
+    "menu": {
+      "file": "File",
+      "edit": "Edit",
+      "view": "View",
+      "simulation": "Simulation",
+      "exercises": "Exercises",
+      "tools": "Tools",
+      "help": "Help",
+      "new": "New project",
+      "open": "Open…",
+      "save": "Save",
+      "saveAs": "Save as…",
+      "export": "Export (PDF, PNG, bill of materials)",
+      "print": "Print",
+      "undo": "Undo",
+      "redo": "Redo",
+      "copy": "Copy",
+      "paste": "Paste",
+      "delete": "Delete",
+      "selectAll": "Select all",
+      "rotate": "Rotate 90°",
+      "alignLeft": "Align left",
+      "alignTop": "Align top",
+      "group": "Group in a board",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "fit": "Fit to window",
+      "soon": "Available in a later version",
+      "tour": "Guided tour",
+      "about": "About Faísca"
+    },
+    "tool": {
+      "select": "Select",
+      "operate": "Operate",
+      "wire": "Connect wire",
+      "probe": "Probe / multimeter",
+      "clamp": "Clamp meter",
+      "delete": "Delete"
+    },
+    "nextWire": {
+      "title": "Next wire",
+      "auto": "Automatic colour",
+      "conductor": "Conductor of the next wire",
+      "section": "Size of the next wire"
+    },
+    "tab": {
+      "logic": "Logic diagram",
+      "physical": "Physical 3D"
+    },
+    "view3d": {
+      "soon": "The physical 3D view arrives in Phase 5."
+    },
+    "sim": {
+      "mode": "Simulation mode",
+      "realtime": "Real time",
+      "stepMode": "Step by step",
+      "start": "Start",
+      "pause": "Pause",
+      "step": "Advance 0.1 s",
+      "toStep": "Switch to step by step",
+      "toRealtime": "Switch to real time",
+      "reset": "Reset time",
+      "speed": "Simulation speed",
+      "clock": "Simulation clock"
+    },
+    "props": {
+      "title": "Properties",
+      "name": "Name",
+      "commands": "Commands",
+      "whyNot": "Why does it not work?",
+      "params": "Parameters",
+      "measurements": "Measurements",
+      "connections": "Connections",
+      "free": "free",
+      "multi": "{{count}} items selected",
+      "wire": "Wire",
+      "conductor": "Conductor (colour)",
+      "section": "Size",
+      "length": "Length",
+      "material": "Material",
+      "method": "Installation method",
+      "iz": "Current-carrying capacity (Iz)",
+      "faults": "Faults",
+      "cut": "Cut wire",
+      "contactR": "Loose connection",
+      "project": "Project",
+      "domain": "Area",
+      "level": "Level",
+      "frequency": "Supply frequency",
+      "stats": "{{nodes}} nodes · {{ms}} ms per step",
+      "hint": "Drag a device from the library onto the diagram. Connect terminals by dragging from one to another."
+    },
+    "material": {
+      "Cu": "Copper",
+      "Al": "Aluminium"
+    },
+    "method": {
+      "A1": "A1 — in conduit in an insulated wall",
+      "B1": "B1 — in conduit on or in a masonry wall",
+      "C": "C — cable fixed directly to the wall"
+    },
+    "dock": {
+      "title": "Library and simulation panels",
+      "library": "Library",
+      "events": "Events",
+      "problems": "Problems",
+      "matrix": "MNA matrix"
+    },
+    "library": {
+      "all": "All",
+      "categories": "Categories",
+      "search": "Search (name, synonym, Q, H…)",
+      "none": "No device found."
+    },
+    "events": {
+      "none": "No events yet. Switch a device on to start.",
+      "system": "System"
+    },
+    "problems": {
+      "none": "No problems."
+    },
+    "matrix": {
+      "refresh": "Compute the matrix",
+      "explain": "System A · x = b of the Modified Nodal Analysis (AC phasors). The last rows are the source currents.",
+      "tooBig": "The matrix has {{n}} rows; only matrices up to {{max}} are shown."
+    },
+    "meter": {
+      "title": "Multimeter",
+      "clear": "Remove the probes",
+      "pickRed": "Click a terminal (red probe)",
+      "pickBlack": "Click another terminal (black probe)",
+      "pickWire": "Clamp: click a wire"
+    },
+    "recovery": {
+      "found": "A project was not saved in the last session.",
+      "restore": "Recover",
+      "discard": "Discard"
+    },
+    "about": {
+      "version": "Version {{version}}",
+      "simplifications": "Model simplifications"
+    }
   }
 }

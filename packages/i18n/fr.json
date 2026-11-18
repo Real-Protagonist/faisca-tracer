@@ -185,6 +185,14 @@
     "person": {
       "name": "Personne en contact",
       "desc": "Une personne touche un point. Montre le courant dans le corps et son effet."
+    },
+    "frame": {
+      "name": "Cadre de tableau",
+      "desc": "Regroupe visuellement les appareils d'un tableau. Sans effet électrique."
+    },
+    "note": {
+      "name": "Note",
+      "desc": "Texte libre pour des consignes ou remarques."
     }
   },
   "param": {
@@ -220,7 +228,11 @@
     "Ra": "Résistance de terre (Ra)",
     "Rf": "Résistance du défaut",
     "floor": "Contact avec le sol",
-    "Rbody": "Résistance du corps"
+    "Rbody": "Résistance du corps",
+    "title": "Titre",
+    "W": "Largeur",
+    "H": "Hauteur",
+    "text": "Texte"
   },
   "option": {
     "earthing": {
@@ -573,5 +585,163 @@
     "fluorescent_ballast": "Fluorescent : impédance R + jX fixe ; démarre au-dessus de 75 % de la tension.",
     "motor1_two_state": "Moteur monophasé : deux états (démarrage et marche) au lieu du glissement continu.",
     "body_model": "Corps humain : résistance fixe de 1000 Ω ; zones de la CEI 60479-1 approchées."
+  },
+  "ui": {
+    "untitled": "Projet sans titre",
+    "recovered": "Projet récupéré",
+    "close": "Fermer",
+    "lang": "Langue",
+    "toolbar": "Barre d'outils",
+    "canvas": {
+      "label": "Schéma logique"
+    },
+    "confirm": {
+      "discard": "Des modifications ne sont pas enregistrées. Continuer et les perdre ?"
+    },
+    "project": {
+      "areaLevel": "Domaine et niveau du projet"
+    },
+    "menu": {
+      "file": "Fichier",
+      "edit": "Édition",
+      "view": "Affichage",
+      "simulation": "Simulation",
+      "exercises": "Exercices",
+      "tools": "Outils",
+      "help": "Aide",
+      "new": "Nouveau projet",
+      "open": "Ouvrir…",
+      "save": "Enregistrer",
+      "saveAs": "Enregistrer sous…",
+      "export": "Exporter (PDF, PNG, liste de matériel)",
+      "print": "Imprimer",
+      "undo": "Annuler",
+      "redo": "Rétablir",
+      "copy": "Copier",
+      "paste": "Coller",
+      "delete": "Supprimer",
+      "selectAll": "Tout sélectionner",
+      "rotate": "Pivoter de 90°",
+      "alignLeft": "Aligner à gauche",
+      "alignTop": "Aligner en haut",
+      "group": "Regrouper dans un tableau",
+      "zoomIn": "Zoom avant",
+      "zoomOut": "Zoom arrière",
+      "fit": "Tout afficher",
+      "soon": "Disponible dans une prochaine version",
+      "tour": "Visite guidée",
+      "about": "À propos de Faísca"
+    },
+    "tool": {
+      "select": "Sélectionner",
+      "operate": "Manœuvrer",
+      "wire": "Relier un câble",
+      "probe": "Sonde / multimètre",
+      "clamp": "Pince ampèremétrique",
+      "delete": "Supprimer"
+    },
+    "nextWire": {
+      "title": "Prochain câble",
+      "auto": "Couleur automatique",
+      "conductor": "Conducteur du prochain câble",
+      "section": "Section du prochain câble"
+    },
+    "tab": {
+      "logic": "Schéma logique",
+      "physical": "Physique 3D"
+    },
+    "view3d": {
+      "soon": "La vue physique 3D arrive en phase 5."
+    },
+    "sim": {
+      "mode": "Mode de simulation",
+      "realtime": "Temps réel",
+      "stepMode": "Pas à pas",
+      "start": "Démarrer",
+      "pause": "Pause",
+      "step": "Avancer de 0,1 s",
+      "toStep": "Passer en pas à pas",
+      "toRealtime": "Passer en temps réel",
+      "reset": "Remettre le temps à zéro",
+      "speed": "Vitesse de simulation",
+      "clock": "Horloge de simulation"
+    },
+    "props": {
+      "title": "Propriétés",
+      "name": "Nom",
+      "commands": "Commandes",
+      "whyNot": "Pourquoi ça ne marche pas ?",
+      "params": "Paramètres",
+      "measurements": "Mesures",
+      "connections": "Connexions",
+      "free": "libre",
+      "multi": "{{count}} éléments sélectionnés",
+      "wire": "Câble",
+      "conductor": "Conducteur (couleur)",
+      "section": "Section",
+      "length": "Longueur",
+      "material": "Matériau",
+      "method": "Mode de pose",
+      "iz": "Courant admissible (Iz)",
+      "faults": "Défauts",
+      "cut": "Fil coupé",
+      "contactR": "Connexion desserrée",
+      "project": "Projet",
+      "domain": "Domaine",
+      "level": "Niveau",
+      "frequency": "Fréquence du réseau",
+      "stats": "{{nodes}} nœuds · {{ms}} ms par pas",
+      "hint": "Faites glisser un appareil de la bibliothèque sur le schéma. Reliez les bornes en glissant de l'une à l'autre."
+    },
+    "material": {
+      "Cu": "Cuivre",
+      "Al": "Aluminium"
+    },
+    "method": {
+      "A1": "A1 — sous conduit dans une paroi isolante",
+      "B1": "B1 — sous conduit apparent ou encastré en maçonnerie",
+      "C": "C — câble fixé directement au mur"
+    },
+    "dock": {
+      "title": "Bibliothèque et panneaux de simulation",
+      "library": "Bibliothèque",
+      "events": "Événements",
+      "problems": "Problèmes",
+      "matrix": "Matrice MNA"
+    },
+    "library": {
+      "all": "Tous",
+      "categories": "Catégories",
+      "search": "Rechercher (nom, synonyme, Q, H…)",
+      "none": "Aucun appareil trouvé."
+    },
+    "events": {
+      "none": "Pas encore d'événement. Allumez un appareil pour commencer.",
+      "system": "Système"
+    },
+    "problems": {
+      "none": "Aucun problème."
+    },
+    "matrix": {
+      "refresh": "Calculer la matrice",
+      "explain": "Système A · x = b de l'analyse nodale modifiée (phaseurs AC). Les dernières lignes sont les courants des sources.",
+      "tooBig": "La matrice a {{n}} lignes ; seules les matrices jusqu'à {{max}} sont affichées."
+    },
+    "meter": {
+      "title": "Multimètre",
+      "clear": "Retirer les pointes",
+      "pickRed": "Cliquez sur une borne (pointe rouge)",
+      "pickBlack": "Cliquez sur une autre borne (pointe noire)",
+      "pickWire": "Pince : cliquez sur un câble"
+    },
+    "recovery": {
+      "found": "Un projet n'a pas été enregistré lors de la dernière session.",
+      "restore": "Récupérer",
+      "discard": "Ignorer"
+    },
+    "about": {
+      "version": "Version {{version}}",
+      "simplifications": "Simplifications des modèles"
+    }
   }
 }

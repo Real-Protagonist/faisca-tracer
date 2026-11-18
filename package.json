@@ -4,12 +4,18 @@
   "version": "0.1.0",
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "test": "node scripts/vitest.mjs run",
     "typecheck": "tsc -p packages/sim-core/tsconfig.json && tsc -p tsconfig.test.json",
-    "check": "npm run typecheck && npm test"
+    "check": "npm run typecheck && tsc -p apps/desktop/tsconfig.json && npm test",
+    "dev": "npm run dev -w @faisca/desktop",
+    "build": "npm run build -w @faisca/desktop",
+    "e2e": "npm run e2e -w @faisca/desktop",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

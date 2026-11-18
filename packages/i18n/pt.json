@@ -185,6 +185,14 @@
     "person": {
       "name": "Pessoa em contacto",
       "desc": "Uma pessoa toca num ponto. Mostra a corrente no corpo e o seu efeito."
+    },
+    "frame": {
+      "name": "Moldura de quadro",
+      "desc": "Agrupa visualmente os aparelhos de um quadro. Não tem efeito eléctrico."
+    },
+    "note": {
+      "name": "Nota",
+      "desc": "Texto livre para instruções ou observações."
     }
   },
   "param": {
@@ -220,7 +228,11 @@
     "Ra": "Resistência de terra (Ra)",
     "Rf": "Resistência do defeito",
     "floor": "Contacto com o chão",
-    "Rbody": "Resistência do corpo"
+    "Rbody": "Resistência do corpo",
+    "title": "Título",
+    "W": "Largura",
+    "H": "Altura",
+    "text": "Texto"
   },
   "option": {
     "earthing": {
@@ -573,5 +585,163 @@
     "fluorescent_ballast": "Fluorescente: impedância R + jX fixa; arranca acima de 75 % da tensão.",
     "motor1_two_state": "Motor monofásico: dois estados (arranque e marcha) em vez do escorregamento contínuo.",
     "body_model": "Corpo humano: resistência fixa de 1000 Ω; zonas da IEC 60479-1 aproximadas."
+  },
+  "ui": {
+    "untitled": "Projecto sem título",
+    "recovered": "Projecto recuperado",
+    "close": "Fechar",
+    "lang": "Idioma",
+    "toolbar": "Barra de ferramentas",
+    "canvas": {
+      "label": "Esquema lógico"
+    },
+    "confirm": {
+      "discard": "Há alterações por guardar. Continuar e perdê-las?"
+    },
+    "project": {
+      "areaLevel": "Área e nível do projecto"
+    },
+    "menu": {
+      "file": "Ficheiro",
+      "edit": "Editar",
+      "view": "Ver",
+      "simulation": "Simulação",
+      "exercises": "Exercícios",
+      "tools": "Ferramentas",
+      "help": "Ajuda",
+      "new": "Novo projecto",
+      "open": "Abrir…",
+      "save": "Guardar",
+      "saveAs": "Guardar como…",
+      "export": "Exportar (PDF, PNG, lista de material)",
+      "print": "Imprimir",
+      "undo": "Desfazer",
+      "redo": "Refazer",
+      "copy": "Copiar",
+      "paste": "Colar",
+      "delete": "Apagar",
+      "selectAll": "Seleccionar tudo",
+      "rotate": "Rodar 90°",
+      "alignLeft": "Alinhar à esquerda",
+      "alignTop": "Alinhar em cima",
+      "group": "Agrupar num quadro",
+      "zoomIn": "Aproximar",
+      "zoomOut": "Afastar",
+      "fit": "Ver tudo",
+      "soon": "Disponível numa próxima versão",
+      "tour": "Tour guiado",
+      "about": "Sobre o Faísca"
+    },
+    "tool": {
+      "select": "Seleccionar",
+      "operate": "Operar",
+      "wire": "Ligar cabo",
+      "probe": "Sonda / multímetro",
+      "clamp": "Pinça amperimétrica",
+      "delete": "Apagar"
+    },
+    "nextWire": {
+      "title": "Próximo cabo",
+      "auto": "Cor automática",
+      "conductor": "Condutor do próximo cabo",
+      "section": "Secção do próximo cabo"
+    },
+    "tab": {
+      "logic": "Esquema lógico",
+      "physical": "Físico 3D"
+    },
+    "view3d": {
+      "soon": "A vista física 3D chega na Fase 5."
+    },
+    "sim": {
+      "mode": "Modo de simulação",
+      "realtime": "Tempo real",
+      "stepMode": "Passo a passo",
+      "start": "Iniciar",
+      "pause": "Pausa",
+      "step": "Avançar 0,1 s",
+      "toStep": "Mudar para passo a passo",
+      "toRealtime": "Mudar para tempo real",
+      "reset": "Repor o tempo",
+      "speed": "Velocidade da simulação",
+      "clock": "Relógio da simulação"
+    },
+    "props": {
+      "title": "Propriedades",
+      "name": "Nome",
+      "commands": "Comandos",
+      "whyNot": "Porque não funciona?",
+      "params": "Parâmetros",
+      "measurements": "Medições",
+      "connections": "Ligações",
+      "free": "livre",
+      "multi": "{{count}} elementos seleccionados",
+      "wire": "Cabo",
+      "conductor": "Condutor (cor)",
+      "section": "Secção",
+      "length": "Comprimento",
+      "material": "Material",
+      "method": "Modo de instalação",
+      "iz": "Corrente admissível (Iz)",
+      "faults": "Falhas",
+      "cut": "Fio cortado",
+      "contactR": "Ligação solta",
+      "project": "Projecto",
+      "domain": "Área",
+      "level": "Nível",
+      "frequency": "Frequência da rede",
+      "stats": "{{nodes}} nós · {{ms}} ms por passo",
+      "hint": "Arraste um equipamento da biblioteca para o esquema. Ligue os terminais arrastando de um para o outro."
+    },
+    "material": {
+      "Cu": "Cobre",
+      "Al": "Alumínio"
+    },
+    "method": {
+      "A1": "A1 — em tubo embebido em parede isolante",
+      "B1": "B1 — em tubo à vista ou embebido em alvenaria",
+      "C": "C — cabo fixado directamente à parede"
+    },
+    "dock": {
+      "title": "Biblioteca e painéis de simulação",
+      "library": "Biblioteca",
+      "events": "Eventos",
+      "problems": "Problemas",
+      "matrix": "Matriz MNA"
+    },
+    "library": {
+      "all": "Todos",
+      "categories": "Categorias",
+      "search": "Procurar (nome, sinónimo, Q, H…)",
+      "none": "Nenhum equipamento encontrado."
+    },
+    "events": {
+      "none": "Ainda não há eventos. Ligue um aparelho para começar.",
+      "system": "Sistema"
+    },
+    "problems": {
+      "none": "Sem problemas."
+    },
+    "matrix": {
+      "refresh": "Calcular a matriz",
+      "explain": "Sistema A · x = b da Análise Nodal Modificada (fasores AC). As últimas linhas são as correntes das fontes.",
+      "tooBig": "A matriz tem {{n}} linhas; só se mostram matrizes até {{max}}."
+    },
+    "meter": {
+      "title": "Multímetro",
+      "clear": "Retirar as pontas",
+      "pickRed": "Clique num terminal (ponta vermelha)",
+      "pickBlack": "Clique noutro terminal (ponta preta)",
+      "pickWire": "Pinça: clique num cabo"
+    },
+    "recovery": {
+      "found": "Há um projecto que não foi guardado na última sessão.",
+      "restore": "Recuperar",
+      "discard": "Descartar"
+    },
+    "about": {
+      "version": "Versão {{version}}",
+      "simplifications": "Simplificações dos modelos"
+    }
   }
 }

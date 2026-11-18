@@ -8,6 +8,7 @@ import { motors } from './motors';
 import { measurement } from './measurement';
 import { distribution } from './distribution';
 import { faults } from './faults';
+import { annotations } from './annotations';
 import type { DeviceDef } from './types';
 
 export const BUILTIN_DEVICES: DeviceDef[] = [
@@ -19,6 +20,7 @@ export const BUILTIN_DEVICES: DeviceDef[] = [
   ...measurement,
   ...distribution,
   ...faults,
+  ...annotations,
 ];
 
 /** Registo com todos os equipamentos incluídos. */

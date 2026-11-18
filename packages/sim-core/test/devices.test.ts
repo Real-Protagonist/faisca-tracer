@@ -3,7 +3,7 @@
  * Um teste garante que nenhum equipamento da biblioteca fica sem casos.
  */
 import { describe, expect, it } from 'vitest';
-import { addDevice, addWire, createProject, defaultRegistry, rms, Simulator, type Device } from '../index';
+import { addDevice, addWire, createProject, defaultRegistry, lookFrom, rms, Simulator, type Device } from '../index';
 
 type Case = () => void;
 interface Cases {
@@ -643,7 +643,57 @@ const CASES: Record<string, Cases> = {
       expect(sim.events.some((e) => e.code === 'body_current')).toBe(true);
     },
   },
+  frame: {
+    normal: () => {
+      const P = createProject();
+      const F = addDevice(P, 'frame', { params: { title: 'Quadro de entrada' } });
+      expect(defaultRegistry.require('frame').symbol!(F, lookFrom([]), String)).toContainEqual(expect.objectContaining({ t: 'text', text: 'Quadro de entrada' }));
+    },
+    limit: () => {
+      const P = createProject();
+      const F = addDevice(P, 'frame', { params: { W: 100, H: 80 } });
+      expect(defaultRegistry.require('frame').symbol!(F, lookFrom([]), String)[0]).toMatchObject({ w: 100, h: 80 });
+    },
+    fault: () => {
+      // Sem efeito eléctrico: não entra na rede.
+      const { P } = fed('lampIncandescent');
+      const before = new Simulator(P).step(0.02).net.nodeCount;
+      addDevice(P, 'frame');
+      expect(new Simulator(P).step(0.02).net.nodeCount).toBe(before);
+    },
+  },
+  note: {
+    normal: () => {
+      const P = createProject();
+      const N = addDevice(P, 'note', { params: { text: 'Ligue primeiro o disjuntor' } });
+      expect(defaultRegistry.require('note').symbol!(N, lookFrom([]), String).some((x) => x.t === 'text')).toBe(true);
+    },
+    limit: () => {
+      const P = createProject();
+      const N = addDevice(P, 'note', { params: { text: 'palavra '.repeat(100) } });
+      expect(defaultRegistry.require('note').symbol!(N, lookFrom([]), String).filter((x) => x.t === 'text').length).toBe(5);
+    },
+    fault: () => {
+      const P = createProject();
+      const N = addDevice(P, 'note', { params: { text: '' } });
+      expect(defaultRegistry.require('note').symbol!(N, lookFrom([]), String).filter((x) => x.t === 'text')).toEqual([]);
+    },
+  },
 };
+
+describe('símbolos 2D', () => {
+  it('todos os equipamentos têm símbolo com coordenadas válidas, no estado inicial e depois de simular', () => {
+    const nums = (o: unknown): number[] => (typeof o === 'number' ? [o] : o && typeof o === 'object' ? Object.values(o).flatMap(nums) : []);
+    for (const def of defaultRegistry.all()) {
+      const { sim, D } = def.terminals.length ? fed(def.type, { tL: def.terminals[0]!.id, tN: def.terminals[1]?.id ?? null }) : { sim: new Simulator(createProject()), D: addDevice(createProject(), def.type) };
+      const d = sim.device(D.id) ?? D;
+      expect(def.symbol, def.type).toBeDefined();
+      const prims = def.symbol!(d, lookFrom(sim.measurements(d.id)), (v) => String(v));
+      expect(prims.length, def.type).toBeGreaterThan(0);
+      for (const v of nums(prims)) expect(Number.isFinite(v), def.type).toBe(true);
+    }
+  });
+});
 
 describe('casos por equipamento', () => {
   it('todos os equipamentos da biblioteca têm casos normal, limite e falha', () => {

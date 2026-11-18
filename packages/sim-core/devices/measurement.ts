@@ -3,6 +3,7 @@ import { cabs, power, rms } from '../solver/complex';
 import { m } from './common';
 import type { DeviceDef, Measurement } from './types';
 import type { Quantity } from '../solver/complex';
+import { Ci, L, Pa, Tx } from './symbols';
 
 /** Leitura de valor eficaz total, com as componentes AC e DC no perfil Profissional. */
 const reading = (q: Quantity, unit: string): Measurement[] => [
@@ -109,3 +110,12 @@ export const energyMeter1ph: DeviceDef<MeterRT> = {
 };
 
 export const measurement = [voltmeter, ammeter, energyMeter1ph];
+
+/* ---------------- Símbolos ---------------- */
+
+voltmeter.symbol = () => [L(20, 0, 20, 14), L(60, 0, 60, 14), Pa('M20 14 H28 M60 14 H52'), Ci(40, 26, 13, 'sl fill'), Tx(40, 31, 'V', 'txt big')];
+ammeter.symbol = () => [L(0, 20, 27, 20), Ci(40, 20, 13, 'sl fill'), Tx(40, 25, 'A', 'txt big'), L(53, 20, 80, 20)];
+energyMeter1ph.symbol = () => [
+  L(20, 0, 20, 90), L(60, 0, 60, 90), { t: 'rect', x: 10, y: 22, w: 120, h: 46, cls: 'sl fill', rx: 3 },
+  Tx(95, 42, 'kWh', 'txt sm'), Ci(20, 45, 6, 'sl fill'), L(20, 45, 60, 45, 'sl thin'),
+];

@@ -1,7 +1,8 @@
 /** Distribuição: ligador, barramento, eléctrodo de terra. */
 import { rms } from '../solver/complex';
-import { m, num, p, sel } from './common';
+import { m, num, p, ps, sel } from './common';
 import type { DeviceDef } from './types';
+import { Ci, L, Re, Tx } from './symbols';
 
 export const junction: DeviceDef = {
   type: 'junction',
@@ -64,3 +65,16 @@ export const earthElectrode: DeviceDef = {
 };
 
 export const distribution = [junction, busbar, earthElectrode];
+
+/* ---------------- Símbolos ---------------- */
+
+junction.symbol = () => [L(20, 0, 20, 40), L(0, 20, 40, 20), Re(10, 10, 20, 20, 'junction'), Ci(20, 20, 3, 'dot')];
+busbar.symbol = (d) => [
+  L(20, 0, 20, 14), ...[0, 1, 2, 3, 4, 5].map((i) => L(30 + 20 * i, 26, 30 + 20 * i, 40)),
+  { t: 'rect', x: 10, y: 14, w: 140, h: 12, cls: `bus bus-${ps(d, 'bus')}`, rx: 2 },
+  Tx(146, 10, ps(d, 'bus'), 'txt xs', 'end'),
+];
+earthElectrode.symbol = (d, _l, n) => [
+  L(30, 0, 30, 22), L(14, 22, 46, 22, 'sl w3'), L(20, 29, 40, 29, 'sl w3'), L(26, 36, 34, 36, 'sl w3'),
+  Tx(30, 54, `Ra ${n(p(d, 'Ra'))} Ω`, 'txt xs'),
+];

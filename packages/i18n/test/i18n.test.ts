@@ -149,3 +149,28 @@ describe('mensagens de diagnóstico', () => {
       for (const c of DIAG_CODES) expect(f[`diag.${c.toLowerCase()}.hint`], `${lang} ${c}`).toMatch(verbs[lang]!);
   });
 });
+
+describe('cobertura da interface', () => {
+  it('cada chave usada em apps/desktop/src existe nos três idiomas', async () => {
+    const { readdirSync, readFileSync, statSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const files: string[] = [];
+    const walk = (d: string) => {
+      for (const f of readdirSync(d)) {
+        const p = join(d, f);
+        if (statSync(p).isDirectory()) walk(p);
+        else if (/\.tsx?$/.test(f)) files.push(p);
+      }
+    };
+    walk(join(__dirname, '../../../apps/desktop/src'));
+    const keys = new Set<string>();
+    for (const f of files) for (const m of readFileSync(f, 'utf-8').matchAll(/['`](ui\.[a-zA-Z0-9_.]+)['`]/g)) keys.add(m[1]!);
+    // Chaves construídas em tempo de execução.
+    for (const k of ['file', 'edit', 'view', 'simulation', 'exercises', 'tools', 'help']) keys.add(`ui.menu.${k}`);
+    for (const k of ['select', 'operate', 'wire', 'probe', 'clamp', 'delete']) keys.add(`ui.tool.${k}`);
+    for (const k of ['library', 'events', 'problems', 'matrix']) keys.add(`ui.dock.${k}`);
+    for (const k of ['A1', 'B1', 'C']) keys.add(`ui.method.${k}`);
+    expect(keys.size).toBeGreaterThan(100);
+    for (const lang of Object.keys(FLAT)) expect([...keys].filter((k) => !(k in FLAT[lang]!)), lang).toEqual([]);
+  });
+});

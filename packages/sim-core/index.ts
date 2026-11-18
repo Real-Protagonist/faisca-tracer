@@ -12,6 +12,7 @@ export * from './devices/common';
 export { motor1Rated, START_TIME } from './devices/motors';
 export { APPLIANCES, DEFECTS } from './devices/loads';
 export { FLOOR } from './devices/faults';
+export * from './devices/symbols';
 export * from './diagnostics';
 export * from './checks/tables';
 export * from './format';

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Faísca",
+  "version": "0.2.0",
+  "identifier": "app.faisca.desktop",
+  "build": {
+    "frontendDist": "../apps/desktop/dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev -w @faisca/desktop",
+    "beforeBuildCommand": "npm run build -w @faisca/desktop"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Faísca",
+        "width": 1366,
+        "height": 768,
+        "minWidth": 1366,
+        "minHeight": 700,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:; script-src 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Education",
+    "shortDescription": "Simulador didáctico de instalações eléctricas",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "fileAssociations": [{ "ext": ["faisca"], "name": "Projecto Faísca", "role": "Editor", "mimeType": "application/x-faisca" }],
+    "windows": { "webviewInstallMode": { "type": "embedBootstrapper" } }
+  }
+}

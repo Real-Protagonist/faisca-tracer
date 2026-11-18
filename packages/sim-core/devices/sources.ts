@@ -3,6 +3,7 @@ import { power, rms } from '../solver/complex';
 import { diag, dev } from '../diagnostics/types';
 import { clamp, m, ms, num, p, ps, sel } from './common';
 import type { DeviceDef, SourceRole } from './types';
+import { Ci, L, Pa, Re, Tx, type Prim } from './symbols';
 
 /* ---------------- Rede monofásica ---------------- */
 
@@ -208,3 +209,36 @@ export const transformer1ph: DeviceDef = {
 };
 
 export const sources = [grid1ph, battery, solarPanel, transformer1ph];
+
+/* ---------------- Símbolos ---------------- */
+
+const leads = (xs: number[], y0: number, y1: number): Prim[] => xs.map((x) => L(x, y0, x, y1));
+
+grid1ph.symbol = (d, _l, n) => [
+  ...leads([20, 60, 100], 66, 80),
+  Ci(60, 30, 17, d.state.on === false ? 'sl off' : 'sl'),
+  Pa('M48 30 q6 -10 12 0 t12 0'),
+  Tx(60, 61, `${n(p(d, 'V'))} V · ${ps(d, 'earthing')}`),
+];
+battery.symbol = (d, look, n) => {
+  const soc = look.num('soc') / 100;
+  return [
+    L(20, 0, 20, 26), L(60, 0, 60, 26), L(20, 26, 30, 26),
+    L(30, 16, 30, 36), L(38, 21, 38, 31, 'sl w3'), L(46, 16, 46, 36), L(54, 21, 54, 31, 'sl w3'), L(54, 26, 60, 26),
+    Re(14, 44, 52, 8),
+    { t: 'rect', x: 15, y: 45, w: Math.round(50 * soc), h: 6, cls: soc > 0.3 ? 'gauge ok' : 'gauge bad' },
+    Tx(40, 66, `${n(p(d, 'V'))} V · ${n(p(d, 'Ah'))} Ah`),
+  ];
+};
+solarPanel.symbol = (d, _l, n) => {
+  const g: Prim[] = [...leads([20, 60], 50, 80), Re(12, 10, 62, 40, 'sl solar')];
+  for (let i = 1; i < 4; i++) g.push(L(12 + i * 15.5, 10, 12 + i * 15.5, 50, 'sl thin'));
+  g.push(L(12, 30, 74, 30, 'sl thin'), Ci(88, 14, 6, p(d, 'irr') > 0 ? 'sun' : 'sl'), Tx(50, 66, `${n(p(d, 'Voc'))} V · ${n(p(d, 'irr'))} %`));
+  return g;
+};
+transformer1ph.symbol = (d, _l, n) => [
+  L(20, 0, 20, 14), L(60, 0, 60, 14), Pa('M20 14 H32'), Pa('M60 14 H48'),
+  Ci(40, 36, 15), Ci(40, 60, 15),
+  L(20, 86, 20, 100), L(60, 86, 60, 100), Pa('M20 86 H32'), Pa('M60 86 H48'),
+  Tx(88, 46, `${n(p(d, 'V1'))}/`, 'txt xs'), Tx(88, 58, `${n(p(d, 'V2'))} V`, 'txt xs'),
+];
