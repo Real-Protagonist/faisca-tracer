@@ -36,5 +36,9 @@ export {
 export * from './diagnostics';
 export * from './checks/tables';
 export * from './format';
+export * from './checks/compliance';
+export * from './report/bom';
+export * from './exercise/exercise';
+export { sha256, canonical, sealOf } from './exercise/seal';
 export { Simulator, MAX_ITERATIONS, type SimEvent, type SimOptions, type SolveResult } from './simulator';
 export * from './worker';

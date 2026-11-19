@@ -7,8 +7,12 @@ import {
   autoName,
   createProject,
   defaultRegistry,
+  type ComplianceResult,
+  type ComplianceRules,
   type Conductor,
   type Device,
+  type Exercise,
+  type ExerciseResult,
   type Diagnostic,
   type Lang,
   type Probes,
@@ -21,7 +25,7 @@ import {
 import { bbox, estimateLength, GRID, routeWire, snap, terminalPos, type Pt } from './editor/geometry';
 
 export type Tool = 'select' | 'operate' | 'wire' | 'probe' | 'clamp' | 'delete';
-export type DockTab = 'library' | 'events' | 'problems' | 'matrix';
+export type DockTab = 'library' | 'events' | 'problems' | 'check' | 'exercise' | 'matrix';
 
 export interface SimBridge {
   load(P: Project): void;
@@ -31,6 +35,17 @@ export interface SimBridge {
   probes(p: Probes): void;
   matrix(): void;
   reset(): void;
+  /** Verifica um exercício (num worker à parte, sem parar a simulação). */
+  checkExercise(seq: number, exercise: Exercise, project: Project): void;
+  compliance(rules?: ComplianceRules): void;
+}
+
+export interface ExerciseState {
+  ex: Exercise;
+  result: ExerciseResult | null;
+  /** O utilizador abriu a solução (a pontuação fica marcada). */
+  solutionShown: boolean;
+  checking: boolean;
 }
 
 export interface Selection {
@@ -72,6 +87,10 @@ export interface AppState {
   dismissed: string[];
   /** Momento da última edição do esquema (ms), para não interromper quem está a montar. */
   lastEdit: number;
+  /** Exercício em curso. */
+  exercise: ExerciseState | null;
+  /** Último resultado da verificação de conformidade e as regras usadas. */
+  compliance: { results: ComplianceResult[] | null; rules: ComplianceRules | null; running: boolean };
 }
 
 const HISTORY_LIMIT = 1000;
@@ -111,6 +130,8 @@ export const useApp = create<AppState>(() => ({
   flags: [],
   dismissed: [],
   lastEdit: 0,
+  exercise: null,
+  compliance: { results: null, rules: null, running: false },
 }));
 
 const get = () => useApp.getState();
@@ -155,7 +176,7 @@ const prune = (P: Project, s: Selection): Selection => ({
 
 /** Substitui o projecto inteiro (novo, abrir, recuperar). */
 export function loadProject(P: Project, filePath: string | null = null, dirty = false) {
-  set({ project: P, filePath, dirty, past: [], future: [], selection: { devices: [], wires: [] }, events: [], whyNot: null, matrix: null, probes: { red: null, black: null, clamp: null }, dismissed: [], snapshot: null, tab: 'logic' });
+  set({ project: P, filePath, dirty, past: [], future: [], selection: { devices: [], wires: [] }, events: [], whyNot: null, matrix: null, probes: { red: null, black: null, clamp: null }, dismissed: [], snapshot: null, tab: 'logic', exercise: null, compliance: { ...get().compliance, results: null } });
   bridge?.reset();
   sync(P);
   bridge?.probes(get().probes);
@@ -482,3 +503,62 @@ export const ui = {
 };
 
 export { registry };
+
+/* ---------------- exercícios ---------------- */
+
+let checkSeq = 0;
+
+/** Abre um exercício: carrega o projecto inicial e mostra o separador «Exercício». */
+export function openExercise(ex: Exercise) {
+  loadProject(structuredClone(ex.initial));
+  set({ exercise: { ex, result: null, solutionShown: false, checking: false }, dockTab: 'exercise' });
+  checkExerciseNow();
+}
+
+export function closeExercise() {
+  set({ exercise: null, dockTab: get().dockTab === 'exercise' ? 'library' : get().dockTab });
+}
+
+/** Pede a verificação dos objectivos com o projecto actual. */
+export function checkExerciseNow() {
+  const e = get().exercise;
+  if (!e) return;
+  set({ exercise: { ...e, checking: true } });
+  bridge?.checkExercise(++checkSeq, e.ex, get().project);
+}
+
+export function setExerciseResult(seq: number, result: ExerciseResult) {
+  const e = get().exercise;
+  // Uma resposta antiga (o projecto já mudou) não conta.
+  if (!e || seq !== checkSeq) return;
+  set({ exercise: { ...e, result, checking: false } });
+}
+
+/** Mostra a solução: carrega-a no esquema (a pontuação fica marcada como «solução vista»). */
+export function showSolution() {
+  const e = get().exercise;
+  if (!e?.ex.solution) return;
+  loadProject(structuredClone(e.ex.solution));
+  set({ exercise: { ...e, solutionShown: true, result: null }, dockTab: 'exercise' });
+  checkExerciseNow();
+}
+
+/** Volta ao projecto inicial do exercício. */
+export function restartExercise() {
+  const e = get().exercise;
+  if (!e) return;
+  loadProject(structuredClone(e.ex.initial));
+  set({ exercise: { ...e, result: null }, dockTab: 'exercise' });
+  checkExerciseNow();
+}
+
+/* ---------------- conformidade ---------------- */
+
+export function runCompliance(rules: ComplianceRules | null = get().compliance.rules) {
+  set({ compliance: { ...get().compliance, rules, running: true } });
+  bridge?.compliance(rules ?? undefined);
+}
+
+export function setComplianceResults(results: ComplianceResult[]) {
+  set({ compliance: { ...get().compliance, results, running: false } });
+}

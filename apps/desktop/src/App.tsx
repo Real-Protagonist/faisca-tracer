@@ -29,6 +29,7 @@ import {
   type Tool,
 } from './store';
 import { fitView, zoomBy } from './view';
+import { useExerciseAutoCheck } from './panels/Exercise';
 
 /** A vista 3D (Three.js) só se carrega quando se abre o separador «Físico 3D». */
 const Physical3D = lazy(() => import('./view3d/Physical3D').then((m) => ({ default: m.Physical3D })));
@@ -42,6 +43,10 @@ function onKey(e: KeyboardEvent) {
   if (ctrl && k === 's') {
     e.preventDefault();
     return void saveProject(e.shiftKey);
+  }
+  if (ctrl && k === 'p') {
+    e.preventDefault();
+    return void import('./export/export').then((m) => m.printSheet());
   }
   if (typing) return;
   const s = useApp.getState();
@@ -97,6 +102,7 @@ export function App() {
   const name = useApp((s) => s.project.name);
   const [about, setAbout] = useState(false);
   const [recovery, setRecovery] = useState<string | null>(null);
+  useExerciseAutoCheck();
 
   useEffect(() => {
     window.addEventListener('keydown', onKey);

@@ -1,8 +1,8 @@
 /** Acções da aplicação que precisam de ficheiros ou diálogos (fora do store puro). */
-import { createProject, parseProject, ProjectFileError, serializeProject } from '@faisca/sim-core';
+import { createProject, parseExercise, parseProject, ProjectFileError, serializeProject } from '@faisca/sim-core';
 import { i18n } from './i18n';
-import { clearRecovery, openFile, openPath, pushRecent, readRecovery, saveFile, writeRecovery } from './platform/files';
-import { loadProject, openWizard, ui, useApp } from './store';
+import { clearRecovery, EXERCISE_FILTER, openFile, openPath, pushRecent, readRecovery, saveFile, writeRecovery } from './platform/files';
+import { loadProject, openExercise, openWizard, ui, useApp } from './store';
 
 const t = (k: string, o: Record<string, unknown> = {}) => i18n.t(k, o);
 
@@ -37,6 +37,18 @@ export async function openProject() {
   if (!confirmDiscard()) return;
   const f = await openFile();
   if (f) openText(f.text, f.path, f.name);
+}
+
+/** Abre um ficheiro de exercício (`.faisca-ex`); recusa ficheiros alterados fora do editor. */
+export async function openExerciseFile() {
+  if (!confirmDiscard()) return;
+  const f = await openFile(EXERCISE_FILTER);
+  if (!f) return;
+  try {
+    openExercise(parseExercise(f.text));
+  } catch (e) {
+    window.alert(t(e instanceof ProjectFileError ? e.key : 'file.error.not_exercise'));
+  }
 }
 
 export async function openRecent(path: string) {

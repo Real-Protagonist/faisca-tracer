@@ -10,6 +10,8 @@ import { rms } from './solver/complex';
 import type { Measurement } from './devices/types';
 import type { Device, Project, WireEnd } from './project/types';
 import type { SimEvent } from './simulator';
+import { checkExercise, type Exercise, type ExerciseResult } from './exercise/exercise';
+import { checkCompliance, type ComplianceResult, type ComplianceRules } from './checks/compliance';
 
 export interface Probes {
   red: WireEnd | null;
@@ -25,7 +27,11 @@ export type WorkerRequest =
   | { type: 'whyNot'; device: string }
   | { type: 'probes'; probes: Probes }
   | { type: 'matrix' }
-  | { type: 'reset' };
+  | { type: 'reset' }
+  /** Verifica os objectivos de um exercício no projecto dado (simulações próprias). */
+  | { type: 'checkExercise'; seq: number; exercise: Exercise; project: Project }
+  /** Verificação de conformidade sobre o estado actual da simulação. */
+  | { type: 'compliance'; rules?: ComplianceRules };
 
 export interface WorkerSnapshot {
   type: 'snapshot';
@@ -55,6 +61,8 @@ export type WorkerResponse =
   | WorkerSnapshot
   | { type: 'whyNot'; device: string; diagnostic: Diagnostic }
   | MatrixResult
+  | { type: 'exercise'; seq: number; result: ExerciseResult }
+  | { type: 'compliance'; results: ComplianceResult[] }
   | { type: 'error'; message: string };
 
 export function createWorkerHandler(post: (m: WorkerResponse) => void) {
@@ -125,6 +133,13 @@ export function createWorkerHandler(post: (m: WorkerResponse) => void) {
         case 'whyNot':
           if (!sim) return;
           post({ type: 'whyNot', device: msg.device, diagnostic: whyNotWorking(sim, msg.device) });
+          break;
+        case 'checkExercise':
+          post({ type: 'exercise', seq: msg.seq, result: checkExercise(msg.exercise, msg.project) });
+          break;
+        case 'compliance':
+          if (!sim) return;
+          post({ type: 'compliance', results: checkCompliance(sim, msg.rules) });
           break;
         case 'matrix': {
           if (!sim) return;

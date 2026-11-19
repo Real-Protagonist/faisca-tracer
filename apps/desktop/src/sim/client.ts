@@ -1,12 +1,24 @@
 /** Liga o store ao Web Worker e corre o relógio da simulação em tempo real. */
 import type { WorkerRequest, WorkerResponse } from '@faisca/sim-core';
-import { applySnapshot, setBridge, setMatrix, setWhyNot, useApp } from '../store';
+import { applySnapshot, setBridge, setComplianceResults, setExerciseResult, setMatrix, setWhyNot, useApp } from '../store';
 
 /** Passo máximo enviado num fotograma (s de simulação); o núcleo subdivide em passos de 50 ms. */
 const MAX_FRAME_DT = 2;
 
 export function startSimulation(): () => void {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+  // Os exercícios verificam-se num segundo worker: correm várias simulações sem parar o relógio.
+  let checker: Worker | null = null;
+  const checkerWorker = () => {
+    if (!checker) {
+      checker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+      checker.onmessage = (e: MessageEvent<WorkerResponse>) => {
+        if (e.data.type === 'exercise') setExerciseResult(e.data.seq, e.data.result);
+        else if (e.data.type === 'error') console.error('[exercício]', e.data.message);
+      };
+    }
+    return checker;
+  };
   let busy = false;
   let busySince = 0;
   const post = (m: WorkerRequest) => worker.postMessage(m);
@@ -17,6 +29,7 @@ export function startSimulation(): () => void {
       applySnapshot(m);
     } else if (m.type === 'whyNot') setWhyNot({ device: m.device, diagnostic: m.diagnostic });
     else if (m.type === 'matrix') setMatrix(m);
+    else if (m.type === 'compliance') setComplianceResults(m.results);
     else if (m.type === 'error') {
       busy = false;
       console.error('[simulação]', m.message);
@@ -30,6 +43,8 @@ export function startSimulation(): () => void {
     probes: (probes) => post({ type: 'probes', probes }),
     matrix: () => post({ type: 'matrix' }),
     reset: () => post({ type: 'reset' }),
+    checkExercise: (seq, exercise, project) => checkerWorker().postMessage({ type: 'checkExercise', seq, exercise, project } satisfies WorkerRequest),
+    compliance: (rules) => post({ type: 'compliance', rules }),
   });
 
   let last = performance.now();
@@ -52,5 +67,6 @@ export function startSimulation(): () => void {
     cancelAnimationFrame(raf);
     setBridge(null);
     worker.terminate();
+    checker?.terminate();
   };
 }

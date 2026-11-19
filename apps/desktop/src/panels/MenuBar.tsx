@@ -2,12 +2,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Lang } from '@faisca/sim-core';
-import { newProject, openProject, openRecent, saveProject } from '../actions';
+import { newProject, openExerciseFile, openProject, openRecent, saveProject } from '../actions';
+/** As exportações (react-dom/server, jsPDF) só se carregam quando se usam. */
+const exp = () => import('../export/export');
+import { ExerciseList } from './Exercise';
+import { ExerciseEditor } from './ExerciseEditor';
 import { startTour, TOUR_OF } from '../tour/TourOverlay';
 import { isTauri, recentFiles } from '../platform/files';
 import { rememberLang } from '../i18n';
 import {
   align,
+  closeExercise,
   commit,
   copySelection,
   deleteSelection,
@@ -39,6 +44,8 @@ interface Item {
 export function MenuBar({ onAbout }: { onAbout: () => void }) {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState<string | null>(null);
+  const [modal, setModal] = useState<'exercises' | 'editor' | null>(null);
+  const exercise = useApp((s) => !!s.exercise);
   const ref = useRef<HTMLDivElement>(null);
   const project = useApp((s) => s.project);
   const lang = useApp((s) => s.lang);
@@ -66,8 +73,10 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.menu.save', shortcut: 'Ctrl+S', run: () => void saveProject() },
         { key: 'ui.menu.saveAs', shortcut: 'Ctrl+Shift+S', run: () => void saveProject(true) },
         { key: 'sep2', sep: true },
-        { key: 'ui.menu.export', disabled: true },
-        { key: 'ui.menu.print', disabled: true },
+        { key: 'ui.menu.exportPng', run: () => void exp().then((m) => m.exportPng()) },
+        { key: 'ui.menu.exportPdf', run: () => void exp().then((m) => m.exportPdf()) },
+        { key: 'ui.menu.exportBom', run: () => void exp().then((m) => m.exportBomCsv()) },
+        { key: 'ui.menu.print', shortcut: 'Ctrl+P', run: () => void exp().then((m) => m.printSheet()) },
       ],
     },
     {
@@ -116,7 +125,16 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.menu.wizard', run: newProject },
       ],
     },
-    { key: 'exercises', items: [{ key: 'ui.menu.soon', disabled: true }] },
+    {
+      key: 'exercises',
+      items: [
+        { key: 'ui.menu.exerciseList', run: () => setModal('exercises') },
+        { key: 'ui.menu.exerciseOpen', run: () => void openExerciseFile() },
+        { key: 'sep1', sep: true },
+        { key: 'ui.menu.exerciseCreate', run: () => setModal('editor'), disabled: !project.devices.length },
+        { key: 'ui.menu.exerciseClose', run: closeExercise, disabled: !exercise },
+      ],
+    },
     {
       key: 'tools',
       items: [
@@ -184,6 +202,8 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
           <option value="fr">Français</option>
         </select>
       </label>
+      {modal === 'exercises' && <ExerciseList onClose={() => setModal(null)} domain={project.domain} level={project.level} />}
+      {modal === 'editor' && <ExerciseEditor onClose={() => setModal(null)} />}
     </div>
   );
 }

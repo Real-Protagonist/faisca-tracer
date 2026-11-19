@@ -7,11 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { createProject, parseProject, type Domain, type Lang, type Level } from '@faisca/sim-core';
 import { EXAMPLES } from '@faisca/content';
 import { rememberLang } from '../i18n';
-import { closeWizard, loadProject, setLang, useApp } from '../store';
+import { closeWizard, loadProject, openExercise, setLang, useApp } from '../store';
+import { builtInExercises, exText } from '../panels/Exercise';
 import { startTour, TOUR_OF } from '../tour/TourOverlay';
 import { fitView } from '../view';
 
-type Screen = 'lang' | 'area' | 'level' | 'start' | 'examples';
+type Screen = 'lang' | 'area' | 'level' | 'start' | 'examples' | 'exercises';
 
 const PREF = 'faisca.lastProject';
 
@@ -65,8 +66,9 @@ export function Wizard() {
   if (!open) return null;
 
   const order: Screen[] = firstRun ? ['lang', 'area', 'level', 'start'] : ['area', 'level', 'start'];
-  const n = screen === 'examples' ? order.length : order.indexOf(screen) + 1;
-  const back = () => setScreen(screen === 'examples' ? 'start' : order[Math.max(0, order.indexOf(screen) - 1)]!);
+  const sub = screen === 'examples' || screen === 'exercises';
+  const n = sub ? order.length : order.indexOf(screen) + 1;
+  const back = () => setScreen(sub ? 'start' : order[Math.max(0, order.indexOf(screen) - 1)]!);
 
   const pickLang = (l: Lang) => {
     void i18n.changeLanguage(l);
@@ -149,7 +151,32 @@ export function Wizard() {
             <div className="wcards three">
               <Card id="empty" title={t('wizard.start.empty')} text={t(level === 'beginner' && domain === 'domestic' ? 'wizard.start.emptyBeginner' : 'wizard.start.emptyPro')} onClick={empty} testid="wizard-empty" />
               <Card id="example" title={t('wizard.start.example')} text={t('wizard.start.exampleHint')} onClick={() => setScreen('examples')} testid="wizard-example" />
-              <Card id="exercise" title={t('wizard.start.exercise')} text={t('wizard.start.exerciseSoon')} onClick={() => undefined} disabled testid="wizard-exercise" />
+              <Card id="exercise" title={t('wizard.start.exercise')} text={t('wizard.start.exerciseHint')} onClick={() => setScreen('exercises')} testid="wizard-exercise" />
+            </div>
+          </>
+        )}
+
+        {screen === 'exercises' && (
+          <>
+            <h3>{t('wizard.exercises.title')}</h3>
+            <div className="wcards">
+              {builtInExercises()
+                .filter((x) => x.domain === domain && x.level === level)
+                .map((x) => (
+                  <Card
+                    key={x.id}
+                    id="exercise"
+                    title={exText(t, x.title)}
+                    text={t('ui.exercise.count', { count: x.objectives.length })}
+                    onClick={() => {
+                      remember(domain, level);
+                      closeWizard();
+                      openExercise(x);
+                      requestAnimationFrame(() => fitView());
+                    }}
+                    testid={`wizard-exr-${x.id}`}
+                  />
+                ))}
             </div>
           </>
         )}

@@ -52,6 +52,36 @@ O PLC guarda o programa no parâmetro `program`, em JSON, dentro do próprio `.f
 
 Cada degrau é uma série de colunas; cada coluna é um grupo de contactos em paralelo (`nc: true` = contacto NF). Operandos: `I0`–`I7` (entradas a 24 V DC), `Q0`–`Q7` (saídas a relé, comuns `1L` e `2L`), `M0`–`M15`, `T0`–`T7` e `C0`–`C7`. Bobinas: `out`, `set`, `reset`, `ton` e `tof` (com `preset` em segundos), `ctu` (com `preset` em contagens) e `res` (repõe um temporizador ou contador). O exemplo acima é a auto-retenção marcha/paragem.
 
+### Exercícios
+
+Os 16 exercícios da tabela (4 + 4 domésticos, 3 + 5 industriais) estão em `packages/content/exercises.ts` e são gravados em `packages/content/exercises/*.faisca-ex` por `npm run content`. Cada um tem enunciado, projecto inicial (aparelhos colocados, cabos em falta ou parâmetros a corrigir), objectivos, solução e pontuação.
+
+Cada objectivo é uma regra declarativa sobre o estado depois de um cenário de comandos, verificada numa simulação própria a partir do esquema do aluno:
+
+```json
+{ "id": "stop", "text": { "key": "exercise.ind-dol.obj.stop" },
+  "given": [{ "press": "S1" }, { "run": 3 }],
+  "rule": { "type": "then", "first": { "type": "state", "device": "M1", "is": "running" },
+            "steps": [{ "press": "S0" }, { "run": 6 }],
+            "rule": { "type": "not", "rule": { "type": "state", "device": "M1", "is": "running" } } } }
+```
+
+Regras: `state`, `measure`, `deviceState`, `param`, `working`, `noDiag`, `diag`, `toggles`, `compliance`, `then`, `all` e `not`; passos: `op`, `press`, `run` e `set` (ver `packages/sim-core/exercise/exercise.ts`). A verificação corre num segundo Web Worker, 0,7 s depois de cada alteração, sem parar a simulação.
+
+O editor de exercícios (menu Exercícios → Criar exercício) usa o projecto aberto como solução e exporta um `.faisca-ex` com selo SHA-256: um ficheiro alterado fora do editor é recusado ao abrir. O selo usa um sal da aplicação; impede alterações à mão, não resiste a quem estude o código.
+
+### Verificação de conformidade e exportações
+
+O separador «Verificação» aplica oito regras indicativas da IEC 60364: Ib ≤ In ≤ Iz, quedas de tensão, diferencial ≤ 30 mA nas tomadas, Ra × IΔn ≤ 50 V em TT, massas ligadas ao PE, cores dos condutores, interruptores na fase e poder de corte. No nível Iniciante mostra só as quatro básicas. Os limites e as referências vêm de um ficheiro de regras JSON (por omissão, os valores IEC); um país ou um formador pode abrir o seu:
+
+```json
+{ "id": "pt", "name": "Portugal (indicativo)", "maxDropLighting": 3, "maxDropOther": 5, "maxIdnSockets": 30, "touchVoltage": 50, "references": { "pe": "…" } }
+```
+
+O relatório sai em PDF, com cada regra, o resultado, a referência e o aviso de que é uma ferramenta didáctica.
+
+Menu Ficheiro: esquema em PNG e PDF (com a legenda das cores e a lista de material), lista de material em CSV (separador «;» em PT e FR, para o Excel) e impressão (Ctrl+P). Tudo é gerado na aplicação, sem internet.
+
 Antes do primeiro `npm run e2e`, instale o navegador de testes com `npx playwright install chromium`.
 
 ## Aplicação de desktop (Tauri)
@@ -69,5 +99,9 @@ Comandos:
 npm run tauri:dev     # janela de desktop com recarga automática
 npm run tauri:build   # instaladores em src-tauri/target/release/bundle
 ```
+
+O instalador do Windows inclui o WebView2 (modo `offlineInstaller`): instala-se e funciona sem internet, mesmo num Windows sem WebView2. Por isso tem cerca de 190 MB. A aplicação não faz pedidos à rede (a CSP só permite recursos da própria aplicação).
+
+Os instaladores de macOS (`.dmg`) e Linux (`.deb`, `.rpm`, `.AppImage`) compilam-se no próprio sistema; o workflow `.github/workflows/release.yml` corre os testes e compila os três com o `tauri-action`.
 
 Em desktop, «Abrir» e «Guardar» usam os diálogos nativos. A cópia de recuperação fica na pasta de dados da aplicação. No navegador, guardar descarrega o ficheiro e a recuperação fica no armazenamento local.

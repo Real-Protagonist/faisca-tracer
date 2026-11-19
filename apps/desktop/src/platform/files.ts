@@ -10,25 +10,32 @@ export interface OpenedFile {
   text: string;
 }
 
-const FILTER = { name: 'Faísca', extensions: ['faisca'] };
+export interface FileFilter {
+  name: string;
+  extensions: string[];
+}
+
+export const FILTER: FileFilter = { name: 'Faísca', extensions: ['faisca'] };
+export const EXERCISE_FILTER: FileFilter = { name: 'Faísca — exercício', extensions: ['faisca-ex'] };
+export const RULES_FILTER: FileFilter = { name: 'JSON', extensions: ['json'] };
 const RECOVERY_KEY = 'faisca.recovery';
 const RECENT_KEY = 'faisca.recent';
 const RECOVERY_FILE = 'recuperacao.faisca';
 
 const baseName = (p: string) => p.split(/[\/]/).pop() ?? p;
 
-export async function openFile(): Promise<OpenedFile | null> {
+export async function openFile(filter: FileFilter = FILTER): Promise<OpenedFile | null> {
   if (isTauri()) {
     const { open } = await import('@tauri-apps/plugin-dialog');
     const { readTextFile } = await import('@tauri-apps/plugin-fs');
-    const path = await open({ multiple: false, directory: false, filters: [FILTER] });
+    const path = await open({ multiple: false, directory: false, filters: [filter] });
     if (!path || Array.isArray(path)) return null;
     return { path, name: baseName(path), text: await readTextFile(path) };
   }
   return new Promise((resolve) => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.faisca,application/json';
+    input.accept = filter === FILTER ? '.faisca,application/json' : filter.extensions.map((e) => '.' + e).join(',');
     input.dataset.testid = 'file-input';
     input.style.display = 'none';
     input.onchange = async () => {
@@ -124,4 +131,23 @@ export function pushRecent(r: Recent) {
   } catch {
     /* armazenamento indisponível */
   }
+}
+
+/** Guarda um ficheiro exportado (PNG, PDF, CSV, exercício): diálogo nativo no Tauri, descarga no navegador. */
+export async function saveExport(data: Uint8Array | string, suggestedName: string, filter: FileFilter, mime: string): Promise<string | null> {
+  if (isTauri()) {
+    const { save } = await import('@tauri-apps/plugin-dialog');
+    const target = await save({ defaultPath: suggestedName, filters: [filter] });
+    if (!target) return null;
+    const fs = await import('@tauri-apps/plugin-fs');
+    if (typeof data === 'string') await fs.writeTextFile(target, data);
+    else await fs.writeFile(target, data);
+    return target;
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([data as BlobPart], { type: mime }));
+  a.download = suggestedName;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  return suggestedName;
 }

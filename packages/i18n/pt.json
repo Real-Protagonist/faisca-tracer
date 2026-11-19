@@ -22,7 +22,9 @@
       "newer_version": "Este projecto foi criado numa versão mais recente do Faísca. Actualize a aplicação.",
       "no_migration": "Não é possível converter este projecto para a versão actual.",
       "invalid": "O projecto está danificado e não pode ser aberto.",
-      "unknown_device": "O projecto usa um equipamento que esta versão não conhece."
+      "unknown_device": "O projecto usa um equipamento que esta versão não conhece.",
+      "not_exercise": "Este ficheiro não é um exercício do Faísca.",
+      "tampered": "O exercício foi alterado fora do editor de exercícios e não pode ser aberto."
     }
   },
   "category": {
@@ -947,7 +949,6 @@
       "open": "Abrir…",
       "save": "Guardar",
       "saveAs": "Guardar como…",
-      "export": "Exportar (PDF, PNG, lista de material)",
       "print": "Imprimir",
       "undo": "Desfazer",
       "redo": "Refazer",
@@ -962,13 +963,19 @@
       "zoomIn": "Aproximar",
       "zoomOut": "Afastar",
       "fit": "Ver tudo",
-      "soon": "Disponível numa próxima versão",
       "tour": "Tour guiado",
       "about": "Sobre o Faísca",
       "project": "Projecto",
       "area": "Área: {{area}}",
       "level": "Nível: {{level}}",
-      "wizard": "Assistente de novo projecto…"
+      "wizard": "Assistente de novo projecto…",
+      "exportPng": "Exportar esquema (PNG)",
+      "exportPdf": "Exportar esquema (PDF)",
+      "exportBom": "Exportar lista de material (CSV/Excel)",
+      "exerciseList": "Lista de exercícios…",
+      "exerciseOpen": "Abrir ficheiro de exercício…",
+      "exerciseCreate": "Criar exercício a partir deste projecto…",
+      "exerciseClose": "Fechar o exercício"
     },
     "tool": {
       "select": "Seleccionar",
@@ -1051,7 +1058,9 @@
       "library": "Biblioteca",
       "events": "Eventos",
       "problems": "Problemas",
-      "matrix": "Matriz MNA"
+      "matrix": "Matriz MNA",
+      "check": "Verificação",
+      "exercise": "Exercício"
     },
     "library": {
       "all": "Todos",
@@ -1113,6 +1122,91 @@
         "ctu": "Contador CTU",
         "res": "Repor T ou C"
       }
+    },
+    "exercise": {
+      "none": "Nenhum exercício aberto. Escolha um no menu Exercícios.",
+      "progress": "{{score}} de {{total}} objectivos",
+      "checking": "A verificar…",
+      "solutionShown": "solução vista",
+      "objectives": "Objectivos",
+      "ok": "Cumprido",
+      "notYet": "Por cumprir",
+      "done": "Exercício concluído!",
+      "check": "Verificar agora",
+      "restart": "Recomeçar",
+      "solution": "Ver a solução",
+      "solutionConfirm": "Ver a solução? O exercício fica marcado como resolvido com ajuda.",
+      "close": "Fechar o exercício",
+      "listTitle": "Exercícios",
+      "showAll": "Mostrar todas as áreas e níveis",
+      "count": "Objectivos: {{count}}"
+    },
+    "check": {
+      "run": "Verificar a instalação",
+      "rules": "Regras",
+      "loadRules": "Abrir ficheiro de regras…",
+      "defaultRules": "Voltar às regras IEC",
+      "exportPdf": "Exportar relatório (PDF)",
+      "badRules": "O ficheiro de regras não é válido.",
+      "intro": "Verifica o esquema com regras indicativas da IEC 60364: protecção dos cabos, quedas de tensão, diferenciais, terra, cores e poder de corte.",
+      "introBeginner": "Verifica o básico: terra nas massas, cores dos cabos, interruptores na fase e diferencial nas tomadas.",
+      "status": {
+        "pass": "Passa",
+        "fail": "Falha",
+        "na": "Não se aplica"
+      },
+      "reportTitle": "Relatório de verificação de conformidade",
+      "reference": "Referência",
+      "reportFile": "verificação"
+    },
+    "export": {
+      "legend": "Cores dos condutores",
+      "bom": "Lista de material",
+      "qty": "Qtd.",
+      "names": "Designação",
+      "device": "Equipamento",
+      "spec": "Características",
+      "cable": "Cabo {{section}} mm² {{material}}, {{conductor}} ({{color}})",
+      "runs": "{{count}} troço(s)",
+      "length": "Comprimento (m)",
+      "section": "Secção (mm²)",
+      "material": "Material",
+      "conductor": "Condutor",
+      "runsHeader": "Troços",
+      "bomFile": "lista de material"
+    },
+    "editor": {
+      "title": "Criar exercício",
+      "intro": "O projecto aberto é a solução. Escreva o enunciado, escolha os cabos que o aluno terá de ligar e defina os objectivos.",
+      "exTitle": "Título",
+      "statement": "Enunciado",
+      "wires": "O aluno começa",
+      "wiresAll": "sem nenhum cabo",
+      "wiresControl": "com a potência ligada (cabos de 2,5 mm² ou mais)",
+      "wiresNone": "com todos os cabos (só ajusta parâmetros)",
+      "objText": "Texto do objectivo (ex.: «H1 acende com S1 ligado»)",
+      "remove": "Apagar",
+      "kind": {
+        "works": "A carga funciona",
+        "off": "A carga não funciona",
+        "opens": "O aparelho abre (disparo, contactor em repouso)",
+        "clean": "Sem erros nem avisos",
+        "measure": "Medição entre limites"
+      },
+      "min": "mín.",
+      "max": "máx.",
+      "given": "Depois de:",
+      "wait": "esperar {{s}} s",
+      "add": "+ objectivo",
+      "test": "Testar com a solução",
+      "incomplete": "Preencha o título, o enunciado e o texto de cada objectivo.",
+      "notSolved": "A solução não cumpre todos os objectivos: corrija o projecto ou os objectivos.",
+      "saved": "Exercício exportado.",
+      "export": "Exportar exercício (.faisca-ex)",
+      "device": "Aparelho",
+      "action": "Comando",
+      "addStep": "+ comando",
+      "addWait": "+ esperar 2 s"
     }
   },
   "example": {
@@ -1181,11 +1275,14 @@
       "example": "Abrir um exemplo",
       "exampleHint": "Circuitos completos e a funcionar para explorar.",
       "exercise": "Começar um exercício",
-      "exerciseSoon": "Os exercícios chegam numa próxima versão."
+      "exerciseHint": "Um enunciado com objectivos verificados pelo simulador e uma pontuação."
     },
     "examples": {
       "title": "Escolha um exemplo",
       "none": "Ainda não há exemplos para esta área e nível."
+    },
+    "exercises": {
+      "title": "Escolha um exercício"
     }
   },
   "cards": {
@@ -1244,6 +1341,193 @@
       "phase-loss": "Ensaio de falta de fase: seleccione o cabo do relé 6 para o motor W1 e marque «Fio cortado».",
       "phase-fix": "Leia a mensagem, carregue em «Como corrigir» e volte a ligar o cabo cortado.",
       "done": "Montou o arranque directo, com auto-retenção e relé térmico, e viu como se explica uma falta de fase. O próximo passo é o primeiro exercício industrial."
+    }
+  },
+  "exercise": {
+    "dom-light-point": {
+      "title": "Ponto de luz simples",
+      "statement": "Ligue a rede ao disjuntor Q1 e monte o ponto de luz: o interruptor S1 comanda a lâmpada H1. A fase passa pelo interruptor; o neutro vai directo à lâmpada.",
+      "obj": {
+        "lit": "H1 acende com S1 ligado",
+        "off": "H1 está apagada com S1 desligado",
+        "phase": "S1 corta a fase, não o neutro",
+        "clean": "Sem erros nem avisos de montagem"
+      }
+    },
+    "dom-stair": {
+      "title": "Comando de escada",
+      "statement": "Monte um comando de escada: os comutadores S1 e S2 ligam e desligam a lâmpada H1, cada um no seu extremo da escada. Use dois fios de ligação entre os comutadores.",
+      "obj": {
+        "toggle": "Cada comutador, sozinho, muda o estado de H1",
+        "phase": "Os comutadores estão na fase",
+        "clean": "Sem erros nem avisos de montagem"
+      }
+    },
+    "dom-sockets": {
+      "title": "Tomadas com terra",
+      "statement": "Alimente as tomadas X1 e X2 pelo diferencial Q1 e pelo disjuntor Q2, com cabo de 2,5 mm². Ligue o terminal de terra de cada tomada ao eléctrodo E1.",
+      "obj": {
+        "x1": "X1 alimenta o portátil",
+        "x2": "X2 alimenta a chaleira",
+        "pe": "As duas tomadas têm terra",
+        "rcd": "Com um defeito em X1, o diferencial Q1 dispara"
+      }
+    },
+    "dom-bell": {
+      "title": "Campainha com transformador",
+      "statement": "A campainha B1 é de 12 V. Alimente o transformador T1 pelo disjuntor Q1 e ligue a campainha ao secundário, através do botão S1.",
+      "obj": {
+        "rings": "B1 toca enquanto S1 está premido",
+        "silent": "B1 fica calada com S1 em repouso",
+        "voltage": "B1 recebe a sua tensão de 12 V"
+      }
+    },
+    "dom-board": {
+      "title": "Quadro de habitação com 6 circuitos",
+      "statement": "Complete o quadro: a partir do diferencial Q1, alimente os seis disjuntores pelos barramentos e ligue cada carga ao seu disjuntor, com terra nas cargas de classe I. Respeite Ib ≤ In ≤ Iz.",
+      "obj": {
+        "all": "As seis cargas funcionam",
+        "rcd": "Um defeito em qualquer tomada faz disparar Q1",
+        "ib": "Ib ≤ In ≤ Iz em todos os circuitos",
+        "clean": "Sem erros nem avisos"
+      }
+    },
+    "dom-tt": {
+      "title": "Protecção de pessoas em TT",
+      "statement": "O ferro em X1 tem um defeito e a pessoa Z1 toca-lhe. O eléctrodo E1 tem 200 Ω. Ligue a terra e escolha o diferencial certo para a pessoa ficar protegida.",
+      "obj": {
+        "safe": "Não passa corrente perigosa pela pessoa",
+        "trip": "O diferencial Q1 dispara",
+        "touch": "Ra × IΔn ≤ 50 V"
+      }
+    },
+    "dom-cable": {
+      "title": "Dimensionamento de cabos e quedas de tensão",
+      "statement": "O aquecedor E1 de 4500 W está a 40 m do disjuntor Q1 de 25 A. Escolha a secção dos cabos para o disjuntor proteger o cabo e a queda de tensão ficar abaixo de 5 %.",
+      "obj": {
+        "works": "E1 funciona",
+        "protected": "Q1 protege o cabo (In ≤ Iz)",
+        "drop": "Queda de tensão dentro do limite",
+        "overload": "O cabo não fica em sobrecarga"
+      }
+    },
+    "dom-solar": {
+      "title": "Sistema solar com bateria",
+      "statement": "Ligue o painel G1 à bateria G2 e alimente a lâmpada H1 de 12 V a partir da bateria, através do fusível F1 e do interruptor S1.",
+      "obj": {
+        "night": "De noite, H1 acende com S1 ligado",
+        "charging": "Com sol, a bateria carrega",
+        "fuse": "F1 protege o cabo da lâmpada",
+        "clean": "Sem erros nem avisos"
+      }
+    },
+    "ind-dol": {
+      "title": "Arranque directo com auto-retenção",
+      "statement": "O circuito de potência está montado. Monte o comando: S1 arranca o motor M1 e ele continua depois de largar S1; S0 pára; o relé térmico F1 desliga-o numa sobrecarga.",
+      "obj": {
+        "hold": "M1 continua em marcha depois de largar S1",
+        "stop": "S0 pára M1",
+        "relay": "O disparo de F1 pára M1",
+        "clean": "Sem erros nem avisos"
+      }
+    },
+    "ind-signal": {
+      "title": "Sinalização de marcha e disparo",
+      "statement": "O arranque directo está montado. Ligue o sinalizador verde H1 para indicar o motor em marcha e o vermelho H2 para indicar o disparo do relé térmico F1.",
+      "obj": {
+        "idle": "Com o motor parado, os dois sinalizadores estão apagados",
+        "run": "Em marcha, só H1 acende",
+        "trip": "Com F1 disparado, só H2 acende"
+      }
+    },
+    "ind-reversing": {
+      "title": "Inversão de marcha com encravamento",
+      "statement": "A potência está montada: K2 troca duas fases. Monte o comando: S1 para a direita, S2 para a esquerda, S0 pára, e K1 e K2 nunca podem fechar ao mesmo tempo.",
+      "obj": {
+        "forward": "S1 põe M1 a rodar para a direita",
+        "reverse": "S2 põe M1 a rodar para a esquerda",
+        "interlock": "Com K1 fechado, S2 não fecha K2",
+        "stop": "S0 pára M1"
+      }
+    },
+    "ind-star-delta": {
+      "title": "Arranque estrela-triângulo",
+      "statement": "O motor de 7,5 kW arranca em estrela e passa a triângulo ao fim de 5 s. Ligue KM2 (estrela) e KM3 (triângulo) aos terminais W2, U2 e V2 e monte o comando com o temporizador KT.",
+      "obj": {
+        "star": "No arranque, KM2 fecha e KM3 fica aberto",
+        "delta": "Depois de KT, KM3 fecha, KM2 abre e M1 fica em marcha",
+        "current": "A corrente de arranque não passa de 50 A"
+      }
+    },
+    "ind-pf": {
+      "title": "Correcção do factor de potência",
+      "statement": "O motor M1 de 15 kW funciona com FP baixo. Ligue a bateria de condensadores C1 através de Q2 e escolha a potência reactiva para o FP na rede passar de 0,95, sem sobrecompensar.",
+      "obj": {
+        "motor": "M1 está em marcha",
+        "pf": "FP de pelo menos 0,95, sem sobrecompensar (Q ≥ 0)"
+      }
+    },
+    "ind-selectivity": {
+      "title": "Selectividade entre disjuntores",
+      "statement": "Um curto-circuito no fim da linha de E1 faz disparar Q1 e Q2. Escolha o disjuntor Q1 (calibre e curva) para que só Q2 dispare, sem deixar o cabo de Q1 para Q2 desprotegido.",
+      "obj": {
+        "works": "E1 funciona",
+        "selective": "Com o curto activo, só Q2 dispara",
+        "protected": "Todos os cabos estão protegidos"
+      }
+    },
+    "ind-plc-pump": {
+      "title": "Bomba com bóia de nível por PLC",
+      "statement": "Está tudo ligado: a bóia B1 na entrada I0, o botão S0 em I1, o contactor K1 em Q0 e o sinalizador H1 em Q1. Escreva o programa ladder do autómato A1.",
+      "obj": {
+        "high": "Com nível alto, a bomba M1 trabalha",
+        "low": "Com nível baixo, a bomba está parada",
+        "stop": "S0 premido pára a bomba",
+        "lamp": "H1 sinaliza o nível alto"
+      }
+    },
+    "ind-vfd": {
+      "title": "Motor com variador de frequência",
+      "statement": "Ligue o selector S1 às entradas do variador T1 (24V, DI1 para a direita, DI2 para a esquerda) e regule a rampa de aceleração para 5 s.",
+      "obj": {
+        "forward": "Na posição 1, M1 roda para a direita a 50 Hz",
+        "reverse": "Na posição 2, M1 roda para a esquerda",
+        "ramp": "A frequência sobe numa rampa de 5 s"
+      }
+    }
+  },
+  "compliance": {
+    "ib_in_iz": {
+      "title": "Ib ≤ In ≤ Iz em cada circuito",
+      "item": "{{device}}: Ib {{ib}}, In {{in}}, Iz {{iz}}"
+    },
+    "voltage_drop": {
+      "title": "Queda de tensão (iluminação e outros usos)",
+      "item": "{{device}}: {{drop}} (limite {{limit}})"
+    },
+    "rcd_sockets": {
+      "title": "Tomadas protegidas por diferencial de alta sensibilidade",
+      "item": "{{device}}: diferencial {{rcd}} ({{idn}})"
+    },
+    "tt_touch": {
+      "title": "Esquema TT: Ra × IΔn ≤ tensão de contacto limite",
+      "item": "{{device}}: Ra {{ra}} × IΔn {{idn}} = {{ul}} (limite {{limit}})"
+    },
+    "pe": {
+      "title": "Massas de classe I ligadas ao condutor de protecção",
+      "item": "{{device}}"
+    },
+    "colors": {
+      "title": "Cores dos condutores",
+      "item": "{{from}} → {{to}}: {{actual}} (esperado {{expected}})"
+    },
+    "switch_phase": {
+      "title": "Interruptores unipolares na fase",
+      "item": "{{device}}"
+    },
+    "breaking_capacity": {
+      "title": "Poder de corte acima da corrente de curto-circuito presumida",
+      "item": "{{device}}: Icc {{isc}} ≤ Icn {{icn}}"
     }
   }
 }

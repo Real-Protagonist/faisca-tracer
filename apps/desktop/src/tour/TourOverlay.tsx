@@ -5,7 +5,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TOURS } from '@faisca/content';
-import { setTour, useApp } from '../store';
+import { openExercise, setTour, useApp } from '../store';
+import { builtInExercises } from '../panels/Exercise';
 import { evaluate, mistake, showMe } from './engine';
 import { ensureVisible } from '../view';
 
@@ -58,6 +59,7 @@ export function TourOverlay() {
   const [rect, setRect] = useState<Rect | null>(null);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<string | null>(null);
+  const [doneDomain, setDoneDomain] = useState<'domestic' | 'industrial'>('domestic');
   const sinceSeq = useRef(0);
   const tour = tourState ? TOURS[tourState.id] : undefined;
   const step = tour && tourState ? tour.steps[tourState.index] : undefined;
@@ -102,6 +104,7 @@ export function TourOverlay() {
         setTour(null);
         save(null);
         setDone(tour.doneTextKey ?? 'tour.ui.done.text');
+        setDoneDomain(tour.domain);
       } else setTour({ id: tourState.id, index: tourState.index + 1 });
     }, step?.waitFor.type === 'next' ? 0 : 600);
     return () => clearTimeout(id);
@@ -114,7 +117,17 @@ export function TourOverlay() {
           <h2 id="tour-done-title">{t('tour.ui.done.title')}</h2>
           <p>{t(done)}</p>
           <div className="buttons right">
-            <button disabled>{t('tour.ui.done.exercise')}</button>
+            <button
+              onClick={() => {
+                // O primeiro exercício do mesmo tema: o primeiro do nível Iniciante da área do tour.
+                const ex = builtInExercises().find((x) => x.domain === doneDomain && x.level === 'beginner');
+                setDone(null);
+                if (ex) openExercise(ex);
+              }}
+              data-testid="tour-first-exercise"
+            >
+              {t('tour.ui.done.exercise')}
+            </button>
             <button autoFocus onClick={() => setDone(null)}>
               {t('tour.ui.done.close')}
             </button>

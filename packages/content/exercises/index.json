@@ -1,0 +1,98 @@
+[
+  {
+    "id": "dom-light-point",
+    "file": "dom-light-point.faisca-ex",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "dom-stair",
+    "file": "dom-stair.faisca-ex",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "dom-sockets",
+    "file": "dom-sockets.faisca-ex",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "dom-bell",
+    "file": "dom-bell.faisca-ex",
+    "domain": "domestic",
+    "level": "beginner"
+  },
+  {
+    "id": "dom-board",
+    "file": "dom-board.faisca-ex",
+    "domain": "domestic",
+    "level": "pro"
+  },
+  {
+    "id": "dom-tt",
+    "file": "dom-tt.faisca-ex",
+    "domain": "domestic",
+    "level": "pro"
+  },
+  {
+    "id": "dom-cable",
+    "file": "dom-cable.faisca-ex",
+    "domain": "domestic",
+    "level": "pro"
+  },
+  {
+    "id": "dom-solar",
+    "file": "dom-solar.faisca-ex",
+    "domain": "domestic",
+    "level": "pro"
+  },
+  {
+    "id": "ind-dol",
+    "file": "ind-dol.faisca-ex",
+    "domain": "industrial",
+    "level": "beginner"
+  },
+  {
+    "id": "ind-signal",
+    "file": "ind-signal.faisca-ex",
+    "domain": "industrial",
+    "level": "beginner"
+  },
+  {
+    "id": "ind-reversing",
+    "file": "ind-reversing.faisca-ex",
+    "domain": "industrial",
+    "level": "beginner"
+  },
+  {
+    "id": "ind-star-delta",
+    "file": "ind-star-delta.faisca-ex",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "ind-pf",
+    "file": "ind-pf.faisca-ex",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "ind-selectivity",
+    "file": "ind-selectivity.faisca-ex",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "ind-plc-pump",
+    "file": "ind-plc-pump.faisca-ex",
+    "domain": "industrial",
+    "level": "pro"
+  },
+  {
+    "id": "ind-vfd",
+    "file": "ind-vfd.faisca-ex",
+    "domain": "industrial",
+    "level": "pro"
+  }
+]

@@ -215,6 +215,9 @@ test('tour completo só com «Mostrar-me», em francês', async ({ page }) => {
     await expect(tour.or(page.getByTestId('tour-done'))).not.toHaveAttribute('data-step', step, { timeout: 10_000 });
   }
   await expect(page.getByTestId('tour-done')).toContainText('Vous avez monté votre premier circuit');
+  // No fim, o tour propõe o primeiro exercício do mesmo tema.
+  await page.getByTestId('tour-first-exercise').click();
+  await expect(page.getByTestId('exercise')).toContainText('Point lumineux simple');
 });
 
 test('o tour retoma no mesmo passo pelo menu Ajuda', async ({ page }) => {

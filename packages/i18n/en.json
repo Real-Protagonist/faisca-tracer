@@ -22,7 +22,9 @@
       "newer_version": "This project was created with a newer version of Faísca. Update the application.",
       "no_migration": "This project cannot be converted to the current version.",
       "invalid": "The project is damaged and cannot be opened.",
-      "unknown_device": "The project uses equipment this version does not know."
+      "unknown_device": "The project uses equipment this version does not know.",
+      "not_exercise": "This file is not a Faísca exercise.",
+      "tampered": "The exercise was changed outside the exercise editor and cannot be opened."
     }
   },
   "category": {
@@ -947,7 +949,6 @@
       "open": "Open…",
       "save": "Save",
       "saveAs": "Save as…",
-      "export": "Export (PDF, PNG, bill of materials)",
       "print": "Print",
       "undo": "Undo",
       "redo": "Redo",
@@ -962,13 +963,19 @@
       "zoomIn": "Zoom in",
       "zoomOut": "Zoom out",
       "fit": "Fit to window",
-      "soon": "Available in a later version",
       "tour": "Guided tour",
       "about": "About Faísca",
       "project": "Project",
       "area": "Area: {{area}}",
       "level": "Level: {{level}}",
-      "wizard": "New project wizard…"
+      "wizard": "New project wizard…",
+      "exportPng": "Export diagram (PNG)",
+      "exportPdf": "Export diagram (PDF)",
+      "exportBom": "Export bill of materials (CSV/Excel)",
+      "exerciseList": "Exercise list…",
+      "exerciseOpen": "Open exercise file…",
+      "exerciseCreate": "Create exercise from this project…",
+      "exerciseClose": "Close exercise"
     },
     "tool": {
       "select": "Select",
@@ -1051,7 +1058,9 @@
       "library": "Library",
       "events": "Events",
       "problems": "Problems",
-      "matrix": "MNA matrix"
+      "matrix": "MNA matrix",
+      "check": "Compliance",
+      "exercise": "Exercise"
     },
     "library": {
       "all": "All",
@@ -1113,6 +1122,91 @@
         "ctu": "CTU counter",
         "res": "Reset T or C"
       }
+    },
+    "exercise": {
+      "none": "No exercise open. Choose one from the Exercises menu.",
+      "progress": "{{score}} of {{total}} objectives",
+      "checking": "Checking…",
+      "solutionShown": "solution viewed",
+      "objectives": "Objectives",
+      "ok": "Met",
+      "notYet": "Not met yet",
+      "done": "Exercise complete!",
+      "check": "Check now",
+      "restart": "Start over",
+      "solution": "Show solution",
+      "solutionConfirm": "Show the solution? The exercise will be marked as solved with help.",
+      "close": "Close exercise",
+      "listTitle": "Exercises",
+      "showAll": "Show all areas and levels",
+      "count": "Objectives: {{count}}"
+    },
+    "check": {
+      "run": "Check installation",
+      "rules": "Rules",
+      "loadRules": "Open rules file…",
+      "defaultRules": "Back to IEC rules",
+      "exportPdf": "Export report (PDF)",
+      "badRules": "The rules file is not valid.",
+      "intro": "Checks the diagram against indicative IEC 60364 rules: cable protection, voltage drop, RCDs, earthing, colours and breaking capacity.",
+      "introBeginner": "Checks the basics: earthing of exposed parts, cable colours, switches on the phase and RCD on sockets.",
+      "status": {
+        "pass": "Pass",
+        "fail": "Fail",
+        "na": "Not applicable"
+      },
+      "reportTitle": "Compliance check report",
+      "reference": "Reference",
+      "reportFile": "compliance"
+    },
+    "export": {
+      "legend": "Conductor colours",
+      "bom": "Bill of materials",
+      "qty": "Qty",
+      "names": "Reference",
+      "device": "Equipment",
+      "spec": "Characteristics",
+      "cable": "Cable {{section}} mm² {{material}}, {{conductor}} ({{color}})",
+      "runs": "{{count}} run(s)",
+      "length": "Length (m)",
+      "section": "Size (mm²)",
+      "material": "Material",
+      "conductor": "Conductor",
+      "runsHeader": "Runs",
+      "bomFile": "bill of materials"
+    },
+    "editor": {
+      "title": "Create exercise",
+      "intro": "The open project is the solution. Write the statement, choose which cables the student must connect and define the objectives.",
+      "exTitle": "Title",
+      "statement": "Statement",
+      "wires": "The student starts",
+      "wiresAll": "with no cables",
+      "wiresControl": "with the power circuit wired (2.5 mm² cables or larger)",
+      "wiresNone": "with all cables (only adjusts settings)",
+      "objText": "Objective text (e.g. «H1 lights with S1 on»)",
+      "remove": "Delete",
+      "kind": {
+        "works": "The load works",
+        "off": "The load does not work",
+        "opens": "The device opens (trip, contactor released)",
+        "clean": "No errors or warnings",
+        "measure": "Measurement within limits"
+      },
+      "min": "min",
+      "max": "max",
+      "given": "After:",
+      "wait": "wait {{s}} s",
+      "add": "+ objective",
+      "test": "Test against the solution",
+      "incomplete": "Fill in the title, the statement and the text of each objective.",
+      "notSolved": "The solution does not meet every objective: fix the project or the objectives.",
+      "saved": "Exercise exported.",
+      "export": "Export exercise (.faisca-ex)",
+      "device": "Device",
+      "action": "Command",
+      "addStep": "+ command",
+      "addWait": "+ wait 2 s"
     }
   },
   "example": {
@@ -1181,11 +1275,14 @@
       "example": "Open an example",
       "exampleHint": "Complete, working circuits to explore.",
       "exercise": "Start an exercise",
-      "exerciseSoon": "Exercises arrive in a later version."
+      "exerciseHint": "A task with objectives checked by the simulator and a score."
     },
     "examples": {
       "title": "Choose an example",
       "none": "There are no examples for this area and level yet."
+    },
+    "exercises": {
+      "title": "Choose an exercise"
     }
   },
   "cards": {
@@ -1244,6 +1341,193 @@
       "phase-loss": "Phase loss test: select the cable from relay 6 to motor W1 and tick «Cut wire».",
       "phase-fix": "Read the message, click «How to fix» and reconnect the cut cable.",
       "done": "You built a direct-on-line start with self-hold and a thermal relay, and saw how a phase loss is explained. Next comes the first industrial exercise."
+    }
+  },
+  "exercise": {
+    "dom-light-point": {
+      "title": "Simple light point",
+      "statement": "Connect the supply to breaker Q1 and build the light point: switch S1 controls lamp H1. The phase goes through the switch; the neutral goes straight to the lamp.",
+      "obj": {
+        "lit": "H1 lights with S1 on",
+        "off": "H1 is off with S1 off",
+        "phase": "S1 switches the phase, not the neutral",
+        "clean": "No wiring errors or warnings"
+      }
+    },
+    "dom-stair": {
+      "title": "Two-way switching",
+      "statement": "Build two-way switching: switches S1 and S2 turn lamp H1 on and off, one at each end of the stairs. Use two strapping wires between the switches.",
+      "obj": {
+        "toggle": "Each switch alone changes the state of H1",
+        "phase": "The switches are on the phase",
+        "clean": "No wiring errors or warnings"
+      }
+    },
+    "dom-sockets": {
+      "title": "Earthed sockets",
+      "statement": "Supply sockets X1 and X2 through RCD Q1 and breaker Q2, with 2.5 mm² cable. Connect the earth terminal of each socket to electrode E1.",
+      "obj": {
+        "x1": "X1 supplies the laptop",
+        "x2": "X2 supplies the kettle",
+        "pe": "Both sockets are earthed",
+        "rcd": "With a fault in X1, RCD Q1 trips"
+      }
+    },
+    "dom-bell": {
+      "title": "Doorbell with transformer",
+      "statement": "Bell B1 is rated 12 V. Supply transformer T1 through breaker Q1 and connect the bell to the secondary through push button S1.",
+      "obj": {
+        "rings": "B1 rings while S1 is pressed",
+        "silent": "B1 is silent with S1 released",
+        "voltage": "B1 receives its rated 12 V"
+      }
+    },
+    "dom-board": {
+      "title": "House board with 6 circuits",
+      "statement": "Complete the board: from RCD Q1, supply the six breakers through the busbars and connect each load to its breaker, with earth on class I loads. Keep Ib ≤ In ≤ Iz.",
+      "obj": {
+        "all": "All six loads work",
+        "rcd": "A fault on any socket trips Q1",
+        "ib": "Ib ≤ In ≤ Iz on every circuit",
+        "clean": "No errors or warnings"
+      }
+    },
+    "dom-tt": {
+      "title": "Protecting people in a TT system",
+      "statement": "The iron on X1 has a fault and person Z1 touches it. Electrode E1 is 200 Ω. Connect the earth and choose the right RCD so the person is protected.",
+      "obj": {
+        "safe": "No dangerous current flows through the person",
+        "trip": "RCD Q1 trips",
+        "touch": "Ra × IΔn ≤ 50 V"
+      }
+    },
+    "dom-cable": {
+      "title": "Cable sizing and voltage drop",
+      "statement": "Heater E1 (4500 W) is 40 m away from 25 A breaker Q1. Choose the cable size so the breaker protects the cable and the voltage drop stays below 5 %.",
+      "obj": {
+        "works": "E1 works",
+        "protected": "Q1 protects the cable (In ≤ Iz)",
+        "drop": "Voltage drop within the limit",
+        "overload": "The cable is not overloaded"
+      }
+    },
+    "dom-solar": {
+      "title": "Solar system with battery",
+      "statement": "Connect panel G1 to battery G2 and supply the 12 V lamp H1 from the battery, through fuse F1 and switch S1.",
+      "obj": {
+        "night": "At night, H1 lights with S1 on",
+        "charging": "In sunlight, the battery charges",
+        "fuse": "F1 protects the lamp cable",
+        "clean": "No errors or warnings"
+      }
+    },
+    "ind-dol": {
+      "title": "Direct-on-line start with self-hold",
+      "statement": "The power circuit is wired. Build the control circuit: S1 starts motor M1 and it keeps running after S1 is released; S0 stops it; thermal relay F1 switches it off on overload.",
+      "obj": {
+        "hold": "M1 keeps running after S1 is released",
+        "stop": "S0 stops M1",
+        "relay": "Tripping F1 stops M1",
+        "clean": "No errors or warnings"
+      }
+    },
+    "ind-signal": {
+      "title": "Running and trip indication",
+      "statement": "The direct-on-line start is wired. Connect green pilot light H1 to show the motor running and red H2 to show that thermal relay F1 has tripped.",
+      "obj": {
+        "idle": "With the motor stopped, both lights are off",
+        "run": "When running, only H1 lights",
+        "trip": "With F1 tripped, only H2 lights"
+      }
+    },
+    "ind-reversing": {
+      "title": "Reversing with interlock",
+      "statement": "The power circuit is wired: K2 swaps two phases. Build the control: S1 forward, S2 reverse, S0 stops, and K1 and K2 must never close together.",
+      "obj": {
+        "forward": "S1 runs M1 forward",
+        "reverse": "S2 runs M1 in reverse",
+        "interlock": "With K1 closed, S2 does not close K2",
+        "stop": "S0 stops M1"
+      }
+    },
+    "ind-star-delta": {
+      "title": "Star-delta start",
+      "statement": "The 7.5 kW motor starts in star and switches to delta after 5 s. Connect KM2 (star) and KM3 (delta) to terminals W2, U2 and V2 and build the control with timer KT.",
+      "obj": {
+        "star": "At start, KM2 closes and KM3 stays open",
+        "delta": "After KT, KM3 closes, KM2 opens and M1 keeps running",
+        "current": "Starting current stays below 50 A"
+      }
+    },
+    "ind-pf": {
+      "title": "Power factor correction",
+      "statement": "Motor M1 (15 kW) runs at a low PF. Connect capacitor bank C1 through Q2 and choose the reactive power so the supply PF exceeds 0.95 without over-compensating.",
+      "obj": {
+        "motor": "M1 is running",
+        "pf": "PF at least 0.95, without over-compensating (Q ≥ 0)"
+      }
+    },
+    "ind-selectivity": {
+      "title": "Selectivity between breakers",
+      "statement": "A short circuit at the end of the E1 line trips both Q1 and Q2. Choose breaker Q1 (rating and curve) so only Q2 trips, without leaving the Q1–Q2 cable unprotected.",
+      "obj": {
+        "works": "E1 works",
+        "selective": "With the short active, only Q2 trips",
+        "protected": "All cables are protected"
+      }
+    },
+    "ind-plc-pump": {
+      "title": "PLC pump with float switch",
+      "statement": "Everything is wired: float B1 on input I0, button S0 on I1, contactor K1 on Q0 and pilot light H1 on Q1. Write the ladder program of PLC A1.",
+      "obj": {
+        "high": "At high level, pump M1 runs",
+        "low": "At low level, the pump is stopped",
+        "stop": "Pressing S0 stops the pump",
+        "lamp": "H1 shows the high level"
+      }
+    },
+    "ind-vfd": {
+      "title": "Motor with frequency drive",
+      "statement": "Connect selector S1 to the inputs of drive T1 (24V, DI1 forward, DI2 reverse) and set the acceleration ramp to 5 s.",
+      "obj": {
+        "forward": "In position 1, M1 runs forward at 50 Hz",
+        "reverse": "In position 2, M1 runs in reverse",
+        "ramp": "The frequency rises over a 5 s ramp"
+      }
+    }
+  },
+  "compliance": {
+    "ib_in_iz": {
+      "title": "Ib ≤ In ≤ Iz on every circuit",
+      "item": "{{device}}: Ib {{ib}}, In {{in}}, Iz {{iz}}"
+    },
+    "voltage_drop": {
+      "title": "Voltage drop (lighting and other uses)",
+      "item": "{{device}}: {{drop}} (limit {{limit}})"
+    },
+    "rcd_sockets": {
+      "title": "Sockets protected by a high-sensitivity RCD",
+      "item": "{{device}}: RCD {{rcd}} ({{idn}})"
+    },
+    "tt_touch": {
+      "title": "TT system: Ra × IΔn ≤ touch voltage limit",
+      "item": "{{device}}: Ra {{ra}} × IΔn {{idn}} = {{ul}} (limit {{limit}})"
+    },
+    "pe": {
+      "title": "Class I exposed parts connected to the protective conductor",
+      "item": "{{device}}"
+    },
+    "colors": {
+      "title": "Conductor colours",
+      "item": "{{from}} → {{to}}: {{actual}} (expected {{expected}})"
+    },
+    "switch_phase": {
+      "title": "Single-pole switches on the phase",
+      "item": "{{device}}"
+    },
+    "breaking_capacity": {
+      "title": "Breaking capacity above the prospective short-circuit current",
+      "item": "{{device}}: Isc {{isc}} ≤ Icn {{icn}}"
     }
   }
 }

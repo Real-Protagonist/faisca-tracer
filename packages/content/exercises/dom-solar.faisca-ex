@@ -1,0 +1,364 @@
+{
+  "app": "faisca-ex",
+  "version": 1,
+  "exercise": {
+    "id": "dom-solar",
+    "domain": "domestic",
+    "level": "pro",
+    "title": {
+      "key": "exercise.dom-solar.title"
+    },
+    "statement": {
+      "key": "exercise.dom-solar.statement"
+    },
+    "objectives": [
+      {
+        "id": "night",
+        "text": {
+          "key": "exercise.dom-solar.obj.night"
+        },
+        "rule": {
+          "type": "state",
+          "device": "H1",
+          "is": "lit"
+        },
+        "given": [
+          {
+            "set": "G1",
+            "param": "irr",
+            "value": 0
+          },
+          {
+            "op": "S1",
+            "action": "switch_on"
+          }
+        ]
+      },
+      {
+        "id": "charging",
+        "text": {
+          "key": "exercise.dom-solar.obj.charging"
+        },
+        "rule": {
+          "type": "state",
+          "device": "G2",
+          "is": "charging",
+          "key": "meas.mode"
+        },
+        "given": [
+          {
+            "run": 1
+          }
+        ]
+      },
+      {
+        "id": "fuse",
+        "text": {
+          "key": "exercise.dom-solar.obj.fuse"
+        },
+        "rule": {
+          "type": "all",
+          "rules": [
+            {
+              "type": "state",
+              "device": "H1",
+              "is": "lit"
+            },
+            {
+              "type": "noDiag",
+              "codes": [
+                "CABLE_UNPROTECTED"
+              ]
+            }
+          ]
+        },
+        "given": [
+          {
+            "op": "S1",
+            "action": "switch_on"
+          }
+        ]
+      },
+      {
+        "id": "clean",
+        "text": {
+          "key": "exercise.dom-solar.obj.clean"
+        },
+        "rule": {
+          "type": "noDiag"
+        },
+        "given": [
+          {
+            "op": "S1",
+            "action": "switch_on"
+          },
+          {
+            "run": 1
+          }
+        ]
+      }
+    ],
+    "initial": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "domestic",
+      "level": "pro",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "solarPanel",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "Voc": 22,
+            "Isc": 6,
+            "irr": 100
+          },
+          "state": {}
+        },
+        {
+          "id": "d2",
+          "type": "battery",
+          "name": "G2",
+          "x": 260,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 12,
+            "Ah": 100,
+            "soc0": 60,
+            "Ri": 0.02
+          },
+          "state": {
+            "empty": false
+          }
+        },
+        {
+          "id": "d3",
+          "type": "fuseGG",
+          "name": "F1",
+          "x": 280,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "Icn": 100
+          },
+          "state": {
+            "blown": false
+          }
+        },
+        {
+          "id": "d4",
+          "type": "switch1",
+          "name": "S1",
+          "x": 440,
+          "y": 200,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "on": false
+          }
+        },
+        {
+          "id": "d5",
+          "type": "lampIncandescent",
+          "name": "H1",
+          "x": 600,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "P": 21,
+            "Vn": 12
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [],
+      "seq": 12
+    },
+    "solution": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "domestic",
+      "level": "pro",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "solarPanel",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "Voc": 22,
+            "Isc": 6,
+            "irr": 100
+          },
+          "state": {}
+        },
+        {
+          "id": "d2",
+          "type": "battery",
+          "name": "G2",
+          "x": 260,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 12,
+            "Ah": 100,
+            "soc0": 60,
+            "Ri": 0.02
+          },
+          "state": {
+            "empty": false
+          }
+        },
+        {
+          "id": "d3",
+          "type": "fuseGG",
+          "name": "F1",
+          "x": 280,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "Icn": 100
+          },
+          "state": {
+            "blown": false
+          }
+        },
+        {
+          "id": "d4",
+          "type": "switch1",
+          "name": "S1",
+          "x": 440,
+          "y": 200,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "on": false
+          }
+        },
+        {
+          "id": "d5",
+          "type": "lampIncandescent",
+          "name": "H1",
+          "x": 600,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "P": 21,
+            "Vn": 12
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [
+        {
+          "id": "w6",
+          "a": {
+            "device": "d1",
+            "terminal": "P"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "P"
+          },
+          "conductor": "DC+",
+          "section": 4,
+          "length": 3,
+          "material": "Cu"
+        },
+        {
+          "id": "w7",
+          "a": {
+            "device": "d1",
+            "terminal": "M"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "M"
+          },
+          "conductor": "DC-",
+          "section": 4,
+          "length": 3,
+          "material": "Cu"
+        },
+        {
+          "id": "w8",
+          "a": {
+            "device": "d2",
+            "terminal": "P"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "1"
+          },
+          "conductor": "DC+",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w9",
+          "a": {
+            "device": "d3",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "1"
+          },
+          "conductor": "DC+",
+          "section": 2.5,
+          "length": 3,
+          "material": "Cu"
+        },
+        {
+          "id": "w10",
+          "a": {
+            "device": "d4",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 3,
+          "material": "Cu"
+        },
+        {
+          "id": "w11",
+          "a": {
+            "device": "d5",
+            "terminal": "N"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "M"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 5,
+          "material": "Cu"
+        }
+      ],
+      "seq": 12
+    }
+  },
+  "seal": "1df3bd482932bab6751db33af4330fa3498cdb5ade906aa0f719f37300c69ecc"
+}

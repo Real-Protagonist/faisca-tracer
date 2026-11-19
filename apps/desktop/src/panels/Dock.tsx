@@ -1,4 +1,4 @@
-/** Doca inferior: biblioteca, Eventos, Problemas e Matriz MNA (Profissional). */
+/** Doca inferior: biblioteca, Eventos, Problemas, Verificação, Exercício e Matriz MNA (Profissional). */
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatNumber, lookFrom, type Category, type Device, type DeviceDef, type Diagnostic } from '@faisca/sim-core';
@@ -8,6 +8,8 @@ import { sizeOf } from '../editor/geometry';
 import { fmtTime } from '../format';
 import { centerOn } from '../view';
 import { i18n } from '../i18n';
+import { ExercisePanel } from './Exercise';
+import { CompliancePanel } from './Compliance';
 
 const CATEGORIES: Category[] = ['sources', 'protection', 'control', 'sensors', 'loads', 'motors', 'measurement', 'distribution', 'faults', 'annotations'];
 
@@ -16,7 +18,8 @@ export function Dock() {
   const tab = useApp((s) => s.dockTab);
   const level = useApp((s) => s.project.level);
   const problems = useApp((s) => s.snapshot?.diagnostics.filter((d) => d.severity !== 'info').length ?? 0);
-  const tabs: DockTab[] = ['library', 'events', 'problems', ...(level === 'pro' ? (['matrix'] as const) : [])];
+  const exercise = useApp((s) => !!s.exercise);
+  const tabs: DockTab[] = ['library', 'events', 'problems', 'check', ...(exercise ? (['exercise'] as const) : []), ...(level === 'pro' ? (['matrix'] as const) : [])];
   return (
     <section className="dock" aria-label={t('ui.dock.title')}>
       <div className="dock-tabs" role="tablist">
@@ -31,6 +34,8 @@ export function Dock() {
         {tab === 'library' && <Library />}
         {tab === 'events' && <Events />}
         {tab === 'problems' && <Problems />}
+        {tab === 'check' && <CompliancePanel />}
+        {tab === 'exercise' && <ExercisePanel />}
         {tab === 'matrix' && <Matrix />}
       </div>
     </section>

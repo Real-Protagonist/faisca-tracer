@@ -1,0 +1,1117 @@
+{
+  "app": "faisca-ex",
+  "version": 1,
+  "exercise": {
+    "id": "ind-signal",
+    "domain": "industrial",
+    "level": "beginner",
+    "title": {
+      "key": "exercise.ind-signal.title"
+    },
+    "statement": {
+      "key": "exercise.ind-signal.statement"
+    },
+    "objectives": [
+      {
+        "id": "idle",
+        "text": {
+          "key": "exercise.ind-signal.obj.idle"
+        },
+        "rule": {
+          "type": "then",
+          "first": {
+            "type": "state",
+            "device": "H1",
+            "is": "lit"
+          },
+          "steps": [
+            {
+              "press": "S0",
+              "hold": 0.3
+            },
+            {
+              "run": 6
+            }
+          ],
+          "rule": {
+            "type": "all",
+            "rules": [
+              {
+                "type": "state",
+                "device": "H1",
+                "is": "unlit"
+              },
+              {
+                "type": "state",
+                "device": "H2",
+                "is": "unlit"
+              }
+            ]
+          }
+        },
+        "given": [
+          {
+            "press": "S1",
+            "hold": 0.3
+          },
+          {
+            "run": 3
+          }
+        ]
+      },
+      {
+        "id": "run",
+        "text": {
+          "key": "exercise.ind-signal.obj.run"
+        },
+        "rule": {
+          "type": "all",
+          "rules": [
+            {
+              "type": "state",
+              "device": "H1",
+              "is": "lit"
+            },
+            {
+              "type": "state",
+              "device": "H2",
+              "is": "unlit"
+            }
+          ]
+        },
+        "given": [
+          {
+            "press": "S1",
+            "hold": 0.3
+          },
+          {
+            "run": 3
+          }
+        ]
+      },
+      {
+        "id": "trip",
+        "text": {
+          "key": "exercise.ind-signal.obj.trip"
+        },
+        "rule": {
+          "type": "all",
+          "rules": [
+            {
+              "type": "state",
+              "device": "H1",
+              "is": "unlit"
+            },
+            {
+              "type": "state",
+              "device": "H2",
+              "is": "lit"
+            }
+          ]
+        },
+        "given": [
+          {
+            "press": "S1",
+            "hold": 0.3
+          },
+          {
+            "run": 3
+          },
+          {
+            "op": "F1",
+            "action": "test"
+          },
+          {
+            "run": 1
+          }
+        ]
+      }
+    ],
+    "initial": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "industrial",
+      "level": "beginner",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "grid3ph",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 400,
+            "earthing": "TN-S",
+            "Zs": 0.03,
+            "Rb": 2
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d2",
+          "type": "motorBreaker",
+          "name": "Q1",
+          "x": 60,
+          "y": 160,
+          "rot": 0,
+          "params": {
+            "Ir": 8,
+            "Icn": 50
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d3",
+          "type": "contactor3p",
+          "name": "K1",
+          "x": 20,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "Uc": 230,
+            "In": 12
+          },
+          "state": {
+            "closed": false,
+            "coilBurnt": false
+          }
+        },
+        {
+          "id": "d4",
+          "type": "thermalRelay",
+          "name": "F1",
+          "x": 60,
+          "y": 500,
+          "rot": 0,
+          "params": {
+            "Ir": 7.7,
+            "cls": 10,
+            "resetMode": "manual"
+          },
+          "state": {
+            "tripped": false
+          }
+        },
+        {
+          "id": "d5",
+          "type": "motor3ph",
+          "name": "M1",
+          "x": 60,
+          "y": 660,
+          "rot": 0,
+          "params": {
+            "Pm": 4,
+            "Vn": "230/400",
+            "connection": "star",
+            "load": 80,
+            "inertia": "medium",
+            "poles": 4,
+            "PF": 0.85,
+            "eta": 0.88,
+            "kStart": 7
+          },
+          "state": {
+            "locked": false,
+            "burnt": false
+          }
+        },
+        {
+          "id": "d6",
+          "type": "buttonNC",
+          "name": "S0",
+          "x": 520,
+          "y": 160,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "pressed": false
+          }
+        },
+        {
+          "id": "d7",
+          "type": "buttonNO",
+          "name": "S1",
+          "x": 520,
+          "y": 320,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "pressed": false
+          }
+        },
+        {
+          "id": "d8",
+          "type": "pilotLight",
+          "name": "H1",
+          "x": 680,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "color": "green",
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        },
+        {
+          "id": "d9",
+          "type": "pilotLight",
+          "name": "H2",
+          "x": 800,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "color": "red",
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [
+        {
+          "id": "w10",
+          "a": {
+            "device": "d1",
+            "terminal": "L1"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w11",
+          "a": {
+            "device": "d1",
+            "terminal": "L2"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w12",
+          "a": {
+            "device": "d1",
+            "terminal": "L3"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w13",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w14",
+          "a": {
+            "device": "d2",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w15",
+          "a": {
+            "device": "d2",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w16",
+          "a": {
+            "device": "d3",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w17",
+          "a": {
+            "device": "d3",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w18",
+          "a": {
+            "device": "d3",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w19",
+          "a": {
+            "device": "d4",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "U1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w20",
+          "a": {
+            "device": "d4",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "V1"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w21",
+          "a": {
+            "device": "d4",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "W1"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w22",
+          "a": {
+            "device": "d1",
+            "terminal": "PE"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w23",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "95"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w24",
+          "a": {
+            "device": "d4",
+            "terminal": "96"
+          },
+          "b": {
+            "device": "d6",
+            "terminal": "11"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w25",
+          "a": {
+            "device": "d6",
+            "terminal": "12"
+          },
+          "b": {
+            "device": "d7",
+            "terminal": "13"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w26",
+          "a": {
+            "device": "d7",
+            "terminal": "13"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "13"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w27",
+          "a": {
+            "device": "d7",
+            "terminal": "14"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "14"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w28",
+          "a": {
+            "device": "d7",
+            "terminal": "14"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "A1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w29",
+          "a": {
+            "device": "d3",
+            "terminal": "A2"
+          },
+          "b": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        }
+      ],
+      "seq": 35
+    },
+    "solution": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "industrial",
+      "level": "beginner",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "grid3ph",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 400,
+            "earthing": "TN-S",
+            "Zs": 0.03,
+            "Rb": 2
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d2",
+          "type": "motorBreaker",
+          "name": "Q1",
+          "x": 60,
+          "y": 160,
+          "rot": 0,
+          "params": {
+            "Ir": 8,
+            "Icn": 50
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d3",
+          "type": "contactor3p",
+          "name": "K1",
+          "x": 20,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "Uc": 230,
+            "In": 12
+          },
+          "state": {
+            "closed": false,
+            "coilBurnt": false
+          }
+        },
+        {
+          "id": "d4",
+          "type": "thermalRelay",
+          "name": "F1",
+          "x": 60,
+          "y": 500,
+          "rot": 0,
+          "params": {
+            "Ir": 7.7,
+            "cls": 10,
+            "resetMode": "manual"
+          },
+          "state": {
+            "tripped": false
+          }
+        },
+        {
+          "id": "d5",
+          "type": "motor3ph",
+          "name": "M1",
+          "x": 60,
+          "y": 660,
+          "rot": 0,
+          "params": {
+            "Pm": 4,
+            "Vn": "230/400",
+            "connection": "star",
+            "load": 80,
+            "inertia": "medium",
+            "poles": 4,
+            "PF": 0.85,
+            "eta": 0.88,
+            "kStart": 7
+          },
+          "state": {
+            "locked": false,
+            "burnt": false
+          }
+        },
+        {
+          "id": "d6",
+          "type": "buttonNC",
+          "name": "S0",
+          "x": 520,
+          "y": 160,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "pressed": false
+          }
+        },
+        {
+          "id": "d7",
+          "type": "buttonNO",
+          "name": "S1",
+          "x": 520,
+          "y": 320,
+          "rot": 0,
+          "params": {},
+          "state": {
+            "pressed": false
+          }
+        },
+        {
+          "id": "d8",
+          "type": "pilotLight",
+          "name": "H1",
+          "x": 680,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "color": "green",
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        },
+        {
+          "id": "d9",
+          "type": "pilotLight",
+          "name": "H2",
+          "x": 800,
+          "y": 320,
+          "rot": 0,
+          "params": {
+            "color": "red",
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [
+        {
+          "id": "w10",
+          "a": {
+            "device": "d1",
+            "terminal": "L1"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w11",
+          "a": {
+            "device": "d1",
+            "terminal": "L2"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w12",
+          "a": {
+            "device": "d1",
+            "terminal": "L3"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w13",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w14",
+          "a": {
+            "device": "d2",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w15",
+          "a": {
+            "device": "d2",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w16",
+          "a": {
+            "device": "d3",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w17",
+          "a": {
+            "device": "d3",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "3"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w18",
+          "a": {
+            "device": "d3",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "5"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w19",
+          "a": {
+            "device": "d4",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "U1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w20",
+          "a": {
+            "device": "d4",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "V1"
+          },
+          "conductor": "L2",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w21",
+          "a": {
+            "device": "d4",
+            "terminal": "6"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "W1"
+          },
+          "conductor": "L3",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w22",
+          "a": {
+            "device": "d1",
+            "terminal": "PE"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 6,
+          "material": "Cu"
+        },
+        {
+          "id": "w23",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "95"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w24",
+          "a": {
+            "device": "d4",
+            "terminal": "96"
+          },
+          "b": {
+            "device": "d6",
+            "terminal": "11"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w25",
+          "a": {
+            "device": "d6",
+            "terminal": "12"
+          },
+          "b": {
+            "device": "d7",
+            "terminal": "13"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w26",
+          "a": {
+            "device": "d7",
+            "terminal": "13"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "13"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w27",
+          "a": {
+            "device": "d7",
+            "terminal": "14"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "14"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w28",
+          "a": {
+            "device": "d7",
+            "terminal": "14"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "A1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w29",
+          "a": {
+            "device": "d3",
+            "terminal": "A2"
+          },
+          "b": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w30",
+          "a": {
+            "device": "d3",
+            "terminal": "A1"
+          },
+          "b": {
+            "device": "d8",
+            "terminal": "X1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w31",
+          "a": {
+            "device": "d8",
+            "terminal": "X2"
+          },
+          "b": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w32",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "97"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w33",
+          "a": {
+            "device": "d4",
+            "terminal": "98"
+          },
+          "b": {
+            "device": "d9",
+            "terminal": "X1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w34",
+          "a": {
+            "device": "d9",
+            "terminal": "X2"
+          },
+          "b": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 1,
+          "material": "Cu"
+        }
+      ],
+      "seq": 35
+    }
+  },
+  "seal": "1b224d65c2e7c1dec080712c15e828c5619b754d95032fc0d96c6a340d7af11c"
+}

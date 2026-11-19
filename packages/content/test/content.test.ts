@@ -2,7 +2,8 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { allDiagnostics, defaultRegistry, DIAG_CODES, EVENT_CODES, parseProject, Simulator } from '../../sim-core/index';
+import { allDiagnostics, checkExercise, defaultRegistry, DIAG_CODES, EVENT_CODES, parseExercise, parseProject, Simulator } from '../../sim-core/index';
+import { buildExercises } from '../exercises';
 import { buildExamples } from '../examples';
 import pt from '../../i18n/pt.json';
 import type { Condition, ShowMe, Tour } from '../tour-types';
@@ -184,6 +185,37 @@ describe('tours', () => {
     it(`${tour.id}: ${n} passos numerados de 1 a ${n}, todos os que esperam uma acção têm «Mostrar-me»`, () => {
       expect([...new Set(tour.steps.map((s) => s.step))]).toEqual(Array.from({ length: n }, (_, i) => i + 1));
       for (const s of tour.steps) if (s.waitFor.type !== 'next') expect(s.showMeAction, s.id).toBeDefined();
+    });
+  }
+});
+
+describe('exercícios', () => {
+  const exDir = join(__dirname, '../exercises');
+  const built = buildExercises();
+
+  it('os ficheiros .faisca-ex estão actualizados e têm selo válido', () => {
+    const index = JSON.parse(readFileSync(join(exDir, 'index.json'), 'utf-8'));
+    expect(index.map((m: { id: string }) => m.id)).toEqual(built.map((e) => e.id));
+    for (const ex of built) {
+      const text = readFileSync(join(exDir, `${ex.id}.faisca-ex`), 'utf-8');
+      expect(JSON.parse(text).exercise, ex.id).toEqual(JSON.parse(JSON.stringify(ex)));
+      expect(() => parseExercise(text), ex.id).not.toThrow();
+    }
+  });
+
+  it('cobre a tabela do prompt: 4 + 4 domésticos, 3 + 5 industriais', () => {
+    const count = (d: string, l: string) => built.filter((e) => e.domain === d && e.level === l).length;
+    expect([count('domestic', 'beginner'), count('domestic', 'pro'), count('industrial', 'beginner'), count('industrial', 'pro')]).toEqual([4, 4, 3, 5]);
+  });
+
+  for (const ex of built) {
+    it(`${ex.id}: a solução cumpre todos os objectivos; o projecto inicial não`, () => {
+      expect(checkExercise(ex, ex.solution!).results.filter((r) => !r.ok).map((r) => r.id)).toEqual([]);
+      expect(checkExercise(ex, ex.initial).done).toBe(false);
+      // O inicial tem os mesmos aparelhos (o aluno só liga cabos e ajusta parâmetros).
+      const key = (P: typeof ex.initial) => P.devices.map((d) => `${d.id}|${d.type}|${d.name}`);
+      expect(key(ex.initial)).toEqual(key(ex.solution!));
+      expect(ex.initial.wires.length).toBeLessThanOrEqual(ex.solution!.wires.length);
     });
   }
 });

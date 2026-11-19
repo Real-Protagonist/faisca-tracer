@@ -45,45 +45,32 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
     const def = sim.registry.get(d.type);
     if (!def) continue;
     if (def.diagnose) out.push(...def.diagnose(d, ctx, sim.rt(d)));
+  }
 
-    // Queda de tensão desde a origem da instalação.
-    if (def.load) {
-      const { phase, neutral } = def.load;
-      const Vn = def.load.nominalVoltage(d);
-      const V = rms(view.vv(d, phase, neutral));
-      if (V < 0.5 * Vn) continue;
-      const pPin = topo.pin(d.id, phase);
-      const nPin = topo.pin(d.id, neutral);
-      const src = feedingSource(topo, pPin, nPin);
-      if (!src) continue;
-      const Vsrc = rms(view.vv(src.phase.device, src.phase.terminal, src.neutral.terminal));
-      const drop = (100 * (Vsrc - V)) / Vn;
-      const limit = def.load.lighting ? IEC_RULES.maxDropLighting : IEC_RULES.maxDropOther;
-      if (drop > limit) {
-        const path = [
-          ...(findPath(topo, pPin, new Set([src.phase.pin]), true) ?? []),
-          ...(findPath(topo, nPin, new Set([src.neutral.pin]), true) ?? []),
-        ];
-        const w = worstWire(sim, path);
-        const targets = [dev(d.id), ...(w ? [wire(w.id)] : [])];
-        out.push(
-          diag('VOLTAGE_DROP', 'warning', targets, {
-            device: d.name,
-            drop: fmt(drop, '%'),
-            limit: fmt(limit, '%'),
-            section: w ? fmt(w.section, 'mm²') : '—',
-            length: w ? fmt(w.length, 'm') : '—',
-          }, w?.id ?? d.id),
-        );
-      }
-    }
+  // Queda de tensão desde a origem da instalação.
+  for (const x of loadDrops(sim, topo)) {
+    const limit = x.lighting ? IEC_RULES.maxDropLighting : IEC_RULES.maxDropOther;
+    if (x.drop <= limit) continue;
+    const w = worstWire(sim, x.path);
+    const targets = [dev(x.device.id), ...(w ? [wire(w.id)] : [])];
+    out.push(
+      diag('VOLTAGE_DROP', 'warning', targets, {
+        device: x.device.name,
+        drop: fmt(x.drop, '%'),
+        limit: fmt(limit, '%'),
+        section: w ? fmt(w.section, 'mm²') : '—',
+        length: w ? fmt(w.length, 'm') : '—',
+      }, w?.id ?? x.device.id),
+    );
   }
 
   for (const w of P.wires) {
     if (w.fault?.cut) continue;
     const I = rms(view.iWire(w.id));
     const iz = ampacity(w);
-    const Ith = sim.wireThermalCurrent(w.id);
+    // Sobrecarga mantida: a corrente actual e a equivalente térmica (60 s) acima de Iz.
+    // Um arranque de motor (curto) ou uma carga que acabou de desligar não contam.
+    const Ith = Math.min(I, sim.wireThermalCurrent(w.id));
     if (Ith > iz * 1.001) {
       out.push(
         diag('CABLE_OVERLOAD', 'warning', [wire(w.id)], {
@@ -104,6 +91,37 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
   if (sim.unstable) {
     const ids = sim.unstableDevices;
     out.push(diag('CONTROL_UNSTABLE', 'error', ids.map(dev), { device: ids.length ? name(ids[0]!) : '—' }, ids[0]));
+  }
+  return out;
+}
+
+export interface LoadDrop {
+  device: Device;
+  /** Queda em % da tensão nominal da carga, desde a fonte. */
+  drop: number;
+  lighting: boolean;
+  /** Caminho da fase e do neutro até à fonte (para apontar o cabo pior). */
+  path: Edge[];
+}
+
+/** Queda de tensão de cada carga monofásica alimentada, desde a fonte que a alimenta. */
+export function loadDrops(sim: Simulator, topo: Topology = buildTopology(sim.project, sim.registry)): LoadDrop[] {
+  const view = sim.view();
+  const out: LoadDrop[] = [];
+  for (const d of sim.project.devices) {
+    const def = sim.registry.get(d.type);
+    if (!def?.load || def.load.phases) continue;
+    const { phase, neutral } = def.load;
+    const Vn = def.load.nominalVoltage(d);
+    const V = rms(view.vv(d, phase, neutral));
+    if (V < 0.5 * Vn) continue;
+    const pPin = topo.pin(d.id, phase);
+    const nPin = topo.pin(d.id, neutral);
+    const src = feedingSource(topo, pPin, nPin);
+    if (!src) continue;
+    const Vsrc = rms(view.vv(src.phase.device, src.phase.terminal, src.neutral.terminal));
+    const path = [...(findPath(topo, pPin, new Set([src.phase.pin]), true) ?? []), ...(findPath(topo, nPin, new Set([src.neutral.pin]), true) ?? [])];
+    out.push({ device: d, drop: (100 * (Vsrc - V)) / Vn, lighting: !!def.load.lighting, path });
   }
   return out;
 }

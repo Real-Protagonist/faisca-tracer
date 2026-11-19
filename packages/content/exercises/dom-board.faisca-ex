@@ -1,0 +1,1313 @@
+{
+  "app": "faisca-ex",
+  "version": 1,
+  "exercise": {
+    "id": "dom-board",
+    "domain": "domestic",
+    "level": "pro",
+    "title": {
+      "key": "exercise.dom-board.title"
+    },
+    "statement": {
+      "key": "exercise.dom-board.statement"
+    },
+    "objectives": [
+      {
+        "id": "all",
+        "text": {
+          "key": "exercise.dom-board.obj.all"
+        },
+        "rule": {
+          "type": "all",
+          "rules": [
+            {
+              "type": "working",
+              "device": "H1"
+            },
+            {
+              "type": "working",
+              "device": "X1"
+            },
+            {
+              "type": "working",
+              "device": "X2"
+            },
+            {
+              "type": "working",
+              "device": "E1"
+            },
+            {
+              "type": "working",
+              "device": "M1"
+            },
+            {
+              "type": "working",
+              "device": "H2"
+            }
+          ]
+        },
+        "given": [
+          {
+            "run": 2
+          }
+        ]
+      },
+      {
+        "id": "rcd",
+        "text": {
+          "key": "exercise.dom-board.obj.rcd"
+        },
+        "rule": {
+          "type": "deviceState",
+          "device": "Q1",
+          "key": "trip",
+          "value": "residual"
+        },
+        "given": [
+          {
+            "set": "X2",
+            "param": "defect",
+            "value": "strong"
+          },
+          {
+            "run": 0.3
+          }
+        ]
+      },
+      {
+        "id": "ib",
+        "text": {
+          "key": "exercise.dom-board.obj.ib"
+        },
+        "rule": {
+          "type": "compliance",
+          "rule": "ib_in_iz"
+        },
+        "given": [
+          {
+            "run": 2
+          }
+        ]
+      },
+      {
+        "id": "clean",
+        "text": {
+          "key": "exercise.dom-board.obj.clean"
+        },
+        "rule": {
+          "type": "noDiag"
+        },
+        "given": [
+          {
+            "run": 2
+          }
+        ]
+      }
+    ],
+    "initial": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "domestic",
+      "level": "pro",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "grid1ph",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 230,
+            "earthing": "TT",
+            "Zs": 0.15,
+            "Rb": 2
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d2",
+          "type": "mainSwitch2p",
+          "name": "Q0",
+          "x": 60,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "In": 40
+          },
+          "state": {
+            "closed": true
+          }
+        },
+        {
+          "id": "d3",
+          "type": "rcd2p",
+          "name": "Q1",
+          "x": 60,
+          "y": 340,
+          "rot": 0,
+          "params": {
+            "IDn": 30,
+            "In": 40,
+            "rcdType": "A"
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d4",
+          "type": "busbar",
+          "name": "X0",
+          "x": 220,
+          "y": 340,
+          "rot": 0,
+          "params": {
+            "bus": "L"
+          },
+          "state": {}
+        },
+        {
+          "id": "d5",
+          "type": "busbar",
+          "name": "X9",
+          "x": 220,
+          "y": 420,
+          "rot": 0,
+          "params": {
+            "bus": "N"
+          },
+          "state": {}
+        },
+        {
+          "id": "d6",
+          "type": "busbar",
+          "name": "X8",
+          "x": 560,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "bus": "PE"
+          },
+          "state": {}
+        },
+        {
+          "id": "d7",
+          "type": "earthElectrode",
+          "name": "E0",
+          "x": 860,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "Ra": 20
+          },
+          "state": {}
+        },
+        {
+          "id": "d15",
+          "type": "mcb1pn",
+          "name": "Q2",
+          "x": 360,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d16",
+          "type": "lampLed",
+          "name": "H1",
+          "x": 360,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 12,
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        },
+        {
+          "id": "d21",
+          "type": "mcb1pn",
+          "name": "Q3",
+          "x": 500,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d22",
+          "type": "socket",
+          "name": "X1",
+          "x": 500,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "appliance": "laptop",
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d28",
+          "type": "mcb1pn",
+          "name": "Q4",
+          "x": 640,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d29",
+          "type": "socket",
+          "name": "X2",
+          "x": 640,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "appliance": "microwave",
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d35",
+          "type": "mcb1pn",
+          "name": "Q5",
+          "x": 780,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d36",
+          "type": "heater",
+          "name": "E1",
+          "x": 780,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 2000,
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d42",
+          "type": "mcb1pn",
+          "name": "Q6",
+          "x": 920,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d43",
+          "type": "motor1ph",
+          "name": "M1",
+          "x": 920,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "Pm": 0.75,
+            "PF": 0.8,
+            "eta": 0.78,
+            "kStart": 6,
+            "inertia": "medium"
+          },
+          "state": {}
+        },
+        {
+          "id": "d49",
+          "type": "mcb1pn",
+          "name": "Q7",
+          "x": 1060,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d50",
+          "type": "lampIncandescent",
+          "name": "H2",
+          "x": 1060,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 100,
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [
+        {
+          "id": "w8",
+          "a": {
+            "device": "d1",
+            "terminal": "L"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 10,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w9",
+          "a": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 10,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w10",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w11",
+          "a": {
+            "device": "d2",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w14",
+          "a": {
+            "device": "d6",
+            "terminal": "E"
+          },
+          "b": {
+            "device": "d7",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 16,
+          "length": 5,
+          "material": "Cu"
+        }
+      ],
+      "seq": 55
+    },
+    "solution": {
+      "app": "faisca",
+      "version": 1,
+      "domain": "domestic",
+      "level": "pro",
+      "lang": "pt",
+      "frequency": 50,
+      "devices": [
+        {
+          "id": "d1",
+          "type": "grid1ph",
+          "name": "G1",
+          "x": 40,
+          "y": 20,
+          "rot": 0,
+          "params": {
+            "V": 230,
+            "earthing": "TT",
+            "Zs": 0.15,
+            "Rb": 2
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d2",
+          "type": "mainSwitch2p",
+          "name": "Q0",
+          "x": 60,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "In": 40
+          },
+          "state": {
+            "closed": true
+          }
+        },
+        {
+          "id": "d3",
+          "type": "rcd2p",
+          "name": "Q1",
+          "x": 60,
+          "y": 340,
+          "rot": 0,
+          "params": {
+            "IDn": 30,
+            "In": 40,
+            "rcdType": "A"
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d4",
+          "type": "busbar",
+          "name": "X0",
+          "x": 220,
+          "y": 340,
+          "rot": 0,
+          "params": {
+            "bus": "L"
+          },
+          "state": {}
+        },
+        {
+          "id": "d5",
+          "type": "busbar",
+          "name": "X9",
+          "x": 220,
+          "y": 420,
+          "rot": 0,
+          "params": {
+            "bus": "N"
+          },
+          "state": {}
+        },
+        {
+          "id": "d6",
+          "type": "busbar",
+          "name": "X8",
+          "x": 560,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "bus": "PE"
+          },
+          "state": {}
+        },
+        {
+          "id": "d7",
+          "type": "earthElectrode",
+          "name": "E0",
+          "x": 860,
+          "y": 200,
+          "rot": 0,
+          "params": {
+            "Ra": 20
+          },
+          "state": {}
+        },
+        {
+          "id": "d15",
+          "type": "mcb1pn",
+          "name": "Q2",
+          "x": 360,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d16",
+          "type": "lampLed",
+          "name": "H1",
+          "x": 360,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 12,
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        },
+        {
+          "id": "d21",
+          "type": "mcb1pn",
+          "name": "Q3",
+          "x": 500,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d22",
+          "type": "socket",
+          "name": "X1",
+          "x": 500,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "appliance": "laptop",
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d28",
+          "type": "mcb1pn",
+          "name": "Q4",
+          "x": 640,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d29",
+          "type": "socket",
+          "name": "X2",
+          "x": 640,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "appliance": "microwave",
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d35",
+          "type": "mcb1pn",
+          "name": "Q5",
+          "x": 780,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d36",
+          "type": "heater",
+          "name": "E1",
+          "x": 780,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 2000,
+            "defect": "none"
+          },
+          "state": {
+            "on": true
+          }
+        },
+        {
+          "id": "d42",
+          "type": "mcb1pn",
+          "name": "Q6",
+          "x": 920,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 16,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d43",
+          "type": "motor1ph",
+          "name": "M1",
+          "x": 920,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "Pm": 0.75,
+            "PF": 0.8,
+            "eta": 0.78,
+            "kStart": 6,
+            "inertia": "medium"
+          },
+          "state": {}
+        },
+        {
+          "id": "d49",
+          "type": "mcb1pn",
+          "name": "Q7",
+          "x": 1060,
+          "y": 520,
+          "rot": 0,
+          "params": {
+            "In": 10,
+            "curve": "C",
+            "Icn": 6
+          },
+          "state": {
+            "closed": true,
+            "trip": null
+          }
+        },
+        {
+          "id": "d50",
+          "type": "lampIncandescent",
+          "name": "H2",
+          "x": 1060,
+          "y": 700,
+          "rot": 0,
+          "params": {
+            "P": 100,
+            "Vn": 230
+          },
+          "state": {
+            "burnt": false
+          }
+        }
+      ],
+      "wires": [
+        {
+          "id": "w8",
+          "a": {
+            "device": "d1",
+            "terminal": "L"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 10,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w9",
+          "a": {
+            "device": "d1",
+            "terminal": "N"
+          },
+          "b": {
+            "device": "d2",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 10,
+          "length": 1,
+          "material": "Cu"
+        },
+        {
+          "id": "w10",
+          "a": {
+            "device": "d2",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w11",
+          "a": {
+            "device": "d2",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d3",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w12",
+          "a": {
+            "device": "d3",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d4",
+            "terminal": "E"
+          },
+          "conductor": "L1",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w13",
+          "a": {
+            "device": "d3",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d5",
+            "terminal": "E"
+          },
+          "conductor": "N",
+          "section": 10,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w14",
+          "a": {
+            "device": "d6",
+            "terminal": "E"
+          },
+          "b": {
+            "device": "d7",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 16,
+          "length": 5,
+          "material": "Cu"
+        },
+        {
+          "id": "w17",
+          "a": {
+            "device": "d4",
+            "terminal": "S1"
+          },
+          "b": {
+            "device": "d15",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w18",
+          "a": {
+            "device": "d5",
+            "terminal": "S1"
+          },
+          "b": {
+            "device": "d15",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w19",
+          "a": {
+            "device": "d15",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d16",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w20",
+          "a": {
+            "device": "d15",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d16",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w23",
+          "a": {
+            "device": "d4",
+            "terminal": "S2"
+          },
+          "b": {
+            "device": "d21",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w24",
+          "a": {
+            "device": "d5",
+            "terminal": "S2"
+          },
+          "b": {
+            "device": "d21",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w25",
+          "a": {
+            "device": "d21",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d22",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w26",
+          "a": {
+            "device": "d21",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d22",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w27",
+          "a": {
+            "device": "d6",
+            "terminal": "S1"
+          },
+          "b": {
+            "device": "d22",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w30",
+          "a": {
+            "device": "d4",
+            "terminal": "S3"
+          },
+          "b": {
+            "device": "d28",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w31",
+          "a": {
+            "device": "d5",
+            "terminal": "S3"
+          },
+          "b": {
+            "device": "d28",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w32",
+          "a": {
+            "device": "d28",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d29",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w33",
+          "a": {
+            "device": "d28",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d29",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w34",
+          "a": {
+            "device": "d6",
+            "terminal": "S2"
+          },
+          "b": {
+            "device": "d29",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w37",
+          "a": {
+            "device": "d4",
+            "terminal": "S4"
+          },
+          "b": {
+            "device": "d35",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w38",
+          "a": {
+            "device": "d5",
+            "terminal": "S4"
+          },
+          "b": {
+            "device": "d35",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w39",
+          "a": {
+            "device": "d35",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d36",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w40",
+          "a": {
+            "device": "d35",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d36",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w41",
+          "a": {
+            "device": "d6",
+            "terminal": "S3"
+          },
+          "b": {
+            "device": "d36",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w44",
+          "a": {
+            "device": "d4",
+            "terminal": "S5"
+          },
+          "b": {
+            "device": "d42",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w45",
+          "a": {
+            "device": "d5",
+            "terminal": "S5"
+          },
+          "b": {
+            "device": "d42",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w46",
+          "a": {
+            "device": "d42",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d43",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w47",
+          "a": {
+            "device": "d42",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d43",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w48",
+          "a": {
+            "device": "d6",
+            "terminal": "S4"
+          },
+          "b": {
+            "device": "d43",
+            "terminal": "PE"
+          },
+          "conductor": "PE",
+          "section": 2.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w51",
+          "a": {
+            "device": "d4",
+            "terminal": "S6"
+          },
+          "b": {
+            "device": "d49",
+            "terminal": "1"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w52",
+          "a": {
+            "device": "d5",
+            "terminal": "S6"
+          },
+          "b": {
+            "device": "d49",
+            "terminal": "3"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 0.5,
+          "material": "Cu"
+        },
+        {
+          "id": "w53",
+          "a": {
+            "device": "d49",
+            "terminal": "2"
+          },
+          "b": {
+            "device": "d50",
+            "terminal": "L"
+          },
+          "conductor": "L1",
+          "section": 1.5,
+          "length": 12,
+          "material": "Cu"
+        },
+        {
+          "id": "w54",
+          "a": {
+            "device": "d49",
+            "terminal": "4"
+          },
+          "b": {
+            "device": "d50",
+            "terminal": "N"
+          },
+          "conductor": "N",
+          "section": 1.5,
+          "length": 12,
+          "material": "Cu"
+        }
+      ],
+      "seq": 55
+    }
+  },
+  "seal": "1a6c647ce1c76438ba4996d4ffb3a9bde7deb3bc64e9e3d7b5a0144370a2dbc1"
+}

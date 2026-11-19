@@ -12,8 +12,10 @@ import {
   EVENT_CODES,
   defaultRegistry,
   Simulator,
+  COMPLIANCE_RULES,
   type Measurement,
 } from '../../sim-core/index';
+import { buildExercises } from '../../content/exercises';
 
 type Tree = { [k: string]: string | Tree };
 const LANGS = { pt, en, fr } as Record<string, Tree>;
@@ -97,7 +99,12 @@ function requiredKeys(): Set<string> {
     add(`color.${c}`);
     add(`role.${c}`);
   }
-  for (const k of ['not_faisca', 'newer_version', 'no_migration', 'invalid', 'unknown_device']) add(`file.error.${k}`);
+  for (const k of ['not_faisca', 'newer_version', 'no_migration', 'invalid', 'unknown_device', 'not_exercise', 'tampered']) add(`file.error.${k}`);
+  for (const r of COMPLIANCE_RULES) for (const part of ['title', 'item']) add(`compliance.${r}.${part}`);
+  // Exercícios incluídos: título, enunciado e cada objectivo.
+  for (const ex of buildExercises()) {
+    for (const x of [ex.title, ex.statement, ...ex.objectives.map((o) => o.text)]) if ('key' in x) add(x.key);
+  }
   add('app.disclaimer');
   return keys;
 }
@@ -174,7 +181,8 @@ describe('cobertura da interface', () => {
     // Chaves construídas em tempo de execução.
     for (const k of ['file', 'edit', 'view', 'project', 'simulation', 'exercises', 'tools', 'help']) keys.add(`ui.menu.${k}`);
     for (const k of ['select', 'operate', 'wire', 'probe', 'clamp', 'delete']) keys.add(`ui.tool.${k}`);
-    for (const k of ['library', 'events', 'problems', 'matrix']) keys.add(`ui.dock.${k}`);
+    for (const k of ['library', 'events', 'problems', 'check', 'exercise', 'matrix']) keys.add(`ui.dock.${k}`);
+    for (const k of ['pass', 'fail', 'na']) keys.add(`ui.check.status.${k}`);
     for (const k of ['A1', 'B1', 'C']) keys.add(`ui.method.${k}`);
     for (const k of ['domestic', 'industrial']) keys.add(`wizard.area.${k}`);
     for (const k of ['beginner', 'pro']) keys.add(`wizard.level.${k}`);

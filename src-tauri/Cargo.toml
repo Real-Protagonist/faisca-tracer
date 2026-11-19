@@ -1,6 +1,6 @@
 [package]
 name = "faisca"
-version = "0.2.0"
+version = "1.0.0"
 description = "Faísca — simulador didáctico de instalações eléctricas"
 edition = "2021"
 

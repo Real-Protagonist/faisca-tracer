@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Faísca",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "identifier": "app.faisca.desktop",
   "build": {
     "frontendDist": "../apps/desktop/dist",
@@ -29,8 +29,53 @@
     "targets": "all",
     "category": "Education",
     "shortDescription": "Simulador didáctico de instalações eléctricas",
-    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-    "fileAssociations": [{ "ext": ["faisca"], "name": "Projecto Faísca", "role": "Editor", "mimeType": "application/x-faisca" }],
-    "windows": { "webviewInstallMode": { "type": "embedBootstrapper" } }
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": [
+          "faisca"
+        ],
+        "name": "Projecto Faísca",
+        "role": "Editor",
+        "mimeType": "application/x-faisca"
+      },
+      {
+        "ext": [
+          "faisca-ex"
+        ],
+        "name": "Exercício Faísca",
+        "role": "Viewer",
+        "mimeType": "application/x-faisca-ex"
+      }
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "Portuguese",
+          "English",
+          "French"
+        ],
+        "displayLanguageSelector": true
+      }
+    },
+    "linux": {
+      "deb": {
+        "section": "education"
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "10.15"
+    }
   }
 }
