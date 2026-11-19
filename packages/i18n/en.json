@@ -1214,10 +1214,6 @@
     "donations": {
       "title": "Support {{app}}",
       "intro": "{{app}} is free. If it helps you, you can support its development with a donation.",
-      "visa": {
-        "title": "From abroad — Visa card",
-        "note": "For international donations."
-      },
       "bank": {
         "title": "In Angola — bank transfer",
         "note": "For national transfers (Kz)."
@@ -1239,7 +1235,11 @@
       },
       "copy": "Copy",
       "copied": "Copied",
-      "missing": "To be filled in"
+      "missing": "To be filled in",
+      "international": {
+        "title": "From abroad — international transfer",
+        "note": "For international donations: give your bank the IBAN and the SWIFT/BIC code."
+      }
     }
   },
   "example": {

@@ -1214,10 +1214,6 @@
     "donations": {
       "title": "Apoie o {{app}}",
       "intro": "O {{app}} é gratuito. Se lhe é útil, pode apoiar o seu desenvolvimento com uma doação.",
-      "visa": {
-        "title": "Do estrangeiro — cartão Visa",
-        "note": "Para doações internacionais."
-      },
       "bank": {
         "title": "Em Angola — transferência bancária",
         "note": "Para transferências nacionais (Kz)."
@@ -1239,7 +1235,11 @@
       },
       "copy": "Copiar",
       "copied": "Copiado",
-      "missing": "A preencher"
+      "missing": "A preencher",
+      "international": {
+        "title": "Do estrangeiro — transferência internacional",
+        "note": "Para doações internacionais: indique o IBAN e o código SWIFT/BIC no seu banco."
+      }
     }
   },
   "example": {

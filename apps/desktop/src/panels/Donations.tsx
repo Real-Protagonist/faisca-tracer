@@ -1,11 +1,11 @@
-/** Modal «Doações»: Visa (internacional), conta bancária angolana (nacional) e Bitcoin. */
+/** Modal «Doações»: transferência internacional (IBAN + SWIFT/BIC), conta bancária angolana (nacional) e Bitcoin. */
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { APP_NAME, DONATIONS } from '../brand';
 
 /** Chaves literais (o teste de traduções encontra-as no código). */
-const TITLE: Record<string, string> = { visa: 'ui.donations.visa.title', bank: 'ui.donations.bank.title', bitcoin: 'ui.donations.bitcoin.title' };
-const NOTE: Record<string, string> = { visa: 'ui.donations.visa.note', bank: 'ui.donations.bank.note', bitcoin: 'ui.donations.bitcoin.note' };
+const TITLE: Record<string, string> = { international: 'ui.donations.international.title', bank: 'ui.donations.bank.title', bitcoin: 'ui.donations.bitcoin.title' };
+const NOTE: Record<string, string> = { international: 'ui.donations.international.note', bank: 'ui.donations.bank.note', bitcoin: 'ui.donations.bitcoin.note' };
 const FIELD: Record<string, string> = {
   holder: 'ui.donations.field.holder',
   bank: 'ui.donations.field.bank',

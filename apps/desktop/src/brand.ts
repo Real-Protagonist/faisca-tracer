@@ -17,17 +17,19 @@ export interface DonationField {
 
 export interface DonationMethod {
   /** Chave de tradução do título (`ui.donations.<id>.title`) e da nota (`ui.donations.<id>.note`). */
-  id: 'visa' | 'bank' | 'bitcoin';
+  id: 'international' | 'bank' | 'bitcoin';
   fields: DonationField[];
 }
 
-/** Contas para doações: internacional (Visa), nacional (banco angolano) e Bitcoin. */
+/** Contas para doações: transferência internacional (IBAN + SWIFT/BIC), nacional (banco angolano) e Bitcoin. */
 export const DONATIONS: DonationMethod[] = [
   {
-    id: 'visa',
+    id: 'international',
     fields: [
+      { key: 'bank', value: '' },
       { key: 'holder', value: '' },
-      { key: 'link', value: '' },
+      { key: 'iban', value: '' },
+      { key: 'swift', value: '' },
     ],
   },
   {

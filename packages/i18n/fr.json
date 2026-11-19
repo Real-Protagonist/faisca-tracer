@@ -1214,10 +1214,6 @@
     "donations": {
       "title": "Soutenez {{app}}",
       "intro": "{{app}} est gratuit. S’il vous est utile, vous pouvez soutenir son développement par un don.",
-      "visa": {
-        "title": "Depuis l’étranger — carte Visa",
-        "note": "Pour les dons internationaux."
-      },
       "bank": {
         "title": "En Angola — virement bancaire",
         "note": "Pour les virements nationaux (Kz)."
@@ -1239,7 +1235,11 @@
       },
       "copy": "Copier",
       "copied": "Copié",
-      "missing": "À compléter"
+      "missing": "À compléter",
+      "international": {
+        "title": "Depuis l’étranger — virement international",
+        "note": "Pour les dons internationaux : indiquez à votre banque l’IBAN et le code SWIFT/BIC."
+      }
     }
   },
   "example": {
