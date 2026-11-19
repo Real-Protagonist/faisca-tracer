@@ -2,6 +2,7 @@
 name = "faisca-tracer"
 version = "1.0.0"
 description = "Faísca Tracer — simulador didáctico de instalações eléctricas"
+homepage = "https://faiscatracer.com"
 edition = "2021"
 
 [lib]

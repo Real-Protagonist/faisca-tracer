@@ -1,6 +1,6 @@
 # Faísca Tracer
 
-> Nome com acento na interface; sem acento nos ficheiros, no domínio e nas lojas: «Faisca Tracer», `faisca-tracer`, identificador `app.faiscatracer.desktop`. Projectos `.fast` e exercícios `.fast-ex` (os antigos `.faisca` e `.faisca-ex` continuam a abrir). Dados do autor e contas para doações: `apps/desktop/src/brand.ts`.
+> Nome com acento na interface; sem acento nos ficheiros, no domínio e nas lojas: «Faisca Tracer», `faisca-tracer`, domínio `faiscatracer.com`, identificador `com.faiscatracer.desktop`. Projectos `.fast` e exercícios `.fast-ex` (os antigos `.faisca` e `.faisca-ex` continuam a abrir). Dados do autor e contas para doações: `apps/desktop/src/brand.ts`.
 
 Simulador didáctico de instalações eléctricas: monte circuitos com equipamentos reais, opere interruptores e protecções, meça grandezas e perceba cada falha.
 
