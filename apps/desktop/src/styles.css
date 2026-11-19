@@ -307,3 +307,12 @@ table.list tr:hover { background: var(--ui-bg3); }
 .ladder .nc.active { background: #6b3a3a; }
 .ladder .coil-row { display: flex; gap: 4px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
 .ladder .preset { width: 56px; background: var(--ui-bg3); border: 1px solid var(--ui-line); border-radius: 4px; }
+
+/* Vista física 3D */
+.view3d { position: relative; width: 100%; height: 100%; background: #1a2029; }
+.view3d canvas { display: block; }
+.view3d-bar { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; align-items: center; gap: 12px; pointer-events: none; }
+.view3d-bar > * { pointer-events: auto; }
+.view3d-bar .check { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 5px; background: #0e1118cc; color: var(--ui-text); }
+.view3d-bar .hint { padding: 4px 8px; border-radius: 5px; background: #0e1118aa; color: var(--ui-muted); font-size: 12px; }
+.view3d-bar .fps { margin-left: auto; padding: 4px 8px; border-radius: 5px; background: #0e1118cc; color: #9ff0c4; font: 12px monospace; }

@@ -989,7 +989,13 @@
       "physical": "Physique 3D"
     },
     "view3d": {
-      "soon": "La vue physique 3D arrive en phase 5."
+      "title": "Vue physique 3D",
+      "mode": "Mode de vue",
+      "bench": "Banc didactique",
+      "real": "Installation réelle",
+      "names": "Noms",
+      "hint": "Faites glisser pour tourner, utilisez la molette pour zoomer et cliquez sur un appareil pour le manœuvrer.",
+      "fps": "{{fps}} i/s"
     },
     "sim": {
       "mode": "Mode de simulation",

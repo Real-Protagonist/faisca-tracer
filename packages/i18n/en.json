@@ -989,7 +989,13 @@
       "physical": "Physical 3D"
     },
     "view3d": {
-      "soon": "The physical 3D view arrives in Phase 5."
+      "title": "3D physical view",
+      "mode": "View mode",
+      "bench": "Training bench",
+      "real": "Real installation",
+      "names": "Names",
+      "hint": "Drag to orbit, scroll to zoom and click a device to operate it.",
+      "fps": "{{fps}} fps"
     },
     "sim": {
       "mode": "Simulation mode",

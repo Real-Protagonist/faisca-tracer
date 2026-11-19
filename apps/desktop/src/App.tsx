@@ -1,5 +1,5 @@
 /** Janela principal: menus, ferramentas, área de trabalho, propriedades e doca, como no Packet Tracer. */
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuBar } from './panels/MenuBar';
 import { Toolbar } from './panels/Toolbar';
@@ -8,7 +8,6 @@ import { Dock } from './panels/Dock';
 import { About } from './panels/About';
 import { Canvas } from './editor/Canvas';
 import { Meter } from './editor/Meter';
-import { Physical3D } from './view3d/Physical3D';
 import { ErrorCards } from './messages/ErrorCards';
 import { Wizard } from './onboarding/Wizard';
 import { TourOverlay } from './tour/TourOverlay';
@@ -30,6 +29,9 @@ import {
   type Tool,
 } from './store';
 import { fitView, zoomBy } from './view';
+
+/** A vista 3D (Three.js) só se carrega quando se abre o separador «Físico 3D». */
+const Physical3D = lazy(() => import('./view3d/Physical3D').then((m) => ({ default: m.Physical3D })));
 
 const TOOL_KEYS: Record<string, Tool> = { v: 'select', h: 'operate', w: 'wire', m: 'probe', p: 'clamp', d: 'delete' };
 
@@ -133,7 +135,13 @@ export function App() {
       )}
       <main className="work">
         <div className="stage">
-          {tab === 'logic' ? <Canvas /> : <Physical3D />}
+          {tab === 'logic' ? (
+            <Canvas />
+          ) : (
+            <Suspense fallback={<div className="view3d" />}>
+              <Physical3D />
+            </Suspense>
+          )}
           {tab === 'logic' && <Meter />}
           {tab === 'logic' && <ErrorCards />}
         </div>

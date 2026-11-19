@@ -31,6 +31,17 @@ Os tours são JSON editáveis: cada passo tem `{ id, step, targetSelector, textK
 
 Condições (`waitFor.type`): `next`, `deviceExists`, `wire`, `chain`, `loadState`, `probe`, `tab`, `event`, `flag`, `deviceState`, `param` (parâmetro entre `min` e `max`), `diag` (código presente ou ausente), `wireCut` (cabo cortado ou inteiro) e `all`. Acções de «Mostrar-me»: `place`, `wire`, `operate`, `press` (premir e largar), `probe`, `tab`, `flag`, `param`, `wireCut` e `sequence`.
 
+### Vista física 3D
+
+O separador «Físico 3D» (`apps/desktop/src/view3d`) gera a cena a partir do esquema, com Three.js e React Three Fiber, em dois modos:
+
+- **Bancada didáctica:** painel vertical com cada aparelho na posição do esquema, os modulares em calhas DIN e os cabos pelo mesmo percurso do esquema 2D, com as cores dos condutores.
+- **Instalação real:** casa (doméstica) ou nave (industrial). Os aparelhos de protecção e comando ficam num quadro na parede; as lâmpadas no tecto; interruptores, tomadas e botoneiras na parede mais próxima; motores no chão; a fonte e o eléctrodo de terra numa laje exterior. Os cabos aparecem como tubos pelo tecto.
+
+Cada `model3d` do núcleo tem um modelo em `view3d/models.ts`: uma malha fixa com cor por vértice, partilhada entre aparelhos iguais, mais as partes móveis (alavancas que caem no disparo, lâmpadas e sinalizadores que acendem, motores que rodam no sentido certo, contactores com bandeirola, botões que afundam, LED do PLC). Clicar num aparelho selecciona-o e opera-o. Os estados animam-se num só ciclo por fotograma, sem renderizar o React a cada passo da simulação.
+
+Desempenho medido com 100 aparelhos numa AMD Radeon integrada: 60 fps nos dois modos, cerca de 320 chamadas de desenho e 50 mil triângulos, menos de 1 ms de lógica por fotograma. O teste `e2e/phase5-fps.spec.ts` repete a medição com a placa gráfica, sozinho e depois dos outros testes (é saltado numa máquina sem GPU). Na aplicação nativa (WebView2) a medição dá o mesmo: 60 fps.
+
 ### Programa do autómato (ladder)
 
 O PLC guarda o programa no parâmetro `program`, em JSON, dentro do próprio `.faisca`:

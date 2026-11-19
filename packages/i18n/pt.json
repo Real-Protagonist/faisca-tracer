@@ -989,7 +989,13 @@
       "physical": "Físico 3D"
     },
     "view3d": {
-      "soon": "A vista física 3D chega na Fase 5."
+      "title": "Vista física 3D",
+      "mode": "Modo da vista",
+      "bench": "Bancada didáctica",
+      "real": "Instalação real",
+      "names": "Nomes",
+      "hint": "Arraste para rodar, use a roda para aproximar e clique num aparelho para o operar.",
+      "fps": "{{fps}} fps"
     },
     "sim": {
       "mode": "Modo de simulação",

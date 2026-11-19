@@ -15,6 +15,7 @@ export const frame: DeviceDef = {
   initialState: () => ({}),
   annotation: true,
   sizeOf: (d) => ({ w: Number(d.params.W) || 400, h: Number(d.params.H) || 300 }),
+  model3d: 'frame',
   symbol: (d) => [{ t: 'rect', x: 0, y: 0, w: Number(d.params.W), h: Number(d.params.H), cls: 'frame', rx: 6 }, { t: 'text', x: 10, y: 18, text: String(d.params.title ?? ''), cls: 'txt frame-title', anchor: 'start' }],
 };
 
@@ -30,6 +31,7 @@ export const note: DeviceDef = {
   params: [{ key: 'text', kind: 'text', default: '' }],
   initialState: () => ({}),
   annotation: true,
+  model3d: 'note',
   symbol(d) {
     const words = String(d.params.text ?? '').split(/\s+/);
     const lines: string[] = [];

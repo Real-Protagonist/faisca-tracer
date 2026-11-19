@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   clearScreen: false,
   server: { port: 1420, strictPort: true },
-  build: { target: 'es2022', outDir: 'dist', emptyOutDir: true },
+  // A vista 3D (Three.js, ~860 kB) é um ficheiro à parte, carregado só ao abrir o separador «Físico 3D».
+  build: { target: 'es2022', outDir: 'dist', emptyOutDir: true, chunkSizeWarningLimit: 1000 },
   worker: { format: 'es' },
 });
