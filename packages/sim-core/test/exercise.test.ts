@@ -61,7 +61,7 @@ describe('selo SHA-256', () => {
     expect(sha256('abc')).toBe('ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
     expect(sha256('')).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
     expect(sha256('a'.repeat(1000))).toBe('41edece42d63e8d9bf515a9ba6932e1c20cbc9f5a5d134645adb5db1b9737ea3');
-    for (const s of ['Faísca ⚡ instalação', 'ç'.repeat(77), JSON.stringify({ a: [1, 2, 'três'] }), 'x'.repeat(55), 'y'.repeat(64)])
+    for (const s of ['Faísca Tracer ⚡ instalação', 'ç'.repeat(77), JSON.stringify({ a: [1, 2, 'três'] }), 'x'.repeat(55), 'y'.repeat(64)])
       expect(sha256(s)).toBe(createHash('sha256').update(s, 'utf8').digest('hex'));
   });
 

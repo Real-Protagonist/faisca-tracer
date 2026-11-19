@@ -2,7 +2,7 @@
 import { useTranslation } from 'react-i18next';
 import { SECTIONS, type Conductor } from '@faisca/sim-core';
 import { redo, rotateSelection, setSim, stepOnce, ui, undo, useApp, type Tool } from '../store';
-import { fmtTime } from '../format';
+import { fmtClock } from '../format';
 import { fitView, zoomBy } from '../view';
 
 const TOOLS: { id: Tool; icon: string; key: string }[] = [
@@ -110,8 +110,8 @@ export function Toolbar() {
             </option>
           ))}
         </select>
-        <span className="clock" aria-label={t('ui.sim.clock')} data-testid="clock">
-          {fmtTime(time, lang)}
+        <span className="clock" aria-label={t('ui.sim.clock')} title={t('ui.sim.clockSeconds', { s: time.toFixed(2) })} data-testid="clock" data-seconds={time.toFixed(3)}>
+          {fmtClock(time, !sim.realtime, lang)}
         </span>
       </div>
     </div>

@@ -169,7 +169,7 @@ export function buildSheet(P: Project, measurements: Record<string, Measurement[
           {P.name || t('ui.untitled')} · {t(`domain.${P.domain}`)} · {date}
         </text>
         <text x={20} y={33} fontSize={10} fill="#5a6577">
-          Faísca — {t('app.disclaimer')}
+          Faísca Tracer — {t('app.disclaimer')}
         </text>
       </g>
     </svg>

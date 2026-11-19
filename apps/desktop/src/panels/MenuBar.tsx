@@ -7,6 +7,7 @@ import { newProject, openExerciseFile, openProject, openRecent, saveProject } fr
 const exp = () => import('../export/export');
 import { ExerciseList } from './Exercise';
 import { ExerciseEditor } from './ExerciseEditor';
+import { Donations } from './Donations';
 import { startTour, TOUR_OF } from '../tour/TourOverlay';
 import { isTauri, recentFiles } from '../platform/files';
 import { rememberLang } from '../i18n';
@@ -44,7 +45,7 @@ interface Item {
 export function MenuBar({ onAbout }: { onAbout: () => void }) {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState<string | null>(null);
-  const [modal, setModal] = useState<'exercises' | 'editor' | null>(null);
+  const [modal, setModal] = useState<'exercises' | 'editor' | 'donations' | null>(null);
   const exercise = useApp((s) => !!s.exercise);
   const ref = useRef<HTMLDivElement>(null);
   const project = useApp((s) => s.project);
@@ -146,7 +147,15 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
         { key: 'ui.tool.delete', shortcut: 'D', run: () => ui.setTool('delete') },
       ],
     },
-    { key: 'help', items: [{ key: 'ui.menu.tour', run: () => startTour(TOUR_OF[useApp.getState().project.domain]) }, { key: 'ui.menu.about', run: onAbout }] },
+    {
+      key: 'help',
+      items: [
+        { key: 'ui.menu.tour', run: () => startTour(TOUR_OF[useApp.getState().project.domain]) },
+        { key: 'sep1', sep: true },
+        { key: 'ui.menu.donations', run: () => setModal('donations') },
+        { key: 'ui.menu.about', run: onAbout },
+      ],
+    },
   ];
 
   const changeLang = (l: Lang) => {
@@ -204,6 +213,7 @@ export function MenuBar({ onAbout }: { onAbout: () => void }) {
       </label>
       {modal === 'exercises' && <ExerciseList onClose={() => setModal(null)} domain={project.domain} level={project.level} />}
       {modal === 'editor' && <ExerciseEditor onClose={() => setModal(null)} />}
+      {modal === 'donations' && <Donations onClose={() => setModal(null)} />}
     </div>
   );
 }

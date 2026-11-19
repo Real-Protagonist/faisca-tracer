@@ -5,7 +5,7 @@ import { formatNumber, lookFrom, type Category, type Device, type DeviceDef, typ
 import { registry, requestMatrix, select, ui, useApp, type DockTab } from '../store';
 import { SymbolView } from '../editor/SymbolView';
 import { sizeOf } from '../editor/geometry';
-import { fmtTime } from '../format';
+import { fmtClock } from '../format';
 import { centerOn } from '../view';
 import { i18n } from '../i18n';
 import { ExercisePanel } from './Exercise';
@@ -118,7 +118,7 @@ function Events() {
       <tbody>
         {[...events].reverse().map((e) => (
           <tr key={e.seq} className={`sev-${e.severity}`} onClick={() => e.deviceId && select({ devices: [e.deviceId] })}>
-            <td className="time">{fmtTime(e.t, lang)}</td>
+            <td className="time">{fmtClock(e.t, true, lang)}</td>
             <td className="who">{P.devices.find((d) => d.id === e.deviceId)?.name ?? t('ui.events.system')}</td>
             <td>{t(`event.${e.code}`, e.values)}</td>
           </tr>

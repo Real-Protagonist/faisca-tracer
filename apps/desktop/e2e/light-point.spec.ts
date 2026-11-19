@@ -66,13 +66,14 @@ test('ponto de luz só com o rato, em menos de 2 minutos, e o ficheiro reabre ig
 
   // 5. Guardar (Ctrl+S → descarga) e reabrir noutra sessão.
   const [download] = await Promise.all([page.waitForEvent('download'), page.keyboard.press('Control+s')]);
+  expect(download.suggestedFilename()).toMatch(/\.fast$/);
   const saved = readFileSync((await download.path())!, 'utf-8');
   const before = await project(page);
 
   await page.reload();
   await expect(page.locator('[data-device]')).toHaveCount(0);
   const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.keyboard.press('Control+o')]);
-  await chooser.setFiles({ name: 'ponto-de-luz.faisca', mimeType: 'application/json', buffer: Buffer.from(saved) });
+  await chooser.setFiles({ name: 'ponto-de-luz.fast', mimeType: 'application/json', buffer: Buffer.from(saved) });
   await expect(page.locator('[data-device]')).toHaveCount(4);
 
   const after = await project(page);
@@ -132,9 +133,11 @@ test('modo passo a passo: o tempo pára e ⏭ avança 0,1 s', async ({ page }) =
     .toBe(true);
   await page.waitForTimeout(400);
   expect(await clock.textContent()).toBe(t1);
+  // O relógio mostra a hora com décimas no modo passo a passo («00:00:03,4»); o valor exacto está em data-seconds.
+  expect(t1).toMatch(/^\d{2}:\d{2}:\d{2},\d$/);
+  const before = Number(await clock.getAttribute('data-seconds'));
   await page.getByTestId('step').click();
-  const v = (s: string | null) => Number(s!.replace(' s', '').replace(',', '.'));
-  await expect.poll(async () => v(await clock.textContent())).toBeCloseTo(v(t1) + 0.1, 5);
+  await expect.poll(async () => Number(await clock.getAttribute('data-seconds'))).toBeCloseTo(before + 0.1, 5);
 });
 
 test('a biblioteca procura nos três idiomas e o idioma muda sem reiniciar', async ({ page }) => {

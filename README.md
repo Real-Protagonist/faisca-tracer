@@ -1,8 +1,10 @@
-# Faísca
+# Faísca Tracer
+
+> Nome com acento na interface; sem acento nos ficheiros, no domínio e nas lojas: «Faisca Tracer», `faisca-tracer`, identificador `app.faiscatracer.desktop`. Projectos `.fast` e exercícios `.fast-ex` (os antigos `.faisca` e `.faisca-ex` continuam a abrir). Dados do autor e contas para doações: `apps/desktop/src/brand.ts`.
 
 Simulador didáctico de instalações eléctricas: monte circuitos com equipamentos reais, opere interruptores e protecções, meça grandezas e perceba cada falha.
 
-> O Faísca é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento.
+> O Faísca Tracer é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento.
 
 ## Estrutura
 
@@ -10,7 +12,7 @@ Simulador didáctico de instalações eléctricas: monte circuitos com equipamen
 | --- | --- |
 | `packages/sim-core` | Núcleo de simulação em TypeScript puro, sem DOM. Ver o [README](packages/sim-core/README.md). |
 | `packages/i18n` | Traduções `pt.json`, `en.json`, `fr.json` |
-| `packages/content` | Exemplos (`examples/*.faisca`) e tours (`tours/*.json`) em JSON |
+| `packages/content` | Exemplos (`examples/*.fast`) e tours (`tours/*.json`) em JSON |
 | `apps/desktop` | Interface: React 18, Vite, Zustand, i18next |
 | `src-tauri` | Aplicação de desktop Tauri 2 |
 
@@ -44,7 +46,7 @@ Desempenho medido com 100 aparelhos numa AMD Radeon integrada: 60 fps nos dois m
 
 ### Programa do autómato (ladder)
 
-O PLC guarda o programa no parâmetro `program`, em JSON, dentro do próprio `.faisca`:
+O PLC guarda o programa no parâmetro `program`, em JSON, dentro do próprio `.fast`:
 
 ```json
 { "rungs": [{ "cols": [[{ "op": "I0" }, { "op": "Q0" }], [{ "op": "I1", "nc": true }]], "coil": { "kind": "out", "op": "Q0" } }] }
@@ -54,7 +56,7 @@ Cada degrau é uma série de colunas; cada coluna é um grupo de contactos em pa
 
 ### Exercícios
 
-Os 16 exercícios da tabela (4 + 4 domésticos, 3 + 5 industriais) estão em `packages/content/exercises.ts` e são gravados em `packages/content/exercises/*.faisca-ex` por `npm run content`. Cada um tem enunciado, projecto inicial (aparelhos colocados, cabos em falta ou parâmetros a corrigir), objectivos, solução e pontuação.
+Os 16 exercícios da tabela (4 + 4 domésticos, 3 + 5 industriais) estão em `packages/content/exercises.ts` e são gravados em `packages/content/exercises/*.fast-ex` por `npm run content`. Cada um tem enunciado, projecto inicial (aparelhos colocados, cabos em falta ou parâmetros a corrigir), objectivos, solução e pontuação.
 
 Cada objectivo é uma regra declarativa sobre o estado depois de um cenário de comandos, verificada numa simulação própria a partir do esquema do aluno:
 
@@ -68,7 +70,7 @@ Cada objectivo é uma regra declarativa sobre o estado depois de um cenário de 
 
 Regras: `state`, `measure`, `deviceState`, `param`, `working`, `noDiag`, `diag`, `toggles`, `compliance`, `then`, `all` e `not`; passos: `op`, `press`, `run` e `set` (ver `packages/sim-core/exercise/exercise.ts`). A verificação corre num segundo Web Worker, 0,7 s depois de cada alteração, sem parar a simulação.
 
-O editor de exercícios (menu Exercícios → Criar exercício) usa o projecto aberto como solução e exporta um `.faisca-ex` com selo SHA-256: um ficheiro alterado fora do editor é recusado ao abrir. O selo usa um sal da aplicação; impede alterações à mão, não resiste a quem estude o código.
+O editor de exercícios (menu Exercícios → Criar exercício) usa o projecto aberto como solução e exporta um `.fast-ex` com selo SHA-256: um ficheiro alterado fora do editor é recusado ao abrir. O selo usa um sal da aplicação; impede alterações à mão, não resiste a quem estude o código.
 
 ### Verificação de conformidade e exportações
 

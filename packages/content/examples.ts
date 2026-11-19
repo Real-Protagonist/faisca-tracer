@@ -1,6 +1,6 @@
 /**
  * Exemplos completos e a funcionar, abertos pelo assistente de arranque.
- * São escritos aqui contra o núcleo e gravados em JSON (`examples/*.faisca`) pelo
+ * São escritos aqui contra o núcleo e gravados em JSON (`examples/*.fast`) pelo
  * script `scripts/build-content.ts`. Os títulos e descrições estão nas traduções:
  * example.<id>.title e example.<id>.desc.
  */
@@ -125,6 +125,6 @@ export function buildExamples(): { meta: ExampleMeta; project: Project }[] {
   ];
   return list.map(([id, f]) => {
     const project = f();
-    return { meta: { id, file: `${id}.faisca`, domain: project.domain, level: project.level }, project };
+    return { meta: { id, file: `${id}.fast`, domain: project.domain, level: project.level }, project };
   });
 }

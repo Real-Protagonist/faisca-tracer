@@ -15,16 +15,20 @@ export interface FileFilter {
   extensions: string[];
 }
 
-export const FILTER: FileFilter = { name: 'Faísca', extensions: ['faisca'] };
-export const EXERCISE_FILTER: FileFilter = { name: 'Faísca — exercício', extensions: ['faisca-ex'] };
+/** Projectos `.fast` (guardar); ao abrir aceitam-se também os antigos `.faisca`. */
+export const FILTER: FileFilter = { name: 'Faísca Tracer', extensions: ['fast'] };
+export const OPEN_FILTER: FileFilter = { name: 'Faísca Tracer', extensions: ['fast', 'faisca'] };
+/** Exercícios `.fast-ex` (exportar); ao abrir aceitam-se também os antigos `.faisca-ex`. */
+export const EXERCISE_FILTER: FileFilter = { name: 'Faísca Tracer — exercício', extensions: ['fast-ex'] };
+export const EXERCISE_OPEN_FILTER: FileFilter = { name: 'Faísca Tracer — exercício', extensions: ['fast-ex', 'faisca-ex'] };
 export const RULES_FILTER: FileFilter = { name: 'JSON', extensions: ['json'] };
 const RECOVERY_KEY = 'faisca.recovery';
 const RECENT_KEY = 'faisca.recent';
-const RECOVERY_FILE = 'recuperacao.faisca';
+const RECOVERY_FILE = 'recuperacao.fast';
 
 const baseName = (p: string) => p.split(/[\/]/).pop() ?? p;
 
-export async function openFile(filter: FileFilter = FILTER): Promise<OpenedFile | null> {
+export async function openFile(filter: FileFilter = OPEN_FILTER): Promise<OpenedFile | null> {
   if (isTauri()) {
     const { open } = await import('@tauri-apps/plugin-dialog');
     const { readTextFile } = await import('@tauri-apps/plugin-fs');
@@ -35,7 +39,7 @@ export async function openFile(filter: FileFilter = FILTER): Promise<OpenedFile 
   return new Promise((resolve) => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = filter === FILTER ? '.faisca,application/json' : filter.extensions.map((e) => '.' + e).join(',');
+    input.accept = [...filter.extensions.map((e) => '.' + e), 'application/json'].join(',');
     input.dataset.testid = 'file-input';
     input.style.display = 'none';
     input.onchange = async () => {

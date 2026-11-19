@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Faísca",
-    "disclaimer": "O Faísca é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento."
+    "name": "Faísca Tracer",
+    "disclaimer": "O Faísca Tracer é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento."
   },
   "domain": {
     "domestic": "Electricidade doméstica",
@@ -18,12 +18,12 @@
   },
   "file": {
     "error": {
-      "not_faisca": "Este ficheiro não é um projecto do Faísca.",
-      "newer_version": "Este projecto foi criado numa versão mais recente do Faísca. Actualize a aplicação.",
+      "not_faisca": "Este ficheiro não é um projecto do Faísca Tracer.",
+      "newer_version": "Este projecto foi criado numa versão mais recente do Faísca Tracer. Actualize a aplicação.",
       "no_migration": "Não é possível converter este projecto para a versão actual.",
       "invalid": "O projecto está danificado e não pode ser aberto.",
       "unknown_device": "O projecto usa um equipamento que esta versão não conhece.",
-      "not_exercise": "Este ficheiro não é um exercício do Faísca.",
+      "not_exercise": "Este ficheiro não é um exercício do Faísca Tracer.",
       "tampered": "O exercício foi alterado fora do editor de exercícios e não pode ser aberto."
     }
   },
@@ -964,7 +964,7 @@
       "zoomOut": "Afastar",
       "fit": "Ver tudo",
       "tour": "Tour guiado",
-      "about": "Sobre o Faísca",
+      "about": "Sobre o Faísca Tracer",
       "project": "Projecto",
       "area": "Área: {{area}}",
       "level": "Nível: {{level}}",
@@ -975,7 +975,8 @@
       "exerciseList": "Lista de exercícios…",
       "exerciseOpen": "Abrir ficheiro de exercício…",
       "exerciseCreate": "Criar exercício a partir deste projecto…",
-      "exerciseClose": "Fechar o exercício"
+      "exerciseClose": "Fechar o exercício",
+      "donations": "Doações"
     },
     "tool": {
       "select": "Seleccionar",
@@ -1015,7 +1016,8 @@
       "toRealtime": "Mudar para tempo real",
       "reset": "Repor o tempo",
       "speed": "Velocidade da simulação",
-      "clock": "Relógio da simulação"
+      "clock": "Relógio da simulação",
+      "clockSeconds": "{{s}} s de simulação"
     },
     "props": {
       "title": "Propriedades",
@@ -1094,7 +1096,8 @@
     },
     "about": {
       "version": "Versão {{version}}",
-      "simplifications": "Simplificações dos modelos"
+      "simplifications": "Simplificações dos modelos",
+      "copyright": "© {{year}} {{author}}. Todos os direitos reservados."
     },
     "ladder": {
       "title": "Programa (ladder)",
@@ -1207,6 +1210,36 @@
       "action": "Comando",
       "addStep": "+ comando",
       "addWait": "+ esperar 2 s"
+    },
+    "donations": {
+      "title": "Apoie o {{app}}",
+      "intro": "O {{app}} é gratuito. Se lhe é útil, pode apoiar o seu desenvolvimento com uma doação.",
+      "visa": {
+        "title": "Do estrangeiro — cartão Visa",
+        "note": "Para doações internacionais."
+      },
+      "bank": {
+        "title": "Em Angola — transferência bancária",
+        "note": "Para transferências nacionais (Kz)."
+      },
+      "bitcoin": {
+        "title": "Bitcoin",
+        "note": "Envie apenas Bitcoin (BTC) para este endereço."
+      },
+      "field": {
+        "holder": "Titular",
+        "bank": "Banco",
+        "iban": "IBAN",
+        "account": "N.º de conta",
+        "swift": "SWIFT/BIC",
+        "card": "Cartão",
+        "link": "Ligação de pagamento",
+        "address": "Endereço",
+        "network": "Rede"
+      },
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "missing": "A preencher"
     }
   },
   "example": {

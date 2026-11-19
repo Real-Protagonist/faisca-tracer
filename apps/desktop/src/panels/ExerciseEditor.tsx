@@ -1,7 +1,7 @@
 /**
  * Editor de exercícios para formadores. O projecto aberto é a solução; o formador escreve o
  * enunciado, escolhe os cabos que o aluno terá de ligar e define os objectivos como regras
- * (sem programar). Exporta um `.faisca-ex` com selo, só depois de a solução cumprir os objectivos.
+ * (sem programar). Exporta um `.fast-ex` com selo, só depois de a solução cumprir os objectivos.
  */
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -111,7 +111,7 @@ export function ExerciseEditor({ onClose }: { onClose: () => void }) {
       initial,
       solution: structuredClone(project),
     };
-    const saved = await saveExport(serializeExercise(ex), `${title.trim().replace(/[\\/:*?"<>|]+/g, '_')}.faisca-ex`, EXERCISE_FILTER, 'application/json');
+    const saved = await saveExport(serializeExercise(ex), `${title.trim().replace(/[\\/:*?"<>|]+/g, '_')}.fast-ex`, EXERCISE_FILTER, 'application/json');
     if (saved) setMessage(t('ui.editor.saved'));
   };
 

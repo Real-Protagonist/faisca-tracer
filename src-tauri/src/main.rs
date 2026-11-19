@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    faisca_lib::run()
+    faisca_tracer_lib::run()
 }

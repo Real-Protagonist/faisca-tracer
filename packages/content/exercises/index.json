@@ -1,97 +1,97 @@
 [
   {
     "id": "dom-light-point",
-    "file": "dom-light-point.faisca-ex",
+    "file": "dom-light-point.fast-ex",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "dom-stair",
-    "file": "dom-stair.faisca-ex",
+    "file": "dom-stair.fast-ex",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "dom-sockets",
-    "file": "dom-sockets.faisca-ex",
+    "file": "dom-sockets.fast-ex",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "dom-bell",
-    "file": "dom-bell.faisca-ex",
+    "file": "dom-bell.fast-ex",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "dom-board",
-    "file": "dom-board.faisca-ex",
+    "file": "dom-board.fast-ex",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "dom-tt",
-    "file": "dom-tt.faisca-ex",
+    "file": "dom-tt.fast-ex",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "dom-cable",
-    "file": "dom-cable.faisca-ex",
+    "file": "dom-cable.fast-ex",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "dom-solar",
-    "file": "dom-solar.faisca-ex",
+    "file": "dom-solar.fast-ex",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "ind-dol",
-    "file": "ind-dol.faisca-ex",
+    "file": "ind-dol.fast-ex",
     "domain": "industrial",
     "level": "beginner"
   },
   {
     "id": "ind-signal",
-    "file": "ind-signal.faisca-ex",
+    "file": "ind-signal.fast-ex",
     "domain": "industrial",
     "level": "beginner"
   },
   {
     "id": "ind-reversing",
-    "file": "ind-reversing.faisca-ex",
+    "file": "ind-reversing.fast-ex",
     "domain": "industrial",
     "level": "beginner"
   },
   {
     "id": "ind-star-delta",
-    "file": "ind-star-delta.faisca-ex",
+    "file": "ind-star-delta.fast-ex",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "ind-pf",
-    "file": "ind-pf.faisca-ex",
+    "file": "ind-pf.fast-ex",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "ind-selectivity",
-    "file": "ind-selectivity.faisca-ex",
+    "file": "ind-selectivity.fast-ex",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "ind-plc-pump",
-    "file": "ind-plc-pump.faisca-ex",
+    "file": "ind-plc-pump.fast-ex",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "ind-vfd",
-    "file": "ind-vfd.faisca-ex",
+    "file": "ind-vfd.fast-ex",
     "domain": "industrial",
     "level": "pro"
   }

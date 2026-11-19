@@ -1,11 +1,11 @@
 [package]
-name = "faisca"
+name = "faisca-tracer"
 version = "1.0.0"
-description = "Faísca — simulador didáctico de instalações eléctricas"
+description = "Faísca Tracer — simulador didáctico de instalações eléctricas"
 edition = "2021"
 
 [lib]
-name = "faisca_lib"
+name = "faisca_tracer_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

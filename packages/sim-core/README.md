@@ -1,8 +1,8 @@
 # @faisca/sim-core
 
-Núcleo de simulação do Faísca. É TypeScript puro, sem DOM, e corre num Web Worker na aplicação ou em Node nos testes.
+Núcleo de simulação do Faísca Tracer. É TypeScript puro, sem DOM, e corre num Web Worker na aplicação ou em Node nos testes.
 
-> O Faísca é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento.
+> O Faísca Tracer é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento.
 
 ## Estrutura
 
@@ -12,7 +12,7 @@ Núcleo de simulação do Faísca. É TypeScript puro, sem DOM, e corre num Web 
 | `devices/` | Um ficheiro por família de equipamentos e o registo (`Registry`) |
 | `diagnostics/` | Topologia, regras de montagem, regras em simulação, «Porque não funciona?» e lista de códigos |
 | `checks/` | Tabelas da IEC 60364 (Iz, resistividade, limites) e zonas da IEC 60479-1 |
-| `project/` | Modelo do ficheiro `.faisca`, edição, abertura com migrações |
+| `project/` | Modelo do ficheiro `.fast`, edição, abertura com migrações |
 | `simulator.ts` | Passo no tempo, iteração até estabilizar, eventos, Icc presumida, matriz MNA |
 | `worker.ts` | Protocolo de mensagens do Web Worker (puro, testável em Node) |
 | `format.ts` | Números e unidades no formato de cada idioma |

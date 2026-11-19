@@ -36,7 +36,7 @@ describe('exemplos', () => {
     for (const level of ['beginner', 'pro']) expect(built.filter((b) => b.meta.domain === 'domestic' && b.meta.level === level).length).toBeGreaterThanOrEqual(2);
   });
 
-  for (const f of readdirSync(dir).filter((x) => x.endsWith('.faisca'))) {
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.fast'))) {
     it(`${f} abre e simula sem erros de montagem`, () => {
       const sim = new Simulator(parseProject(readFileSync(join(dir, f), 'utf-8')));
       sim.run(0.5);
@@ -193,11 +193,11 @@ describe('exercícios', () => {
   const exDir = join(__dirname, '../exercises');
   const built = buildExercises();
 
-  it('os ficheiros .faisca-ex estão actualizados e têm selo válido', () => {
+  it('os ficheiros .fast-ex estão actualizados e têm selo válido', () => {
     const index = JSON.parse(readFileSync(join(exDir, 'index.json'), 'utf-8'));
     expect(index.map((m: { id: string }) => m.id)).toEqual(built.map((e) => e.id));
     for (const ex of built) {
-      const text = readFileSync(join(exDir, `${ex.id}.faisca-ex`), 'utf-8');
+      const text = readFileSync(join(exDir, `${ex.id}.fast-ex`), 'utf-8');
       expect(JSON.parse(text).exercise, ex.id).toEqual(JSON.parse(JSON.stringify(ex)));
       expect(() => parseExercise(text), ex.id).not.toThrow();
     }

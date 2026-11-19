@@ -3,7 +3,7 @@
  * regras (um por país). Cada regra dá «passa», «falha» ou «não se aplica», com a lista dos
  * aparelhos ou cabos verificados e a referência da norma.
  *
- * O Faísca é didáctico: esta verificação não substitui o projecto nem a inspecção de uma instalação.
+ * O Faísca Tracer é didáctico: esta verificação não substitui o projecto nem a inspecção de uma instalação.
  */
 import type { Simulator } from '../simulator';
 import type { Device, Project, Wire, WireEnd } from '../project/types';

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Núcleo de simulação do Faísca: solver MNA, equipamentos, protecções e diagnóstico. Sem DOM.",
+  "description": "Núcleo de simulação do Faísca Tracer: solver MNA, equipamentos, protecções e diagnóstico. Sem DOM.",
   "main": "index.ts",
   "types": "index.ts"
 }

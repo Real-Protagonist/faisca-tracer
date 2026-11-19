@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { registry } from '../store';
+import { APP_NAME, AUTHOR, COPYRIGHT_YEAR } from '../brand';
 
 export function About({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
@@ -12,7 +13,10 @@ export function About({ onClose }: { onClose: () => void }) {
     <div className="modal-back" onClick={onClose}>
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="about-title" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()}>
         <h2 id="about-title">{t('app.name')}</h2>
-        <p className="muted">{t('ui.about.version', { version: '0.2.0' })}</p>
+        <p className="muted">{t('ui.about.version', { version: __APP_VERSION__ })}</p>
+        <p className="copyright" data-testid="copyright">
+          {t('ui.about.copyright', { year: COPYRIGHT_YEAR, author: AUTHOR || APP_NAME })}
+        </p>
         <p className="disclaimer">{t('app.disclaimer')}</p>
         <h3>{t('ui.about.simplifications')}</h3>
         <ul>

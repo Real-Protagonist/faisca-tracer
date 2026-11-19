@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Faísca",
-    "disclaimer": "Faísca is a teaching tool. It does not replace the design of an installation according to the regulations."
+    "name": "Faísca Tracer",
+    "disclaimer": "Faísca Tracer is a teaching tool. It does not replace the design of an installation according to the regulations."
   },
   "domain": {
     "domestic": "Domestic electricity",
@@ -18,12 +18,12 @@
   },
   "file": {
     "error": {
-      "not_faisca": "This file is not a Faísca project.",
-      "newer_version": "This project was created with a newer version of Faísca. Update the application.",
+      "not_faisca": "This file is not a Faísca Tracer project.",
+      "newer_version": "This project was created with a newer version of Faísca Tracer. Update the application.",
       "no_migration": "This project cannot be converted to the current version.",
       "invalid": "The project is damaged and cannot be opened.",
       "unknown_device": "The project uses equipment this version does not know.",
-      "not_exercise": "This file is not a Faísca exercise.",
+      "not_exercise": "This file is not a Faísca Tracer exercise.",
       "tampered": "The exercise was changed outside the exercise editor and cannot be opened."
     }
   },
@@ -964,7 +964,7 @@
       "zoomOut": "Zoom out",
       "fit": "Fit to window",
       "tour": "Guided tour",
-      "about": "About Faísca",
+      "about": "About Faísca Tracer",
       "project": "Project",
       "area": "Area: {{area}}",
       "level": "Level: {{level}}",
@@ -975,7 +975,8 @@
       "exerciseList": "Exercise list…",
       "exerciseOpen": "Open exercise file…",
       "exerciseCreate": "Create exercise from this project…",
-      "exerciseClose": "Close exercise"
+      "exerciseClose": "Close exercise",
+      "donations": "Donations"
     },
     "tool": {
       "select": "Select",
@@ -1015,7 +1016,8 @@
       "toRealtime": "Switch to real time",
       "reset": "Reset time",
       "speed": "Simulation speed",
-      "clock": "Simulation clock"
+      "clock": "Simulation clock",
+      "clockSeconds": "{{s}} s of simulation"
     },
     "props": {
       "title": "Properties",
@@ -1094,7 +1096,8 @@
     },
     "about": {
       "version": "Version {{version}}",
-      "simplifications": "Model simplifications"
+      "simplifications": "Model simplifications",
+      "copyright": "© {{year}} {{author}}. All rights reserved."
     },
     "ladder": {
       "title": "Program (ladder)",
@@ -1207,6 +1210,36 @@
       "action": "Command",
       "addStep": "+ command",
       "addWait": "+ wait 2 s"
+    },
+    "donations": {
+      "title": "Support {{app}}",
+      "intro": "{{app}} is free. If it helps you, you can support its development with a donation.",
+      "visa": {
+        "title": "From abroad — Visa card",
+        "note": "For international donations."
+      },
+      "bank": {
+        "title": "In Angola — bank transfer",
+        "note": "For national transfers (Kz)."
+      },
+      "bitcoin": {
+        "title": "Bitcoin",
+        "note": "Send only Bitcoin (BTC) to this address."
+      },
+      "field": {
+        "holder": "Holder",
+        "bank": "Bank",
+        "iban": "IBAN",
+        "account": "Account no.",
+        "swift": "SWIFT/BIC",
+        "card": "Card",
+        "link": "Payment link",
+        "address": "Address",
+        "network": "Network"
+      },
+      "copy": "Copy",
+      "copied": "Copied",
+      "missing": "To be filled in"
     }
   },
   "example": {

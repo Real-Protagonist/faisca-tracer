@@ -1,6 +1,6 @@
 /**
  * Critério de aceitação da Fase 6: todos os exercícios da tabela podem ser completados.
- * Também: editor de exercícios (.faisca-ex com selo), verificação de conformidade, exportações.
+ * Também: editor de exercícios (.fast-ex com selo), verificação de conformidade, exportações.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -120,7 +120,7 @@ test('editor de exercícios: criar, testar, exportar com selo e reabrir; um fich
   await ed.getByTestId('ed-test').click();
   await expect(obj.locator('.mark.ok')).toBeVisible();
   const file = await download(page, () => ed.getByTestId('ed-export').click());
-  expect(file.name).toBe('Luz da cozinha.faisca-ex');
+  expect(file.name).toBe('Luz da cozinha.fast-ex');
   const text = file.bytes.toString('utf-8');
   expect(JSON.parse(text)).toMatchObject({ app: 'faisca-ex', exercise: { title: { text: 'Luz da cozinha' } } });
   await ed.getByRole('button', { name: 'Fechar' }).click();
@@ -134,7 +134,7 @@ test('editor de exercícios: criar, testar, exportar com selo e reabrir; um fich
     void d.accept();
   });
   const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByTestId('item-ui.menu.exerciseOpen').click()]);
-  await chooser.setFiles({ name: 'cozinha.faisca-ex', mimeType: 'application/json', buffer: Buffer.from(text) });
+  await chooser.setFiles({ name: 'cozinha.fast-ex', mimeType: 'application/json', buffer: Buffer.from(text) });
   await expect(page.getByTestId('exercise')).toContainText('Luz da cozinha');
   await expect(page.getByTestId('exercise')).toContainText('H1 acende com S1 ligado');
   await expect(page.locator('[data-wire]')).toHaveCount(0);

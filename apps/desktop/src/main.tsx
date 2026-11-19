@@ -7,6 +7,7 @@ import { lastChoice } from './onboarding/Wizard';
 import { loadProject, openWizard, useApp } from './store';
 import { startSimulation } from './sim/client';
 import { startAutosave } from './actions';
+import { startSplash } from './splash';
 import './styles.css';
 
 const lang = preferredLang();
@@ -22,6 +23,8 @@ if (!hasLangPref()) openWizard(true);
 
 // Acesso para os testes de interface (Playwright).
 (window as unknown as { faisca: unknown }).faisca = { useApp, core, loadProject };
+
+startSplash();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

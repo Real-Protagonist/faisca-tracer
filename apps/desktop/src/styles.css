@@ -1,4 +1,4 @@
-/* Faísca — interface escura, área de trabalho clara. Contraste WCAG AA. */
+/* Faísca Tracer — interface escura, área de trabalho clara. Contraste WCAG AA. */
 :root {
   --ui-bg: #1d2230;
   --ui-bg2: #252b3b;
@@ -365,3 +365,14 @@ table.list tr:hover { background: var(--ui-bg3); }
   body.printing #print-area { display: block; }
   body.printing #print-area svg { width: 100%; height: auto; }
 }
+
+/* Doações */
+.donations { width: 600px; }
+.donation { margin: 12px 0; padding: 10px 12px; border: 1px solid var(--ui-line); border-radius: 8px; }
+.donation h3 { margin: 0 0 2px; }
+.donation dl { margin: 6px 0 0; }
+.donation-field { display: grid; grid-template-columns: 130px 1fr; gap: 8px; padding: 2px 0; }
+.donation-field dt { color: var(--ui-muted); }
+.donation-field dd { margin: 0; display: flex; gap: 8px; align-items: baseline; word-break: break-all; }
+.donation-field code { font-size: 13px; }
+.copyright { color: var(--ui-muted); }

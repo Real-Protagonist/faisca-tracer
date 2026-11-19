@@ -4,9 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-    <title>Faísca</title>
+    <title>Faísca Tracer</title>
+    <!-- Ecrã de arranque: aparece antes de o código carregar (estilos aqui, sem scripts embutidos). -->
+    <style>
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        background: #12161f;
+        color: #e8eef5;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      #splash.done { opacity: 0; }
+      #splash img { width: 112px; height: 112px; filter: drop-shadow(0 6px 18px #ffb02033); }
+      #splash .splash-name { font-size: 28px; font-weight: 600; letter-spacing: 0.5px; }
+      #splash .splash-bar { width: 260px; height: 6px; border-radius: 3px; background: #2a3242; overflow: hidden; }
+      #splash .splash-bar > div { width: 8%; height: 100%; border-radius: 3px; background: #ffb020; animation: splash-load 2.5s ease-out forwards; transition: width 0.3s ease; }
+      #splash .splash-bar > div.full { width: 100% !important; animation: none; }
+      #splash .splash-version { min-height: 16px; font-size: 13px; color: #8d98ab; }
+      @keyframes splash-load { from { width: 8%; } to { width: 80%; } }
+    </style>
   </head>
   <body>
+    <div id="splash" role="status" aria-label="Faísca Tracer" data-testid="splash">
+      <img src="/icon.svg" alt="" />
+      <div class="splash-name">Faísca Tracer</div>
+      <div class="splash-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div id="splash-progress"></div></div>
+      <div class="splash-version" id="splash-version" data-testid="splash-version"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

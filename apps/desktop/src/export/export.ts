@@ -61,7 +61,7 @@ export async function exportPdf() {
   const ph = doc.internal.pageSize.getHeight();
   const k = Math.min((pw - 20) / sheet.width, (ph - 20) / sheet.height);
   doc.addImage(dataUrl, 'PNG', 10, 10, sheet.width * k, sheet.height * k);
-  doc.setProperties({ title: base(), creator: 'Faísca', subject: t('app.disclaimer') });
+  doc.setProperties({ title: base(), creator: 'Faísca Tracer', subject: t('app.disclaimer') });
   return saveExport(new Uint8Array(doc.output('arraybuffer')), `${base()}.pdf`, { name: 'PDF', extensions: ['pdf'] }, 'application/pdf');
 }
 
@@ -135,7 +135,7 @@ export async function exportCompliancePdf(results: ComplianceResult[], rules: Co
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(8);
     doc.setTextColor(90, 101, 119);
-    doc.text(doc.splitTextToSize(`Faísca — ${t('app.disclaimer')}`, W - 28) as string[], 14, H - 12);
+    doc.text(doc.splitTextToSize(`Faísca Tracer — ${t('app.disclaimer')}`, W - 28) as string[], 14, H - 12);
   };
   const footerAndPage = () => {
     footer();

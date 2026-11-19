@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Faísca",
+  "productName": "Faisca Tracer",
   "version": "1.0.0",
-  "identifier": "app.faisca.desktop",
+  "identifier": "app.faiscatracer.desktop",
   "build": {
     "frontendDist": "../apps/desktop/dist",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Faísca",
+        "title": "Faísca Tracer",
         "width": 1366,
         "height": 768,
         "minWidth": 1366,
@@ -39,19 +39,21 @@
     "fileAssociations": [
       {
         "ext": [
-          "faisca"
+          "fast"
         ],
-        "name": "Projecto Faísca",
+        "name": "Projecto Faisca Tracer",
+        "description": "Projecto Faísca Tracer",
         "role": "Editor",
-        "mimeType": "application/x-faisca"
+        "mimeType": "application/x-faisca-tracer"
       },
       {
         "ext": [
-          "faisca-ex"
+          "fast-ex"
         ],
-        "name": "Exercício Faísca",
+        "name": "Exercicio Faisca Tracer",
+        "description": "Exercício Faísca Tracer",
         "role": "Viewer",
-        "mimeType": "application/x-faisca-ex"
+        "mimeType": "application/x-faisca-tracer-exercise"
       }
     ],
     "windows": {
@@ -77,5 +79,6 @@
     "macOS": {
       "minimumSystemVersion": "10.15"
     }
-  }
+  },
+  "mainBinaryName": "faisca-tracer"
 }

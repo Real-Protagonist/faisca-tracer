@@ -1,55 +1,55 @@
 [
   {
     "id": "light-point",
-    "file": "light-point.faisca",
+    "file": "light-point.fast",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "stair-light",
-    "file": "stair-light.faisca",
+    "file": "stair-light.fast",
     "domain": "domestic",
     "level": "beginner"
   },
   {
     "id": "house-board",
-    "file": "house-board.faisca",
+    "file": "house-board.fast",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "tt-protection",
-    "file": "tt-protection.faisca",
+    "file": "tt-protection.fast",
     "domain": "domestic",
     "level": "pro"
   },
   {
     "id": "dol-start",
-    "file": "dol-start.faisca",
+    "file": "dol-start.fast",
     "domain": "industrial",
     "level": "beginner"
   },
   {
     "id": "reversing",
-    "file": "reversing.faisca",
+    "file": "reversing.fast",
     "domain": "industrial",
     "level": "beginner"
   },
   {
     "id": "star-delta",
-    "file": "star-delta.faisca",
+    "file": "star-delta.fast",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "vfd-motor",
-    "file": "vfd-motor.faisca",
+    "file": "vfd-motor.fast",
     "domain": "industrial",
     "level": "pro"
   },
   {
     "id": "plc-pump",
-    "file": "plc-pump.faisca",
+    "file": "plc-pump.fast",
     "domain": "industrial",
     "level": "pro"
   }

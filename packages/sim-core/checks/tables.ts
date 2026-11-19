@@ -1,6 +1,6 @@
 /**
  * Valores indicativos da IEC 60364 usados no cálculo e na verificação.
- * Configuráveis por país (ver `RuleSet`). O Faísca é didáctico: não substitui o projecto regulamentar.
+ * Configuráveis por país (ver `RuleSet`). O Faísca Tracer é didáctico: não substitui o projecto regulamentar.
  */
 import type { InstallMethod, Material, Wire } from '../project/types';
 

@@ -118,3 +118,16 @@ describe('editor', () => {
     expect(P().devices).toHaveLength(0);
   });
 });
+
+describe('relógio da simulação', () => {
+  it('formato de hora hh:mm:ss; décimas só no modo passo a passo', async () => {
+    const { fmtClock } = await import('../src/format');
+    expect(fmtClock(0, false, 'pt')).toBe('00:00:00');
+    expect(fmtClock(3725.4, false, 'pt')).toBe('01:02:05');
+    expect(fmtClock(3725.4, true, 'pt')).toBe('01:02:05,4');
+    expect(fmtClock(3725.4, true, 'en')).toBe('01:02:05.4');
+    // 0,1 + 0,2 não dá 0,30000000000000004 no ecrã.
+    expect(fmtClock(0.1 + 0.2, true, 'fr')).toBe('00:00:00,3');
+    expect(fmtClock(59.96, true, 'pt')).toBe('00:01:00,0');
+  });
+});

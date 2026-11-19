@@ -1,7 +1,7 @@
 /** Acções da aplicação que precisam de ficheiros ou diálogos (fora do store puro). */
 import { createProject, parseExercise, parseProject, ProjectFileError, serializeProject } from '@faisca/sim-core';
 import { i18n } from './i18n';
-import { clearRecovery, EXERCISE_FILTER, openFile, openPath, pushRecent, readRecovery, saveFile, writeRecovery } from './platform/files';
+import { clearRecovery, EXERCISE_OPEN_FILTER, openFile, openPath, pushRecent, readRecovery, saveFile, writeRecovery } from './platform/files';
 import { loadProject, openExercise, openWizard, ui, useApp } from './store';
 
 const t = (k: string, o: Record<string, unknown> = {}) => i18n.t(k, o);
@@ -24,7 +24,7 @@ export function blankProject(domain: 'domestic' | 'industrial', level: 'beginner
 function openText(text: string, path: string | null, name: string) {
   try {
     const P = parseProject(text);
-    P.name ??= name.replace(/\.faisca$/i, '');
+    P.name ??= name.replace(/\.(fast|faisca)$/i, '');
     loadProject(P, path);
     if (path) pushRecent({ path, name });
   } catch (e) {
@@ -39,10 +39,10 @@ export async function openProject() {
   if (f) openText(f.text, f.path, f.name);
 }
 
-/** Abre um ficheiro de exercício (`.faisca-ex`); recusa ficheiros alterados fora do editor. */
+/** Abre um ficheiro de exercício (`.fast-ex`, ou o antigo `.faisca-ex`); recusa ficheiros alterados fora do editor. */
 export async function openExerciseFile() {
   if (!confirmDiscard()) return;
-  const f = await openFile(EXERCISE_FILTER);
+  const f = await openFile(EXERCISE_OPEN_FILTER);
   if (!f) return;
   try {
     openExercise(parseExercise(f.text));
@@ -61,7 +61,7 @@ export async function openRecent(path: string) {
   }
 }
 
-const fileName = () => `${useApp.getState().project.name || t('ui.untitled')}.faisca`;
+const fileName = () => `${useApp.getState().project.name || t('ui.untitled')}.fast`;
 
 export async function saveProject(as = false) {
   const { project, filePath, lang } = useApp.getState();
