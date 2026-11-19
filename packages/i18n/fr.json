@@ -1213,7 +1213,7 @@
     },
     "donations": {
       "title": "Soutenez {{app}}",
-      "intro": "{{app}} est gratuit. S’il vous est utile, vous pouvez soutenir son développement par un don.",
+      "intro": "{{app}} est gratuit et conçu avec soin pour celles et ceux qui apprennent et enseignent l’électricité. Faire vivre la plateforme a un coût : du temps pour corriger les erreurs, ajouter de nouveaux équipements et exercices, et l’hébergement du site. Si {{app}} vous a été utile, un don, même modeste, l’aide à continuer. Merci de votre soutien !",
       "bank": {
         "title": "En Angola — virement bancaire",
         "note": "Pour les virements nationaux (Kz)."

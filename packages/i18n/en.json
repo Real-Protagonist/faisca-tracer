@@ -1213,7 +1213,7 @@
     },
     "donations": {
       "title": "Support {{app}}",
-      "intro": "{{app}} is free. If it helps you, you can support its development with a donation.",
+      "intro": "{{app}} is free and made with care for everyone who learns and teaches electrical work. Keeping the platform going has costs: time to fix bugs, add new devices and exercises, and host the website. If {{app}} has helped you, a donation, however small, helps keep it alive. Thank you for your support!",
       "bank": {
         "title": "In Angola — bank transfer",
         "note": "For national transfers (Kz)."

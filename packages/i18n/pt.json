@@ -1213,7 +1213,7 @@
     },
     "donations": {
       "title": "Apoie o {{app}}",
-      "intro": "O {{app}} é gratuito. Se lhe é útil, pode apoiar o seu desenvolvimento com uma doação.",
+      "intro": "O {{app}} é gratuito e feito com dedicação para quem aprende e ensina electricidade. Manter a plataforma tem custos: tempo para corrigir erros, juntar novos equipamentos e exercícios, e o alojamento do site. Se o {{app}} lhe foi útil, uma doação, por pequena que seja, ajuda-o a continuar. Obrigado pelo seu apoio!",
       "bank": {
         "title": "Em Angola — transferência bancária",
         "note": "Para transferências nacionais (Kz)."

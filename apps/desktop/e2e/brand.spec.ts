@@ -36,6 +36,7 @@ test('menu Ajuda: «Doações» antes de «Sobre»; Sobre tem o copyright de 202
   await page.getByTestId('item-ui.menu.donations').click();
   const d = page.getByTestId('donations');
   await expect(d.locator('[data-method]')).toHaveCount(3);
+  await expect(d).toContainText('ajuda-o a continuar');
   await expect(d).toContainText('Do estrangeiro — transferência internacional');
   await expect(d).toContainText('Em Angola — transferência bancária');
   await expect(d).toContainText('Bitcoin');
