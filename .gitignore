@@ -7,3 +7,9 @@ test-results/
 playwright-report/
 e2e-out/
 .build-tmp
+
+# Ferramentas locais (agentes de IA), fora do repositório
+.agents/
+.claude/
+.grok/
+skills-lock.json
