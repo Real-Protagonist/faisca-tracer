@@ -7,7 +7,7 @@
 export const APP_NAME = 'Faísca Tracer';
 export const COPYRIGHT_YEAR = 2023;
 /** Autor (copyright no «Sobre»). */
-export const AUTHOR = '';
+export const AUTHOR = 'Mesaque M. Txangala';
 
 export interface DonationField {
   /** Chave de tradução do rótulo (`ui.donations.field.<key>`). */
@@ -26,26 +26,26 @@ export const DONATIONS: DonationMethod[] = [
   {
     id: 'international',
     fields: [
-      { key: 'bank', value: '' },
-      { key: 'holder', value: '' },
-      { key: 'iban', value: '' },
-      { key: 'swift', value: '' },
+      { key: 'bank', value: 'Banking Circle S.A.' },
+      { key: 'holder', value: 'MESAQUE MANUEL TXANGALA' },
+      { key: 'iban', value: 'LU834080000044233156' },
+      { key: 'swift', value: 'BCIRLULL' },
     ],
   },
   {
     id: 'bank',
     fields: [
-      { key: 'bank', value: '' },
-      { key: 'holder', value: '' },
-      { key: 'account', value: '' },
-      { key: 'iban', value: '' },
+      { key: 'bank', value: 'Banco BIC' },
+      { key: 'holder', value: 'MESAQUE MANUEL TXANGALA' },
+      // { key: 'account', value: '00000000000000000000' },
+      { key: 'iban', value: 'AO06.005100008175466414176' },
     ],
   },
   {
     id: 'bitcoin',
     fields: [
       { key: 'network', value: 'Bitcoin (BTC)' },
-      { key: 'address', value: '' },
+      { key: 'address', value: '124bKWuYgkHY3SJodpByCar1RBwVXMEgn5' },
     ],
   },
 ];

@@ -18,6 +18,9 @@ const FIELD: Record<string, string> = {
   network: 'ui.donations.field.network',
 };
 
+/** IBAN e números de conta copiam-se sem espaços nem pontos (assim os aceitam os bancos). */
+const NUMBERS = ['iban', 'account', 'swift'];
+
 export function Donations({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   const ref = useRef<HTMLButtonElement>(null);
@@ -57,7 +60,7 @@ export function Donations({ onClose }: { onClose: () => void }) {
                           ) : (
                             <code>{f.value}</code>
                           )}
-                          <button className="link small" onClick={() => void copy(id, f.value)}>
+                          <button className="link small" onClick={() => void copy(id, NUMBERS.includes(f.key) ? f.value.replace(/[\s.]/g, '') : f.value)}>
                             {copied === id ? t('ui.donations.copied') : t('ui.donations.copy')}
                           </button>
                         </>
