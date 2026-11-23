@@ -17,7 +17,8 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "content": "tsx scripts/build-content.ts",
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "site:version": "node scripts/site-version.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
