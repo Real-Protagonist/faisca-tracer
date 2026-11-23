@@ -18,8 +18,9 @@
   <meta property="og:url" content="https://faiscatracer.com/" />
   <meta property="og:locale" content="pt_PT" />
   <meta property="og:image" content="https://faiscatracer.com/img/pt/esquema-2d.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="lang.js" data-home></script>
+  <link rel="stylesheet" href="styles.css?v=e4f0d881fa" />
+  <script src="site.js?v=3b3e95c6bf" defer></script>
+  <script src="lang.js?v=de0d929085" data-home></script>
 </head>
 <body>
   <!--
@@ -37,6 +38,7 @@
         <a href="#about">O que é</a>
         <a href="#audience">Para quem</a>
         <a href="#download">Como usar</a>
+        <a href="#feedback">Opiniões</a>
       </nav>
       <nav class="langs" aria-label="Idioma">
         <a href="./" hreflang="pt" lang="pt" data-lang="pt" aria-current="page">PT</a>
@@ -62,6 +64,7 @@
             <a class="btn btn-primary" href="#download">Começar agora</a>
             <a class="btn btn-ghost" href="#about">Saber mais</a>
           </div>
+          <p class="downloads on-dark" data-downloads hidden title="Contagem em tempo real dos downloads dos instaladores"><span class="live" aria-hidden="true"></span><strong data-count>0</strong> downloads</p>
           <p class="meta">Gratuito · Português, inglês e francês · Funciona sem internet no computador</p>
         </div>
         <figure class="shot hero-shot">
@@ -173,6 +176,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
               Descarregar para Windows
             </a>
+            <p class="downloads" data-downloads hidden title="Contagem em tempo real dos downloads dos instaladores"><span class="live" aria-hidden="true"></span><strong data-count>0</strong> downloads</p>
             <p class="small">Versão 1.1.0 · instalador de 210 MB · <a href="https://github.com/Real-Protagonist/faisca-tracer/releases">outras versões e notas</a></p>
           </article>
           <article class="mode">
@@ -196,6 +200,57 @@
       </div>
     </section>
 
+    <section id="feedback" class="section">
+      <div class="wrap feedback-grid">
+        <div>
+          <p class="eyebrow">A sua opinião</p>
+          <h2>Ajude a melhorar o Faísca Tracer</h2>
+          <p class="intro">Gostou? Encontrou um erro? Falta um equipamento, um exemplo ou um exercício? Diga-nos. Cada mensagem é lida.</p>
+          <h3 class="tips-title">O que mais ajuda</h3>
+          <ul class="checks tips">
+            <li>O que estava a fazer e o que esperava que acontecesse.</li>
+            <li>O aparelho ou o exercício em causa (por exemplo, «Q2» ou «Arranque estrela-triângulo»).</li>
+            <li>Se usa a aplicação de desktop ou a versão web.</li>
+          </ul>
+        </div>
+        <form class="feedback-form" action="api/feedback.php" method="post" data-feedback
+          data-msg-sending="A enviar…" data-msg-ok="Obrigado! A sua mensagem foi recebida." data-msg-invalid="Verifique a mensagem (pelo menos 10 caracteres) e o e-mail."
+          data-msg-rate="Já enviou várias mensagens na última hora. Tente mais tarde." data-msg-error="Não foi possível enviar agora. Tente de novo dentro de alguns minutos.">
+          <fieldset class="kinds">
+            <legend>Tipo de mensagem</legend>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="kind" value="opinion" checked /><span>Opinião</span></label>
+                <label class="chip"><input type="radio" name="kind" value="criticism" /><span>Crítica</span></label>
+                <label class="chip"><input type="radio" name="kind" value="improvement" /><span>Sugestão de melhoria</span></label>
+            </div>
+          </fieldset>
+          <label class="field">
+            <span>Mensagem</span>
+            <textarea name="message" rows="6" minlength="10" maxlength="3000" required placeholder="Escreva aqui a sua opinião, crítica ou sugestão…"></textarea>
+            <small class="chars" data-chars aria-hidden="true"></small>
+          </label>
+          <div class="row">
+            <label class="field">
+              <span>Nome <em>(opcional)</em></span>
+              <input type="text" name="name" maxlength="80" autocomplete="name" />
+            </label>
+            <label class="field">
+              <span>E-mail <em>(opcional)</em></span>
+              <input type="email" name="email" maxlength="120" autocomplete="email" aria-describedby="email-hint-pt" />
+              <small id="email-hint-pt">Só para lhe podermos responder.</small>
+            </label>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <input type="hidden" name="lang" value="pt" />
+          <button class="btn btn-primary" type="submit">Enviar</button>
+          <p class="form-status" data-status role="status" aria-live="polite"></p>
+          <p class="privacy">As mensagens são lidas só pelo autor e não são publicadas. O seu endereço IP não fica guardado.</p>
+        </form>
+      </div>
+    </section>
+
     <section class="section notice">
       <div class="wrap">
         <p>O Faísca Tracer é uma ferramenta didáctica. Não substitui o projecto de uma instalação segundo o regulamento.</p>
@@ -210,9 +265,11 @@
         <span>Faísca Tracer</span>
       </div>
       <p>© 2023 Mesaque M. Txangala</p>
+      <p class="foot-note">Estatísticas de visitas anónimas, sem cookies.</p>
       <nav class="foot-links" aria-label="Ligações">
         <a href="#download">Descarregar</a>
         <a href="https://web.faiscatracer.com/?lang=pt" target="_blank" rel="noopener">Versão web</a>
+        <a href="#feedback">Deixar opinião</a>
         <a href="https://github.com/Real-Protagonist/faisca-tracer">Código-fonte</a>
       </nav>
     </div>

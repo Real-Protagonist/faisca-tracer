@@ -152,6 +152,49 @@ p { margin: 0; }
 .small { margin-top: 12px; font-size: 14px; color: var(--ink-soft); text-align: center; }
 .small a { color: var(--ink); }
 
+/* Contador de downloads */
+.downloads { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-soft); }
+.downloads[hidden] { display: none; }
+.downloads strong { display: inline-block; color: var(--ink); font-variant-numeric: tabular-nums; font-size: 17px; }
+.downloads.on-dark { margin-top: 22px; padding: 6px 14px 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); color: var(--on-navy-soft); }
+.downloads.on-dark strong { color: var(--on-navy); }
+.downloads.on-dark + .meta { margin-top: 12px; }
+.mode .downloads { align-self: center; margin-top: 14px; }
+.live { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34, 164, 93, 0.6); animation: pulse 2s infinite; }
+.downloads.bump strong { animation: bump 0.6s ease; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 164, 93, 0.55); } 70% { box-shadow: 0 0 0 8px rgba(34, 164, 93, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 164, 93, 0); } }
+@keyframes bump { 0% { color: var(--amber); transform: scale(1.25); } 100% { transform: scale(1); } }
+
+/* Opiniões */
+.feedback-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
+.tips-title { margin-top: 32px; font-size: 16px; }
+.tips { margin-top: 12px; color: var(--ink-soft); }
+.feedback-form { display: grid; gap: 18px; padding: 28px; border-radius: var(--radius); background: var(--paper-alt); border: 1px solid var(--line); }
+.kinds { border: 0; margin: 0; padding: 0; min-width: 0; }
+.kinds legend, .field > span { display: block; margin-bottom: 8px; font-weight: 650; font-size: 15px; }
+.field em { font-style: normal; font-weight: 400; color: var(--ink-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.chip span { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font-size: 15px; cursor: pointer; }
+.chip input:checked + span { background: var(--navy); border-color: var(--navy); color: var(--on-navy); }
+.chip input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
+.field { display: block; position: relative; }
+.field input, .field textarea { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; }
+.field textarea { resize: vertical; min-height: 140px; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 3px rgba(255, 176, 32, 0.25); }
+.field small { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-soft); }
+.field .chars { position: absolute; right: 0; top: 0; margin: 0; font-variant-numeric: tabular-nums; }
+.row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.feedback-form .btn { justify-self: start; border: 0; cursor: pointer; font-family: inherit; }
+.feedback-form .btn:disabled { opacity: 0.6; cursor: progress; transform: none; }
+.form-status { min-height: 1.6em; font-size: 15px; font-weight: 600; }
+.form-status:empty { display: none; }
+.form-status.good { color: var(--green); }
+.form-status.bad { color: #d64545; }
+.privacy { font-size: 13px; color: var(--ink-soft); }
+
 .notice { padding: 36px 0; border-top: 1px solid var(--line); }
 .notice p { color: var(--ink-soft); font-size: 15px; text-align: center; }
 
@@ -169,6 +212,7 @@ p { margin: 0; }
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-shot { transform: none; }
   .features, .people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feedback-grid { grid-template-columns: 1fr; gap: 32px; }
   .section { padding: 72px 0; }
 }
 
@@ -183,6 +227,9 @@ p { margin: 0; }
   .section { padding: 56px 0; }
   .lead, .intro { font-size: 17px; }
   .foot-links { margin-left: 0; }
+  .row { grid-template-columns: 1fr; }
+  .feedback-form { padding: 20px; }
+  .feedback-form .btn { justify-self: stretch; }
 }
 
 /* Telemóveis: o botão do cabeçalho repete o da secção «Como usar» e não cabe ao lado do selector. */
@@ -194,4 +241,7 @@ p { margin: 0; }
   html { scroll-behavior: auto; }
   .btn { transition: none; }
   .btn:hover { transform: none; }
+  .live, .downloads.bump strong { animation: none; }
 }
+
+.foot-note { font-size: 13px; opacity: 0.8; }

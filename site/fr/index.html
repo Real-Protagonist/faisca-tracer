@@ -18,8 +18,9 @@
   <meta property="og:url" content="https://faiscatracer.com/fr/" />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:image" content="https://faiscatracer.com/img/fr/esquema-2d.png" />
-  <link rel="stylesheet" href="../styles.css" />
-  <script src="../lang.js"></script>
+  <link rel="stylesheet" href="../styles.css?v=e4f0d881fa" />
+  <script src="../site.js?v=3b3e95c6bf" defer></script>
+  <script src="../lang.js?v=de0d929085"></script>
 </head>
 <body>
   <header class="top">
@@ -32,6 +33,7 @@
         <a href="#about">Présentation</a>
         <a href="#audience">Pour qui</a>
         <a href="#download">Comment l'utiliser</a>
+        <a href="#feedback">Avis</a>
       </nav>
       <nav class="langs" aria-label="Langue">
         <a href="../" hreflang="pt" lang="pt" data-lang="pt">PT</a>
@@ -57,6 +59,7 @@
             <a class="btn btn-primary" href="#download">Commencer</a>
             <a class="btn btn-ghost" href="#about">En savoir plus</a>
           </div>
+          <p class="downloads on-dark" data-downloads hidden title="Nombre de téléchargements des programmes d'installation, en temps réel"><span class="live" aria-hidden="true"></span><strong data-count>0</strong> téléchargements</p>
           <p class="meta">Gratuit · Portugais, anglais et français · Fonctionne sans internet sur ordinateur</p>
         </div>
         <figure class="shot hero-shot">
@@ -168,6 +171,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
               Télécharger pour Windows
             </a>
+            <p class="downloads" data-downloads hidden title="Nombre de téléchargements des programmes d'installation, en temps réel"><span class="live" aria-hidden="true"></span><strong data-count>0</strong> téléchargements</p>
             <p class="small">Version 1.1.0 · programme d'installation de 210 Mo · <a href="https://github.com/Real-Protagonist/faisca-tracer/releases">autres versions et notes</a></p>
           </article>
           <article class="mode">
@@ -191,6 +195,57 @@
       </div>
     </section>
 
+    <section id="feedback" class="section">
+      <div class="wrap feedback-grid">
+        <div>
+          <p class="eyebrow">Votre avis</p>
+          <h2>Aidez à améliorer Faísca Tracer</h2>
+          <p class="intro">Il vous plaît ? Vous avez trouvé une erreur ? Il manque un appareil, un exemple ou un exercice ? Dites-le-nous. Chaque message est lu.</p>
+          <h3 class="tips-title">Ce qui aide le plus</h3>
+          <ul class="checks tips">
+            <li>Ce que vous faisiez et ce que vous attendiez.</li>
+            <li>L'appareil ou l'exercice concerné (par exemple « Q2 » ou « Démarrage étoile-triangle »).</li>
+            <li>Si vous utilisez l'application de bureau ou la version en ligne.</li>
+          </ul>
+        </div>
+        <form class="feedback-form" action="../api/feedback.php" method="post" data-feedback
+          data-msg-sending="Envoi en cours…" data-msg-ok="Merci ! Votre message a bien été reçu." data-msg-invalid="Vérifiez le message (au moins 10 caractères) et l'adresse e-mail."
+          data-msg-rate="Vous avez déjà envoyé plusieurs messages au cours de la dernière heure. Réessayez plus tard." data-msg-error="Envoi impossible pour le moment. Réessayez dans quelques minutes.">
+          <fieldset class="kinds">
+            <legend>Type de message</legend>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="kind" value="opinion" checked /><span>Avis</span></label>
+                <label class="chip"><input type="radio" name="kind" value="criticism" /><span>Critique</span></label>
+                <label class="chip"><input type="radio" name="kind" value="improvement" /><span>Suggestion d'amélioration</span></label>
+            </div>
+          </fieldset>
+          <label class="field">
+            <span>Message</span>
+            <textarea name="message" rows="6" minlength="10" maxlength="3000" required placeholder="Écrivez ici votre avis, votre critique ou votre suggestion…"></textarea>
+            <small class="chars" data-chars aria-hidden="true"></small>
+          </label>
+          <div class="row">
+            <label class="field">
+              <span>Nom <em>(facultatif)</em></span>
+              <input type="text" name="name" maxlength="80" autocomplete="name" />
+            </label>
+            <label class="field">
+              <span>E-mail <em>(facultatif)</em></span>
+              <input type="email" name="email" maxlength="120" autocomplete="email" aria-describedby="email-hint-fr" />
+              <small id="email-hint-fr">Uniquement pour pouvoir vous répondre.</small>
+            </label>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <input type="hidden" name="lang" value="fr" />
+          <button class="btn btn-primary" type="submit">Envoyer</button>
+          <p class="form-status" data-status role="status" aria-live="polite"></p>
+          <p class="privacy">Les messages ne sont lus que par l'auteur et ne sont pas publiés. Votre adresse IP n'est pas conservée.</p>
+        </form>
+      </div>
+    </section>
+
     <section class="section notice">
       <div class="wrap">
         <p>Faísca Tracer est un outil pédagogique. Il ne remplace pas la conception d'une installation selon la réglementation.</p>
@@ -205,9 +260,11 @@
         <span>Faísca Tracer</span>
       </div>
       <p>© 2023 Mesaque M. Txangala</p>
+      <p class="foot-note">Statistiques de visites anonymes, sans cookies.</p>
       <nav class="foot-links" aria-label="Liens">
         <a href="#download">Télécharger</a>
         <a href="https://web.faiscatracer.com/?lang=fr" target="_blank" rel="noopener">Version en ligne</a>
+        <a href="#feedback">Donner votre avis</a>
         <a href="https://github.com/Real-Protagonist/faisca-tracer">Code source</a>
       </nav>
     </div>

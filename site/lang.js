@@ -109,5 +109,8 @@
   var me = document.currentScript;
   if (!me || !me.hasAttribute('data-home')) return;
   var lang = read() || detect();
-  if (lang !== 'pt') location.replace(HOME[lang] + location.hash);
+  if (lang !== 'pt') {
+    window.faiscaRedirecting = true; // site.js não conta esta página: conta a do idioma
+    location.replace(HOME[lang] + location.hash);
+  }
 })();
