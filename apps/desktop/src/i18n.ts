@@ -8,7 +8,10 @@ import type { Lang } from '@faisca/sim-core';
 
 const PREF_KEY = 'faisca.lang';
 
-/** Idioma guardado nas preferências ou, na primeira abertura, o do sistema operativo. */
+/**
+ * Idioma guardado nas preferências ou, na primeira abertura, o pedido no endereço (`?lang=fr`,
+ * usado pelo site faiscatracer.com) ou o do sistema operativo.
+ */
 export function preferredLang(): Lang {
   try {
     const saved = localStorage.getItem(PREF_KEY);
@@ -16,6 +19,8 @@ export function preferredLang(): Lang {
   } catch {
     /* sem preferências */
   }
+  const asked = new URLSearchParams(location.search).get('lang');
+  if (asked === 'pt' || asked === 'en' || asked === 'fr') return asked;
   const sys = (navigator.language || 'pt').slice(0, 2);
   return sys === 'en' || sys === 'fr' ? sys : 'pt';
 }
