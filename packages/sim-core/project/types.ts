@@ -50,6 +50,11 @@ export interface Wire {
   material: Material;
   method?: InstallMethod;
   fault?: WireFault;
+  /**
+   * Pontas desligadas do borne (vista 3D ou painel do cabo). O cabo continua no projecto, com as
+   * duas pontas atribuídas, mas não conduz: é como tirar o fio do borne e deixá-lo solto.
+   */
+  detached?: ('a' | 'b')[];
   /** Pontos de curva do desenho (editor 2D). */
   points?: { x: number; y: number }[];
 }

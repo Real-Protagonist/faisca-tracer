@@ -338,6 +338,43 @@ export function updateWire(id: string, f: (w: Wire) => void) {
   });
 }
 
+/** Desliga uma ponta do cabo do borne (o cabo fica, solto, e deixa de conduzir). */
+export function detachWireEnd(id: string, end: 'a' | 'b') {
+  updateWire(id, (w) => {
+    if (!w.detached?.includes(end)) w.detached = [...(w.detached ?? []), end].sort() as ('a' | 'b')[];
+  });
+}
+
+/**
+ * Liga uma ponta solta: ao borne de onde saiu ou a outro (`to`). Num borne novo, o percurso
+ * desenhado e o comprimento estimado são refeitos. Devolve false se a ligação não for possível.
+ */
+export function attachWireEnd(id: string, end: 'a' | 'b', to?: WireEnd): boolean {
+  const P0 = get().project;
+  const w0 = P0.wires.find((x) => x.id === id);
+  if (!w0) return false;
+  const target = to ?? w0[end];
+  const other = w0[end === 'a' ? 'b' : 'a'];
+  if (target.device === other.device && target.terminal === other.terminal) return false;
+  const dt = P0.devices.find((d) => d.id === target.device);
+  const dOther = P0.devices.find((d) => d.id === other.device);
+  if (!dt || !dOther || !registry.require(dt.type).terminals.some((t) => t.id === target.terminal)) return false;
+  const moved = target.device !== w0[end].device || target.terminal !== w0[end].terminal;
+  commit((P) => {
+    const w = P.wires.find((x) => x.id === id)!;
+    w.detached = w.detached?.filter((e) => e !== end);
+    if (!w.detached?.length) delete w.detached;
+    if (!moved) return;
+    w[end] = { device: target.device, terminal: target.terminal };
+    delete w.points;
+    const pa = terminalPos(registry, P.devices.find((d) => d.id === w.a.device)!, w.a.terminal);
+    const pb = terminalPos(registry, P.devices.find((d) => d.id === w.b.device)!, w.b.terminal);
+    const boxes = [w.a.device, w.b.device].map((d) => bbox(registry, P.devices.find((x) => x.id === d)!));
+    if (pa && pb) w.length = estimateLength(routeWire(pa, pb, [], boxes));
+  });
+  return true;
+}
+
 export function selectAll() {
   const P = get().project;
   set({ selection: { devices: P.devices.map((d) => d.id), wires: P.wires.map((w) => w.id) } });

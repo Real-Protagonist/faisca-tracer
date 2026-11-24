@@ -152,6 +152,8 @@ button, select, input { font: inherit; color: inherit; }
 .wire.diag-error .wire-halo, .wire.diag-error .wire-hit { stroke: #ff6b6b66; animation: blink 0.35s 2; }
 .wire.diag-warning .wire-hit { stroke: #ffb34766; animation: blink 0.35s 2; }
 .wire.cut .wire-line { stroke-dasharray: 3 4; }
+.wire-ends tr.off td:first-of-type { color: #d64545; font-weight: 600; }
+.loose-end { fill: var(--canvas-bg, #ffffff); stroke: #d64545; stroke-width: 1.6; pointer-events: none; }
 .cut-mark { stroke: #d64545; stroke-width: 2.5; }
 .flow { fill: none; stroke: #ffd34d; stroke-width: 2; stroke-dasharray: 3 13; animation: flow linear infinite; pointer-events: none; }
 .flow.rev { animation-direction: reverse; }
@@ -318,9 +320,21 @@ table.list tr:hover { background: var(--ui-bg3); }
 .view3d { position: relative; width: 100%; height: 100%; background: #1a2029; }
 .view3d canvas { display: block; }
 .view3d-bar { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; align-items: center; gap: 12px; pointer-events: none; }
-.view3d-bar > * { pointer-events: auto; }
+.view3d-bar > * { pointer-events: auto; flex: none; white-space: nowrap; }
+.view3d-bar > .hint { flex: 0 1 auto; min-width: 140px; white-space: normal; line-height: 1.3; }
 .view3d-bar .check { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 5px; background: #0e1118cc; color: var(--ui-text); }
 .view3d-bar .hint { padding: 4px 8px; border-radius: 5px; background: #0e1118aa; color: var(--ui-muted); font-size: 12px; }
+.view3d-bar .tool-toggle { height: 30px; padding: 0 10px; border-radius: 5px; border: 1px solid #ffffff22; background: #0e1118cc; color: var(--ui-text); cursor: pointer; }
+.view3d-bar .tool-toggle.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.view3d-bar .tool-toggle:disabled { opacity: 0.45; cursor: not-allowed; }
+.view3d-bar .hint.pending { background: #2fd37a33; color: #c9f7dc; }
+.view3d.wiring canvas { cursor: crosshair; }
+.view3d-menu { position: absolute; z-index: 20; min-width: 220px; padding: 6px; border-radius: 8px; background: #0e1118f2; border: 1px solid #ffffff1f; box-shadow: 0 8px 24px #0008; transform: translate(8px, 8px); }
+.view3d-menu .title { padding: 4px 8px 6px; font-size: 12px; font-weight: 700; color: var(--ui-muted); }
+.view3d-menu button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; border: 0; border-radius: 5px; background: none; color: var(--ui-text); text-align: left; cursor: pointer; }
+.view3d-menu button:hover, .view3d-menu button:focus-visible { background: #ffffff14; }
+.view3d-menu button.muted { color: var(--ui-muted); }
+.view3d-menu .chip { width: 10px; height: 10px; border-radius: 50%; flex: none; box-shadow: 0 0 0 1px #fff4; }
 .view3d-bar .fps { margin-left: auto; padding: 4px 8px; border-radius: 5px; background: #0e1118cc; color: #9ff0c4; font: 12px monospace; }
 
 /* Exercícios */

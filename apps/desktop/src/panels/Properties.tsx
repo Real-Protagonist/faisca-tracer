@@ -13,6 +13,8 @@ import {
   select,
   updateDevice,
   updateWire,
+  attachWireEnd,
+  detachWireEnd,
   useApp,
 } from '../store';
 import { fmtMeasurement } from '../format';
@@ -290,6 +292,27 @@ function WireProps({ w }: { w: Wire }) {
           </select>
         </label>
       )}
+      <h3>{t('ui.props.ends')}</h3>
+      <table className="meas wire-ends">
+        <tbody>
+          {(['a', 'b'] as const).map((e) => {
+            const off = !!w.detached?.includes(e);
+            return (
+              <tr key={e} data-testid={`wire-end-${e}`} className={off ? 'off' : ''}>
+                <th>
+                  {name(w[e].device)}:{w[e].terminal}
+                </th>
+                <td>{off ? t('ui.props.endDetached') : t('ui.props.endConnected')}</td>
+                <td>
+                  <button className="link small" onClick={() => (off ? attachWireEnd(w.id, e) : detachWireEnd(w.id, e))} data-testid={`wire-end-${e}-toggle`}>
+                    {off ? t('ui.props.attachEnd') : t('ui.props.detachEnd')}
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       <h3>{t('ui.props.measurements')}</h3>
       <table className="meas">
         <tbody>

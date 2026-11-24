@@ -3,6 +3,7 @@ import { rms } from '../solver/complex';
 import { ampacity, IEC_RULES, wireResistance } from '../checks/tables';
 import type { Simulator } from '../simulator';
 import type { Device } from '../project/types';
+import { wireConducts } from '../project/wire';
 import { diag, dev, wire, type Diagnostic } from './types';
 import { buildTopology, findPath, type Edge, type Topology } from './topology';
 import { assemblyDiagnostics } from './assembly';
@@ -65,7 +66,7 @@ export function runtimeDiagnostics(sim: Simulator, topo: Topology = buildTopolog
   }
 
   for (const w of P.wires) {
-    if (w.fault?.cut) continue;
+    if (!wireConducts(w)) continue;
     const I = rms(view.iWire(w.id));
     const iz = ampacity(w);
     // Sobrecarga mantida: a corrente actual e a equivalente térmica (60 s) acima de Iz.
@@ -173,6 +174,12 @@ export function whyNotWorking(sim: Simulator, idOrName: string, depth = 0): Diag
       if (e.closed) continue;
       if (e.kind === 'wire') {
         const w = P.wires.find((x) => x.id === e.id)!;
+        const loose = w.fault?.cut ? undefined : w.detached?.[0];
+        if (loose) {
+          const end = w[loose];
+          const at = `${P.devices.find((x) => x.id === end.device)?.name ?? end.device}-${end.terminal}`;
+          return diag('WIRE_DETACHED', 'error', [wire(w.id), dev(d.id)], { device: d.name, from: P.devices.find((x) => x.id === w.a.device)?.name ?? '', to: P.devices.find((x) => x.id === w.b.device)?.name ?? '', terminal: at }, w.id);
+        }
         return diag('WIRE_CUT', 'error', [wire(w.id), dev(d.id)], { device: d.name, from: P.devices.find((x) => x.id === w.a.device)?.name ?? '', to: P.devices.find((x) => x.id === w.b.device)?.name ?? '' }, w.id);
       }
       const blocker = P.devices.find((x) => x.id === e.id)!;

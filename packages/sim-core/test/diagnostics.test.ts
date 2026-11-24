@@ -408,6 +408,18 @@ describe('«Porque não funciona?»', () => {
     expect(whyNotWorking(sim, 'H1')).toMatchObject({ code: 'WIRE_CUT', values: { from: 'Q1', to: 'H1' }, fix: { id: a.id } });
   });
 
+  it('WIRE_DETACHED: o cabo de Q1 para H1 está desligado do borne H1-L; ao voltar a ligar, acende', () => {
+    const { P, a } = circuit();
+    a.detached = ['b'];
+    const sim = new Simulator(P);
+    sim.step(0.02);
+    expect(whyNotWorking(sim, 'H1')).toMatchObject({ code: 'WIRE_DETACHED', values: { from: 'Q1', to: 'H1', terminal: 'H1-L' }, fix: { id: a.id } });
+    delete a.detached;
+    const again = new Simulator(P);
+    again.step(0.02);
+    expect(whyNotWorking(again, 'H1').code).toBe('LOAD_OK');
+  });
+
   it('SOURCE_OFF: falha de energia na rede', () => {
     const { P } = circuit();
     const sim = new Simulator(P);

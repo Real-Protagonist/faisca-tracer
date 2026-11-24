@@ -806,6 +806,12 @@
       "hint": "Remplacez le câble de {{from}} à {{to}}.",
       "learn": "Un fil coupé ouvre le circuit comme un interrupteur ouvert, mais ne se voit pas. Mesurez au multimètre : tension d'un côté, rien de l'autre."
     },
+    "wire_detached": {
+      "title": "{{device}} ne fonctionne pas",
+      "cause": "Le câble de {{from}} à {{to}} est débranché de la borne {{terminal}}.",
+      "hint": "Reliez le câble de {{from}} à {{to}} à la borne {{terminal}}.",
+      "learn": "Un câble débranché ouvre le circuit, comme un fil coupé. Sur le banc 3D, l'extrémité libre pend à côté de la borne."
+    },
     "source_off": {
       "title": "{{device}} ne fonctionne pas",
       "cause": "La source {{source}} est hors tension.",
@@ -1002,8 +1008,21 @@
       "bench": "Banc didactique",
       "real": "Installation réelle",
       "names": "Noms",
-      "hint": "Faites glisser pour tourner, utilisez la molette pour zoomer et cliquez sur un appareil pour le manœuvrer.",
-      "fps": "{{fps}} i/s"
+      "hint": "Faites glisser pour tourner, utilisez la molette pour zoomer et cliquez sur un appareil pour le manœuvrer. Double-cliquez sur un appareil pour le voir de près.",
+      "fps": "{{fps}} i/s",
+      "wiring": "Câblage",
+      "wiringTitle": "Afficher les bornes pour brancher et débrancher les câbles",
+      "wiringBenchOnly": "Disponible sur le banc didactique",
+      "wiringHint": "Cliquez sur une borne pour débrancher un câble ou en commencer un. Cliquez sur une extrémité libre pour la brancher.",
+      "pickTarget": "Choisissez la borne d'arrivée du nouveau câble. Échap annule.",
+      "pickAttach": "Choisissez la borne où brancher l'extrémité libre. Échap annule.",
+      "terminal": "{{device}} · borne {{terminal}}",
+      "detach": "Débrancher le câble vers {{to}}",
+      "newWire": "Nouveau câble à partir d'ici",
+      "cancel": "Annuler",
+      "loose": "Extrémité libre du câble {{from}} – {{to}}",
+      "fit": "Tout voir",
+      "fitTitle": "Un double-clic sur un appareil rapproche la caméra ; ce bouton montre toute la scène."
     },
     "sim": {
       "mode": "Mode de simulation",
@@ -1044,7 +1063,12 @@
       "level": "Niveau",
       "frequency": "Fréquence du réseau",
       "stats": "{{nodes}} nœuds · {{ms}} ms par pas",
-      "hint": "Faites glisser un appareil de la bibliothèque sur le schéma. Reliez les bornes en glissant de l'une à l'autre."
+      "hint": "Faites glisser un appareil de la bibliothèque sur le schéma. Reliez les bornes en glissant de l'une à l'autre.",
+      "ends": "Extrémités",
+      "endConnected": "branchée",
+      "endDetached": "débranchée",
+      "detachEnd": "Débrancher",
+      "attachEnd": "Brancher"
     },
     "material": {
       "Cu": "Cuivre",

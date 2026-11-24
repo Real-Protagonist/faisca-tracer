@@ -9,6 +9,7 @@ import {
 } from './mna';
 import { CABLE_REACTANCE, wireResistance } from '../checks/tables';
 import type { Device, Project } from '../project/types';
+import { wireConducts } from '../project/wire';
 import type { Registry } from '../devices/registry';
 import type { SolutionView, StampContext } from '../devices/types';
 
@@ -135,7 +136,7 @@ export function buildNetwork(
 
   // 2. Cabos: R = ρ·L/S (+ contacto solto), X = 0,08 mΩ/m no perfil Profissional.
   for (const w of project.wires) {
-    if (w.fault?.cut) continue;
+    if (!wireConducts(w)) continue;
     const a = termNode.get(`${w.a.device}:${w.a.terminal}`);
     const b = termNode.get(`${w.b.device}:${w.b.terminal}`);
     if (a === undefined || b === undefined) continue;
@@ -185,7 +186,7 @@ function frequencyDomains(project: Project, registry: Registry, runtimeOf: (d: D
     const rb = find(b);
     if (ra !== rb) parent.set(ra, rb);
   };
-  for (const w of project.wires) if (!w.fault?.cut) union(termNode.get(`${w.a.device}:${w.a.terminal}`), termNode.get(`${w.b.device}:${w.b.terminal}`));
+  for (const w of project.wires) if (wireConducts(w)) union(termNode.get(`${w.a.device}:${w.a.terminal}`), termNode.get(`${w.b.device}:${w.b.terminal}`));
   for (const d of project.devices) {
     for (const c of registry.get(d.type)?.conducts?.(d) ?? []) if (c.closed) union(termNode.get(`${d.id}:${c.a}`), termNode.get(`${d.id}:${c.b}`));
   }

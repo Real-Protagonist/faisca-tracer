@@ -806,6 +806,12 @@
       "hint": "Substitua o cabo de {{from}} para {{to}}.",
       "learn": "Um fio cortado abre o circuito como um interruptor desligado, mas não se vê. Mede-se com o multímetro: tensão de um lado, nada do outro."
     },
+    "wire_detached": {
+      "title": "{{device}} não funciona",
+      "cause": "O cabo de {{from}} para {{to}} está desligado do borne {{terminal}}.",
+      "hint": "Ligue o cabo de {{from}} para {{to}} ao borne {{terminal}}.",
+      "learn": "Um cabo desligado abre o circuito, como um fio cortado. Na bancada 3D, a ponta solta fica pendurada junto ao borne."
+    },
     "source_off": {
       "title": "{{device}} não funciona",
       "cause": "A fonte {{source}} está sem energia.",
@@ -1002,8 +1008,21 @@
       "bench": "Bancada didáctica",
       "real": "Instalação real",
       "names": "Nomes",
-      "hint": "Arraste para rodar, use a roda para aproximar e clique num aparelho para o operar.",
-      "fps": "{{fps}} fps"
+      "hint": "Arraste para rodar, use a roda para aproximar e clique num aparelho para o operar. Duplo clique num aparelho para o ver de perto.",
+      "fps": "{{fps}} fps",
+      "wiring": "Ligações",
+      "wiringTitle": "Mostrar os bornes para ligar e desligar cabos",
+      "wiringBenchOnly": "Disponível na bancada didáctica",
+      "wiringHint": "Clique num borne para desligar um cabo ou começar um novo. Clique numa ponta solta para a ligar.",
+      "pickTarget": "Escolha o borne de destino do cabo novo. Esc cancela.",
+      "pickAttach": "Escolha o borne onde ligar a ponta solta. Esc cancela.",
+      "terminal": "{{device}} · borne {{terminal}}",
+      "detach": "Desligar o cabo para {{to}}",
+      "newWire": "Novo cabo a partir daqui",
+      "cancel": "Cancelar",
+      "loose": "Ponta solta do cabo {{from}} – {{to}}",
+      "fit": "Ver tudo",
+      "fitTitle": "Duplo clique num aparelho aproxima a câmara; este botão mostra a cena toda."
     },
     "sim": {
       "mode": "Modo de simulação",
@@ -1044,7 +1063,12 @@
       "level": "Nível",
       "frequency": "Frequência da rede",
       "stats": "{{nodes}} nós · {{ms}} ms por passo",
-      "hint": "Arraste um equipamento da biblioteca para o esquema. Ligue os terminais arrastando de um para o outro."
+      "hint": "Arraste um equipamento da biblioteca para o esquema. Ligue os terminais arrastando de um para o outro.",
+      "ends": "Pontas",
+      "endConnected": "ligada",
+      "endDetached": "desligada",
+      "detachEnd": "Desligar",
+      "attachEnd": "Ligar"
     },
     "material": {
       "Cu": "Cobre",

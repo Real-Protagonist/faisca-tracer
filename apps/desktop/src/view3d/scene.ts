@@ -9,10 +9,11 @@
  */
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import type { Device, Project, Registry } from '@faisca/sim-core';
+import type { Device, DeviceDef, Project, Registry, WireEnd } from '@faisca/sim-core';
 import { bbox, layoutWires, sizeOf, terminalPos, type Pt } from '../editor/geometry';
 import { buildModel, modelId, mountOf, type Live, type Model, type Mount } from './models';
-import { mats } from './kit';
+import { COL, mats } from './kit';
+import { buildDecals, type DecalItem } from './decals';
 
 export type Mode = 'bench' | 'real';
 
@@ -29,15 +30,22 @@ export interface Built {
   anchors: Map<string, THREE.Vector3>;
   /** Aparelhos montados dentro do quadro (instalação real). */
   inBoard: Set<string>;
+  /** Bornes, para os ligar e desligar na vista 3D (só na bancada): «aparelho:borne» → posição. */
+  terminals: Map<string, { pos: THREE.Vector3; end: WireEnd }>;
+  /** Pontas de cabo desligadas, penduradas junto ao borne: «cabo:a|b» → posição da ponta. */
+  looseEnds: Map<string, { pos: THREE.Vector3; wire: string; end: 'a' | 'b' }>;
   update(live: (d: Device) => Live | null, dt: number): void;
   dispose(): void;
 }
 
 interface Placed {
   d: Device;
+  def: DeviceDef;
   model: Model;
   W: number;
   H: number;
+  /** Bornes em coordenadas locais do modelo e o texto impresso de cada um. */
+  terms: { x: number; y: number; top: boolean; label: string }[];
 }
 
 /** Bornes em coordenadas locais do modelo (x, y), a partir dos terminais do símbolo. */
@@ -52,7 +60,61 @@ function makeModel(registry: Registry, d: Device): Placed {
   const { w, h } = sizeOf(def, d);
   const W = w / U;
   const H = h / U;
-  return { d, model: buildModel({ d, def, W: W * 0.92, H: H * 0.92, terms: localTerms(registry, d).map((t) => ({ ...t, x: t.x * 0.92, y: t.y * 0.92 })) }), W, H };
+  const terms = localTerms(registry, d).map((t) => ({ ...t, x: t.x * 0.92, y: t.y * 0.92 }));
+  const labels = def.terminals.map((t) => t.label ?? t.id);
+  return { d, def, model: buildModel({ d, def, W: W * 0.92, H: H * 0.92, terms }), W, H, terms: terms.map((t, i) => ({ ...t, label: labels[i]! })) };
+}
+
+/**
+ * Calibre impresso na frente do aparelho, a partir dos parâmetros: «C16» (curva e corrente),
+ * «30 mA», «230 V»… No máximo dois valores, como nas etiquetas reais.
+ */
+export function ratingText(def: DeviceDef, d: Device): string {
+  const val = (k: string) => d.params[k] ?? def.params?.find((p) => p.key === k)?.default;
+  const parts: string[] = [];
+  const curve = val('curve');
+  const In = val('In');
+  const merged = typeof curve === 'string' && In !== undefined;
+  if (merged) parts.push(`${curve}${In}`);
+  for (const p of def.params ?? []) {
+    if (parts.length >= 2) break;
+    // Os parâmetros do perfil Profissional também vêm impressos (poder de corte, corrente nominal).
+    if (p.hidden || !p.unit || p.key === 'curve' || (merged && p.key === 'In')) continue;
+    const v = val(p.key);
+    if (typeof v === 'number') parts.push(`${String(v).replace('.', ',')} ${p.unit}`);
+  }
+  return parts.join(' · ');
+}
+
+/** Etiquetas de um aparelho: números dos bornes de cima e de baixo e o calibre na frente. */
+function decalsOf(p: Placed): DecalItem[] {
+  const plate = p.model.plate;
+  if (!plate) return [];
+  const out: DecalItem[] = [];
+  const matrix = p.model.root.matrixWorld.clone();
+  const ink = plate.ink ?? '#2b2f36';
+  const w = plate.w * 0.98;
+  for (const top of [true, false]) {
+    const row = p.terms.filter((t) => t.top === top);
+    if (!row.length) continue;
+    // Por baixo da frente saliente, os números ficariam tapados (a câmara olha de cima).
+    const outer = !top && plate.edge !== undefined;
+    const y = outer ? -(plate.screwY + plate.edge!) / 2 : (top ? 1 : -1) * (plate.screwY - 0.2);
+    const h = outer ? Math.min(0.16, plate.edge! - plate.screwY - 0.03) : 0.16;
+    out.push({
+      matrix,
+      x: 0,
+      y,
+      z: plate.z + 0.004,
+      w,
+      h,
+      labels: row.map((t) => ({ text: t.label, at: (t.x + w / 2) / w })),
+      ink,
+    });
+  }
+  const rating = ratingText(p.def, p.d);
+  if (plate.front && rating) out.push({ matrix, x: 0, y: plate.front.y, z: plate.front.z + 0.003, w: plate.w * 0.86, h: 0.15, labels: [{ text: rating, at: 0.5 }], ink, bold: true });
+  return out;
 }
 
 /** Tubo por uma polilinha com cantos vivos. */
@@ -67,7 +129,7 @@ function tube(pts: THREE.Vector3[], radius: number): THREE.BufferGeometry | null
 }
 
 /** Junta os tubos de cada cor numa só malha (uma chamada de desenho por cor). */
-function wireMeshes(byColor: Map<number, THREE.BufferGeometry[]>, group: THREE.Group, disposables: THREE.BufferGeometry[]) {
+function wireMeshes(byColor: Map<number, THREE.BufferGeometry[]>, group: THREE.Group, disposables: { dispose(): void }[]) {
   for (const [hex, geos] of byColor) {
     if (!geos.length) continue;
     const g = mergeGeometries(geos, false)!;
@@ -86,16 +148,32 @@ const wireMaterial = (hex: number) => {
   return m;
 };
 
-function finish(group: THREE.Group, placed: Placed[], anchors: Map<string, THREE.Vector3>, disposables: THREE.BufferGeometry[], inBoard = new Set<string>()): Built {
+function finish(
+  group: THREE.Group,
+  placed: Placed[],
+  anchors: Map<string, THREE.Vector3>,
+  disposables: { dispose(): void }[],
+  inBoard = new Set<string>(),
+  terminals: Built['terminals'] = new Map(),
+  looseEnds: Built['looseEnds'] = new Map(),
+): Built {
   const models = new Map(placed.map((p) => [p.d.id, p.model]));
   group.updateMatrixWorld(true);
   const bounds = new THREE.Box3().setFromObject(group);
+  // Etiquetas impressas (só no navegador: precisam de um canvas).
+  const decals = buildDecals(placed.flatMap(decalsOf));
+  if (decals) {
+    group.add(decals.group);
+    disposables.push(decals);
+  }
   return {
     group,
     models,
     bounds,
     anchors,
     inBoard,
+    terminals,
+    looseEnds,
     update(live, dt) {
       for (const p of placed) {
         if (!p.model.update) continue;
@@ -113,7 +191,7 @@ function finish(group: THREE.Group, placed: Placed[], anchors: Map<string, THREE
 
 export function buildBench(P: Project, registry: Registry): Built {
   const group = new THREE.Group();
-  const disposables: THREE.BufferGeometry[] = [];
+  const disposables: { dispose(): void }[] = [];
   const anchors = new Map<string, THREE.Vector3>();
   const devs = P.devices.filter((d) => registry.get(d.type));
   const boxes = devs.map((d) => bbox(registry, d));
@@ -166,25 +244,67 @@ export function buildBench(P: Project, registry: Registry): Built {
     group.add(rail);
   }
 
+  // Bornes: o ponto onde o cabo entra, junto ao parafuso.
+  const terminals: Built['terminals'] = new Map();
+  const termAt = (d: Device, terminal: string) => {
+    const t = terminalPos(registry, d, terminal);
+    if (!t) return null;
+    const inward = new THREE.Vector3(-t.nx, t.ny, 0).multiplyScalar(0.18);
+    return at(t, (zOf.get(d.id) ?? 0.5) * 0.55).add(inward);
+  };
+  for (const d of devs) {
+    for (const t of registry.require(d.type).terminals) {
+      const pos = termAt(d, t.id);
+      if (pos) terminals.set(`${d.id}:${t.id}`, { pos, end: { device: d.id, terminal: t.id } });
+    }
+  }
+
   // Cabos: o percurso do esquema sobre o painel, e no fim sobem até ao borne do aparelho.
+  // Nas pontas ligadas há uma ponteira metálica; uma ponta desligada fica pendurada, com o cobre à vista.
   const byColor = new Map<number, THREE.BufferGeometry[]>();
+  const ferrules: THREE.BufferGeometry[] = [];
+  const tips: THREE.BufferGeometry[] = [];
+  const looseEnds: Built['looseEnds'] = new Map();
+  const sleeve = (from: THREE.Vector3, toward: THREE.Vector3, len: number, r: number, into: THREE.BufferGeometry[]) => {
+    const dir = toward.clone().sub(from);
+    if (dir.lengthSq() < 1e-8) return;
+    dir.normalize();
+    const g = new THREE.CylinderGeometry(r, r, len, 10, 1);
+    g.deleteAttribute('uv');
+    g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir));
+    g.translate(from.x + (dir.x * len) / 2, from.y + (dir.y * len) / 2, from.z + (dir.z * len) / 2);
+    into.push(g);
+  };
   const routes = layoutWires(registry, P);
   for (const w of P.wires) {
     const pts = routes.get(w.id);
     if (!pts) continue;
     const z = 0.14;
-    const end = (e: typeof w.a, p: Pt) => {
+    const radius = w.conductor === 'PE' ? 0.035 : 0.03;
+    // Ponta de um cabo: no borne, ou solta (pendurada à frente do painel, junto ao borne).
+    const tip = (e: WireEnd, which: 'a' | 'b', p: Pt): THREE.Vector3[] => {
       const d = P.devices.find((x) => x.id === e.device)!;
+      const base = at(p, z);
+      if (!w.detached?.includes(which)) return [termAt(d, e.terminal) ?? base, base];
       const t = terminalPos(registry, d, e.terminal)!;
-      const inward = new THREE.Vector3(-t.nx, t.ny, 0).multiplyScalar(0.18);
-      return at(p, (zOf.get(d.id) ?? 0.5) * 0.55).add(inward);
+      const out = new THREE.Vector3(t.nx, -t.ny, 0);
+      const lift = base.clone().add(new THREE.Vector3(0, 0, 0.45));
+      const hang = lift.clone().addScaledVector(out, 0.2).add(new THREE.Vector3(0, -0.95, 0.3));
+      looseEnds.set(`${w.id}:${which}`, { pos: hang, wire: w.id, end: which });
+      return [hang, lift, base];
     };
-    const path = [end(w.a, pts[0]!), at(pts[0]!, z), ...pts.slice(1, -1).map((p) => at(p, z)), at(pts[pts.length - 1]!, z), end(w.b, pts[pts.length - 1]!)];
+    const ea = tip(w.a, 'a', pts[0]!);
+    const eb = tip(w.b, 'b', pts[pts.length - 1]!).reverse();
+    const path = [...ea, ...pts.slice(1, -1).map((p) => at(p, z)), ...eb];
     const hex = WIRE_HEX[w.conductor] ?? 0x888888;
-    const g = tube(path, w.conductor === 'PE' ? 0.035 : 0.03);
+    const g = tube(path, radius);
     if (!g) continue;
     if (!byColor.has(hex)) byColor.set(hex, []);
     byColor.get(hex)!.push(g);
+    for (const [which, first, next] of [['a', path[0]!, path[1]!], ['b', path[path.length - 1]!, path[path.length - 2]!]] as const) {
+      if (w.detached?.includes(which)) sleeve(first.clone().sub(next.clone().sub(first).setLength(0.1)), first, 0.12, radius * 0.75, tips);
+      else sleeve(first, next, 0.14, radius * 1.4, ferrules);
+    }
     if (w.fault?.cut) {
       // Fio cortado: marca vermelha a meio.
       const mid = path[Math.floor(path.length / 2)]!;
@@ -195,8 +315,20 @@ export function buildBench(P: Project, registry: Registry): Built {
     }
   }
   wireMeshes(byColor, group, disposables);
-  return finish(group, placed, anchors, disposables);
+  for (const [geos, mat] of [[ferrules, mats().rail], [tips, copperMaterial()]] as const) {
+    if (!geos.length) continue;
+    const g = mergeGeometries(geos, false)!;
+    geos.forEach((x) => x.dispose());
+    disposables.push(g);
+    const m = new THREE.Mesh(g, mat);
+    m.raycast = () => {};
+    group.add(m);
+  }
+  return finish(group, placed, anchors, disposables, new Set(), terminals, looseEnds);
 }
+
+let copper: THREE.Material | null = null;
+const copperMaterial = () => (copper ??= new THREE.MeshStandardMaterial({ color: COL.copper, roughness: 0.35, metalness: 0.7 }));
 
 /* ---------------- instalação real ---------------- */
 
@@ -207,7 +339,7 @@ const WALL_HEIGHT: Record<string, number> = { 'wall-switch': 1.1, socket: 0.3, h
 
 export function buildReal(P: Project, registry: Registry): Built {
   const group = new THREE.Group();
-  const disposables: THREE.BufferGeometry[] = [];
+  const disposables: { dispose(): void }[] = [];
   const anchors = new Map<string, THREE.Vector3>();
   const industrial = P.domain === 'industrial';
   const roomH = industrial ? 5 : 2.7;

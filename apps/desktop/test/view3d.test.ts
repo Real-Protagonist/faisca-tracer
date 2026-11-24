@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { addDevice, addWire, createProject, defaultRegistry, lookFrom, parseProject, Simulator, type Device, type Project } from '@faisca/sim-core';
 import { EXAMPLES } from '@faisca/content';
 import { buildModel, MODELS, modelId } from '../src/view3d/models';
-import { buildScene, drawCalls, type Mode } from '../src/view3d/scene';
+import { buildScene, drawCalls, ratingText, type Mode } from '../src/view3d/scene';
 
 const triangles = (g: THREE.Object3D) => {
   let n = 0;
@@ -83,6 +83,50 @@ describe('estados animados', () => {
     for (let i = 0; i < 30; i++) built.update((d) => ({ look: lookFrom([]), state: d.state, params: d.params }), 0.05);
     expect(Math.abs(lever.rotation.x)).toBeGreaterThan(1.2);
     expect(Math.abs(lever.rotation.x)).toBeLessThan(1.9);
+  });
+});
+
+describe('ligações na bancada', () => {
+  function lamp() {
+    const P = createProject();
+    const G = addDevice(P, 'grid1ph', { params: { earthing: 'TN-S' } });
+    const Q = addDevice(P, 'mcb1pn', { x: 0, y: 200 });
+    const H = addDevice(P, 'lampIncandescent', { x: 0, y: 400 });
+    addWire(P, G, 'L', Q, '1');
+    addWire(P, G, 'N', Q, '3');
+    const wl = addWire(P, Q, '2', H, 'L');
+    addWire(P, Q, '4', H, 'N');
+    return { P, Q, H, wl };
+  }
+
+  it('todos os bornes da bancada têm posição; na instalação real não há bornes clicáveis', () => {
+    const { P } = lamp();
+    const bench = buildScene(P, defaultRegistry, 'bench');
+    const n = P.devices.reduce((s, d) => s + defaultRegistry.require(d.type).terminals.length, 0);
+    expect(bench.terminals.size).toBe(n);
+    expect(bench.looseEnds.size).toBe(0);
+    expect(buildScene(P, defaultRegistry, 'real').terminals.size).toBe(0);
+  });
+
+  it('uma ponta desligada fica pendurada à frente do painel, longe do borne', () => {
+    const { P, H, wl } = lamp();
+    wl.detached = ['b'];
+    const built = buildScene(P, defaultRegistry, 'bench');
+    const loose = built.looseEnds.get(`${wl.id}:b`)!;
+    expect(loose).toBeDefined();
+    const term = built.terminals.get(`${H.id}:L`)!.pos;
+    expect(loose.pos.distanceTo(term)).toBeGreaterThan(0.4);
+    expect(loose.pos.z).toBeGreaterThan(0.3); // à frente do painel
+    expect(built.looseEnds.size).toBe(1);
+  });
+
+  it('o calibre impresso sai dos parâmetros', () => {
+    const def = (t: string) => defaultRegistry.require(t);
+    const dev = (t: string, params: Record<string, unknown> = {}) => ({ id: 'x', type: t, name: 'X', x: 0, y: 0, rot: 0, params, state: {} }) as unknown as Device;
+    expect(ratingText(def('mcb1pn'), dev('mcb1pn'))).toBe('C10 · 6 kA');
+    expect(ratingText(def('mcb3p'), dev('mcb3p', { In: 32, curve: 'D' }))).toBe('D32 · 10 kA');
+    expect(ratingText(def('rcd2p'), dev('rcd2p'))).toBe('30 mA · 40 A');
+    expect(ratingText(def('contactor3p'), dev('contactor3p'))).toBe('230 V · 12 A');
   });
 });
 

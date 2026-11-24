@@ -1,6 +1,7 @@
 /** Utilitários dos equipamentos industriais: componentes simétricas, térmico de motor, ligações. */
 import { cadd, cmul, cpolar, cscale, type Complex } from '../../solver/complex';
 import type { Device, Project, WireEnd } from '../../project/types';
+import { wireConducts } from '../../project/wire';
 import type { Registry } from '../registry';
 import type { LogicContext } from '../types';
 import { p } from '../common';
@@ -107,7 +108,7 @@ export function wireGroups(P: Project, registry: Registry): (e: WireEnd) => stri
     if (ra !== rb) parent.set(ra, rb);
   };
   for (const d of P.devices) for (const g of registry.get(d.type)?.shorts?.(d) ?? []) for (let i = 1; i < g.length; i++) union(`${d.id}:${g[0]}`, `${d.id}:${g[i]}`);
-  for (const w of P.wires) if (!w.fault?.cut) union(`${w.a.device}:${w.a.terminal}`, `${w.b.device}:${w.b.terminal}`);
+  for (const w of P.wires) if (wireConducts(w)) union(`${w.a.device}:${w.a.terminal}`, `${w.b.device}:${w.b.terminal}`);
   return (e) => find(`${e.device}:${e.terminal}`);
 }
 

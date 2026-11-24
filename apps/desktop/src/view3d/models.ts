@@ -16,10 +16,30 @@ export interface Live {
   params: Record<string, ParamValue>;
 }
 
+/** Onde se imprimem as etiquetas do aparelho (coordenadas locais do modelo). */
+export interface Plate {
+  /** Face onde estão os parafusos dos bornes. */
+  z: number;
+  /** Altura dos parafusos de cima (os de baixo estão em -screwY). */
+  screwY: number;
+  /** Largura útil da face. */
+  w: number;
+  /**
+   * Borda de cima/baixo da face, nos aparelhos modulares com frente saliente: aí os números dos
+   * bornes de baixo ficam entre o parafuso e a borda, para a saliência não os tapar.
+   */
+  edge?: number;
+  /** Placa da frente para o calibre («C16», «30 mA»…), se houver. */
+  front?: { z: number; y: number };
+  /** Cor do texto (claro nos aparelhos escuros). */
+  ink?: string;
+}
+
 export interface Model {
   root: THREE.Group;
   /** Profundidade (para os cabos chegarem à frente dos bornes). */
   depth: number;
+  plate?: Plate;
   update?(live: Live, dt: number): void;
 }
 
@@ -37,6 +57,11 @@ export interface BuildInput {
 }
 
 type Builder = (b: BuildInput) => Model;
+
+/** Texto claro, para aparelhos de corpo escuro. */
+const INK_LIGHT = '#e8ecf1';
+/** A cor é escura (luminância baixa)? */
+const dark = (hex: number) => ((hex >> 16) & 255) * 0.299 + ((hex >> 8) & 255) * 0.587 + (hex & 255) * 0.114 < 110;
 
 const num = (v: ParamValue | undefined, def = 0) => (typeof v === 'number' ? v : Number(v ?? def) || def);
 const bit = (mask: unknown, k: number) => ((Number(mask) || 0) >> k) % 2 === 1;
@@ -121,9 +146,10 @@ const breaker = (kind: 'mcb' | 'rcd' | 'switch' | 'fuse' | 'motor'): Builder => 
     if (kind === 'rcd') k.cyl(0.09, 0.05, COL.yellow, [W * 0.3, -H * 0.12, D], [Math.PI / 2, 0, 0], 10);
     if (kind === 'fuse') k.box(W * 0.5, H * 0.4, 0.04, COL.bodyGrey, [0, -H * 0.05, D + 0.01]);
   }));
+  const plate: Plate = { z: D * 0.55, screwY: H / 2 - 0.16, w: W, edge: H / 2, front: { z: D + 0.022, y: H * 0.18 } };
   if (kind === 'fuse') {
     const set = flag(root, 0, -H * 0.05, D + 0.05, 'redFlag');
-    return { root, depth: D, update: (l) => set(!!l.state.blown) };
+    return { root, depth: D, plate, update: (l) => set(!!l.state.blown) };
   }
   if (kind === 'motor') {
     // Manípulo rotativo: vertical ligado, rodado a 90° desligado, a 45° disparado.
@@ -134,6 +160,7 @@ const breaker = (kind: 'mcb' | 'rcd' | 'switch' | 'fuse' | 'motor'): Builder => 
     return {
       root,
       depth: D,
+      plate: { ...plate, front: { z: D + 0.004, y: -H * 0.2 } },
       update: (l, dt) => {
         const goal = l.state.trip ? -Math.PI / 4 : l.state.closed ? 0 : -Math.PI / 2;
         a += (goal - a) * Math.min(1, dt * 12);
@@ -147,6 +174,7 @@ const breaker = (kind: 'mcb' | 'rcd' | 'switch' | 'fuse' | 'motor'): Builder => 
   return {
     root,
     depth: D,
+    plate,
     update: (l, dt) => {
       set(l.state.trip ? 'trip' : l.state.closed ? 'on' : 'off', dt);
       trip(!!l.state.trip);
@@ -170,6 +198,7 @@ const relay = (kind: 'contactor' | 'din-relay' | 'thermal' | 'starter'): Builder
   return {
     root,
     depth: D,
+    plate: { z: D * 0.55, screwY: H / 2 - 0.16, w: W, edge: H / 2, front: { z: D + 0.004, y: -H * 0.17 } },
     update: (l) => {
       const s = l.state;
       const active = kind === 'thermal' ? false : !!(s.closed || s.coil || s.on || s.ok || (s.stage && s.stage !== 'off'));
@@ -190,6 +219,7 @@ const display = (kind: 'meter' | 'plc' | 'vfd' | 'energy'): Builder => (b) => {
     k.box(Math.min(W * 0.4, 2.2), H * 0.28, 0.02, COL.screen, [kind === 'plc' ? -W * 0.25 : 0, H * 0.05, D + 0.01]);
   }));
   const screen = led(root, kind === 'plc' ? -W * 0.25 : 0, H * 0.05, D + 0.03, kind === 'vfd' ? COL.green : 0x7cf0a8, 0.5);
+  const plate: Plate = { z: D * 0.55, screwY: H / 2 - 0.16, w: W, edge: H / 2, front: { z: D + 0.004, y: -H * 0.19 }, ink: kind === 'vfd' ? INK_LIGHT : undefined };
   if (kind === 'plc') {
     // 8 LED de entradas e 8 de saídas.
     const ins = Array.from({ length: 8 }, (_, i) => led(root, (i - 3.5) * 0.28 + W * 0.18, H * 0.3, D + 0.02, COL.green, 0.55));
@@ -197,6 +227,7 @@ const display = (kind: 'meter' | 'plc' | 'vfd' | 'energy'): Builder => (b) => {
     return {
       root,
       depth: D,
+      plate,
       update: (l) => {
         screen(l.look.state === 'no_power' ? 0 : 0.6);
         ins.forEach((f, i) => f(bit(l.state.i, i) ? 1 : 0));
@@ -207,6 +238,7 @@ const display = (kind: 'meter' | 'plc' | 'vfd' | 'energy'): Builder => (b) => {
   return {
     root,
     depth: D,
+    plate,
     update: (l) => screen(kind === 'vfd' ? (l.look.num('frequency') > 0.05 ? 1 : 0.15) : 0.5),
   };
 };
@@ -223,19 +255,20 @@ const panelRound = (kind: 'push' | 'push-green' | 'push-red' | 'emergency' | 'se
     if (kind === 'emergency') k.cyl(0.55, 0.03, COL.yellow, [0, 0, D + 0.02], [Math.PI / 2, 0, 0], 24);
     for (const t of b.terms) k.screw(t.x, t.top ? H * 0.42 - 0.12 : -H * 0.42 + 0.12, D);
   }));
+  const plate: Plate = { z: D, screwY: H * 0.42 - 0.12, w: W * 0.9 };
   if (kind === 'pilot') {
     const colors: Record<string, number> = { green: COL.green, red: COL.red, orange: COL.orange, white: 0xfff6dc, blue: COL.blue };
     const set = led(root, 0, 0, D + 0.12, colors[String(b.d.params.color)] ?? COL.green, 3.2);
-    return { root, depth: D, update: (l) => set(l.look.state === 'lit' ? 1 : 0) };
+    return { root, depth: D, plate, update: (l) => set(l.look.state === 'lit' ? 1 : 0) };
   }
   if (kind === 'selector') {
     const knob = mesh(G.knob, mats().vertex, [0, 0, D + 0.1]);
     root.add(knob);
-    return { root, depth: D, update: (l) => void (knob.rotation.z = [0, 0.7, -0.7][Number(l.state.pos ?? 0)] ?? 0) };
+    return { root, depth: D, plate, update: (l) => void (knob.rotation.z = [0, 0.7, -0.7][Number(l.state.pos ?? 0)] ?? 0) };
   }
   const cap = mesh(kind === 'emergency' ? G.mushroom : G.push, kind === 'emergency' ? mats().redFlag : new THREE.MeshStandardMaterial({ color: capCol, roughness: 0.4 }), [0, 0, D + 0.12]);
   root.add(cap);
-  return { root, depth: D, update: (l) => void (cap.position.z = D + (l.state.pressed ? 0.02 : 0.12)) };
+  return { root, depth: D, plate, update: (l) => void (cap.position.z = D + (l.state.pressed ? 0.02 : 0.12)) };
 };
 
 /** Lâmpada (ou campainha) num casquilho, acesa conforme o brilho. */
@@ -310,9 +343,10 @@ const boxDevice = (key: string, color: number, depth: number, extra?: (k: Kit, W
     extra?.(k, W, H, D);
     for (const t of b.terms) k.screw(t.x, t.top ? H * 0.42 - 0.12 : -H * 0.42 + 0.12, D);
   }));
-  if (!ledOn) return { root, depth: D };
+  const plate: Plate = { z: D, screwY: H * 0.42 - 0.12, w: W * 0.9, ink: dark(color) ? INK_LIGHT : undefined };
+  if (!ledOn) return { root, depth: D, plate };
   const set = led(root, W * 0.33, H * 0.25, D + 0.03, ledColor);
-  return { root, depth: D, update: (l) => set(ledOn(l)) };
+  return { root, depth: D, plate, update: (l) => set(ledOn(l)) };
 };
 
 /** Interruptor de parede: espelho e tecla basculante. */
@@ -403,7 +437,7 @@ const fault: Builder = (b) => {
     for (const t of b.terms) k.screw(t.x, t.top ? H * 0.35 - 0.1 : -H * 0.35 + 0.1, 0.4);
   }));
   const set = led(root, 0, 0, 0.45, COL.red, 2.2);
-  return { root, depth: 0.4, update: (l) => set(l.state.active ? 1 : 0.1) };
+  return { root, depth: 0.4, plate: { z: 0.4, screwY: H * 0.35 - 0.1, w: W * 0.8, ink: INK_LIGHT }, update: (l) => set(l.state.active ? 1 : 0.1) };
 };
 
 /** Moldura e nota: só marcam o painel. */

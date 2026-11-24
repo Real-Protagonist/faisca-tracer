@@ -325,14 +325,31 @@ function DeviceView({ d, selected, mark, lang }: { d: Device; selected: boolean;
   );
 }
 
-function WireView({ w, pts, selected, single, mark, current, clamp }: { w: Wire; pts?: Pt[]; selected: boolean; single: boolean; mark?: 'error' | 'warning'; current: number; clamp: boolean }) {
-  if (!pts) return null;
+/** Afasta a ponta do cabo do terminal (ponta desligada): recua `gap` px ao longo do primeiro troço. */
+function pullBack(pts: Pt[], atStart: boolean, gap = 14): Pt[] {
+  const out = pts.slice();
+  const i = atStart ? 0 : out.length - 1;
+  const j = atStart ? 1 : out.length - 2;
+  const a = out[i]!;
+  const b = out[j]!;
+  const l = Math.hypot(b.x - a.x, b.y - a.y);
+  if (!l) return out;
+  const f = Math.min(gap, l - 1) / l;
+  out[i] = { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+  return out;
+}
+
+function WireView({ w, pts: routed, selected, single, mark, current, clamp }: { w: Wire; pts?: Pt[]; selected: boolean; single: boolean; mark?: 'error' | 'warning'; current: number; clamp: boolean }) {
+  if (!routed) return null;
+  let pts = routed;
+  if (w.detached?.includes('a')) pts = pullBack(pts, true);
+  if (w.detached?.includes('b')) pts = pullBack(pts, false);
   const d = toPath(pts);
   const I = Math.abs(current);
   // A animação acelera com a corrente (escala logarítmica); só serve para mostrar o sentido e a ordem de grandeza.
   const dur = I > 1e-3 ? Math.max(0.15, 2.2 - 0.55 * Math.log10(1 + I * 100)) : 0;
   const mid = midPoint(pts);
-  const cls = ['wire', selected && 'selected', mark && `diag-${mark}`, w.fault?.cut && 'cut'].filter(Boolean).join(' ');
+  const cls = ['wire', selected && 'selected', mark && `diag-${mark}`, w.fault?.cut && 'cut', w.detached?.length && 'detached'].filter(Boolean).join(' ');
   return (
     <g className={cls} data-wire={w.id} data-current={I.toFixed(4)}>
       <path className="wire-hit" d={d} />
@@ -342,6 +359,8 @@ function WireView({ w, pts, selected, single, mark, current, clamp }: { w: Wire;
       {dur > 0 && !w.fault?.cut && <path className={current < 0 ? 'flow rev' : 'flow'} d={d} style={{ animationDuration: `${dur}s` }} />}
       {w.fault?.cut && <path className="cut-mark" d={`M${mid.x - 6} ${mid.y - 6} L${mid.x + 6} ${mid.y + 6} M${mid.x + 6} ${mid.y - 6} L${mid.x - 6} ${mid.y + 6}`} />}
       {clamp && <circle className="clamp" cx={mid.x} cy={mid.y} r={10} />}
+      {w.detached?.includes('a') && <circle className="loose-end" data-loose={`${w.id}:a`} cx={pts[0]!.x} cy={pts[0]!.y} r={3.5} />}
+      {w.detached?.includes('b') && <circle className="loose-end" data-loose={`${w.id}:b`} cx={pts[pts.length - 1]!.x} cy={pts[pts.length - 1]!.y} r={3.5} />}
       {selected && single && (
         <>
           {(w.points ?? []).map((p, i) => (

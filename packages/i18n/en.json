@@ -806,6 +806,12 @@
       "hint": "Replace the cable from {{from}} to {{to}}.",
       "learn": "A cut wire opens the circuit like a switch that is off, but you cannot see it. Measure with the multimeter: voltage on one side, nothing on the other."
     },
+    "wire_detached": {
+      "title": "{{device}} does not work",
+      "cause": "The cable from {{from}} to {{to}} is disconnected from terminal {{terminal}}.",
+      "hint": "Connect the cable from {{from}} to {{to}} to terminal {{terminal}}.",
+      "learn": "A disconnected cable opens the circuit, like a cut wire. On the 3D bench, the loose end hangs next to the terminal."
+    },
     "source_off": {
       "title": "{{device}} does not work",
       "cause": "Supply {{source}} has no power.",
@@ -1002,8 +1008,21 @@
       "bench": "Training bench",
       "real": "Real installation",
       "names": "Names",
-      "hint": "Drag to orbit, scroll to zoom and click a device to operate it.",
-      "fps": "{{fps}} fps"
+      "hint": "Drag to orbit, scroll to zoom and click a device to operate it. Double-click a device to see it up close.",
+      "fps": "{{fps}} fps",
+      "wiring": "Wiring",
+      "wiringTitle": "Show the terminals to connect and disconnect cables",
+      "wiringBenchOnly": "Available on the training bench",
+      "wiringHint": "Click a terminal to disconnect a cable or start a new one. Click a loose end to connect it.",
+      "pickTarget": "Choose the destination terminal of the new cable. Esc cancels.",
+      "pickAttach": "Choose the terminal for the loose end. Esc cancels.",
+      "terminal": "{{device}} · terminal {{terminal}}",
+      "detach": "Disconnect the cable to {{to}}",
+      "newWire": "New cable from here",
+      "cancel": "Cancel",
+      "loose": "Loose end of the cable {{from}} – {{to}}",
+      "fit": "Show all",
+      "fitTitle": "Double-click a device to zoom in; this button shows the whole scene."
     },
     "sim": {
       "mode": "Simulation mode",
@@ -1044,7 +1063,12 @@
       "level": "Level",
       "frequency": "Supply frequency",
       "stats": "{{nodes}} nodes · {{ms}} ms per step",
-      "hint": "Drag a device from the library onto the diagram. Connect terminals by dragging from one to another."
+      "hint": "Drag a device from the library onto the diagram. Connect terminals by dragging from one to another.",
+      "ends": "Ends",
+      "endConnected": "connected",
+      "endDetached": "disconnected",
+      "detachEnd": "Disconnect",
+      "attachEnd": "Connect"
     },
     "material": {
       "Cu": "Copper",

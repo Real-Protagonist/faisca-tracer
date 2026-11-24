@@ -36,6 +36,7 @@ export const DIAG_CODES = [
   'PATH_OPEN',
   'LOAD_NO_SUPPLY',
   'WIRE_CUT',
+  'WIRE_DETACHED',
   'SOURCE_OFF',
   'LOAD_SWITCHED_OFF',
   'LOW_VOLTAGE',

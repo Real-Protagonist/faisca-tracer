@@ -141,6 +141,8 @@ function traceConductor(P: Project, start: { device: string; terminal: string },
   return null;
 }
 
+export { wireConducts } from './wire';
+
 export interface WireOptions {
   conductor?: Conductor;
   section?: number;

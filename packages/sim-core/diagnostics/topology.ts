@@ -7,6 +7,7 @@
 import type { Registry } from '../devices/registry';
 import type { SourceRole } from '../devices/types';
 import type { Device, Project, Wire } from '../project/types';
+import { wireConducts } from '../project/wire';
 
 export interface Edge {
   a: number;
@@ -80,7 +81,7 @@ export function buildTopology(P: Project, registry: Registry): Topology {
     const a = pinOf.get(`${w.a.device}:${w.a.terminal}`);
     const b = pinOf.get(`${w.b.device}:${w.b.terminal}`);
     if (a === undefined || b === undefined) continue;
-    edges.push({ a, b, kind: 'wire', id: w.id, closed: !w.fault?.cut });
+    edges.push({ a, b, kind: 'wire', id: w.id, closed: wireConducts(w) });
     wiresAt[a]!.push(w);
     if (b !== a) wiresAt[b]!.push(w);
   }
