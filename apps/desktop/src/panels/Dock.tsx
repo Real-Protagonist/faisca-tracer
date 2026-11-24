@@ -1,5 +1,5 @@
 /** Doca inferior: biblioteca, Eventos, Problemas, Verificação, Exercício e Matriz MNA (Profissional). */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatNumber, lookFrom, type Category, type Device, type DeviceDef, type Diagnostic } from '@faisca/sim-core';
 import { registry, requestMatrix, select, ui, useApp, type DockTab } from '../store';
@@ -13,6 +13,90 @@ import { CompliancePanel } from './Compliance';
 
 const CATEGORIES: Category[] = ['sources', 'protection', 'control', 'sensors', 'loads', 'motors', 'measurement', 'distribution', 'faults', 'annotations'];
 
+/** Altura da doca (px): por omissão, mínima (só os separadores) e chave das preferências. */
+export const DOCK_DEFAULT = 210;
+export const DOCK_MIN = 40;
+const DOCK_KEY = 'faisca.dockHeight';
+/** Espaço mínimo que fica para o esquema (menus, barra de ferramentas e área de desenho). */
+const WORK_MIN = 30 + 44 + 220;
+
+const dockMax = () => Math.max(DOCK_MIN, window.innerHeight - WORK_MIN);
+const clampDock = (h: number) => Math.round(Math.min(dockMax(), Math.max(DOCK_MIN, h)));
+
+function savedDockHeight(): number {
+  try {
+    const v = Number(localStorage.getItem(DOCK_KEY));
+    if (v) return clampDock(v);
+  } catch {
+    /* sem preferências */
+  }
+  return DOCK_DEFAULT;
+}
+
+/** Altura da doca, ajustável com a barra do topo (rato ou teclado) e guardada nas preferências. */
+function useDockHeight() {
+  const [height, setHeight] = useState(savedDockHeight);
+  useEffect(() => {
+    try {
+      localStorage.setItem(DOCK_KEY, String(height));
+    } catch {
+      /* sem preferências */
+    }
+  }, [height]);
+  // Se a janela encolher, a doca não pode tapar o esquema.
+  useEffect(() => {
+    const fit = () => setHeight((h) => clampDock(h));
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+  return [height, (h: number) => setHeight(clampDock(h))] as const;
+}
+
+function DockResizer({ height, setHeight }: { height: number; setHeight: (h: number) => void }) {
+  const { t } = useTranslation();
+  const drag = useRef<{ y: number; h: number } | null>(null);
+  return (
+    <div
+      className="dock-resize"
+      role="separator"
+      aria-orientation="horizontal"
+      aria-label={t('ui.dock.resize')}
+      aria-valuemin={DOCK_MIN}
+      aria-valuemax={dockMax()}
+      aria-valuenow={height}
+      title={t('ui.dock.resizeHint')}
+      tabIndex={0}
+      data-testid="dock-resize"
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        drag.current = { y: e.clientY, h: height };
+        document.body.classList.add('resizing-dock');
+      }}
+      onPointerMove={(e) => {
+        if (drag.current) setHeight(drag.current.h - (e.clientY - drag.current.y));
+      }}
+      onPointerUp={(e) => {
+        drag.current = null;
+        e.currentTarget.releasePointerCapture(e.pointerId);
+        document.body.classList.remove('resizing-dock');
+      }}
+      onLostPointerCapture={() => {
+        drag.current = null;
+        document.body.classList.remove('resizing-dock');
+      }}
+      onDoubleClick={() => setHeight(DOCK_DEFAULT)}
+      onKeyDown={(e) => {
+        const step = e.shiftKey ? 80 : 20;
+        const next = { ArrowUp: height + step, ArrowDown: height - step, PageUp: height + 80, PageDown: height - 80, Home: dockMax(), End: DOCK_MIN, Enter: DOCK_DEFAULT }[e.key];
+        if (next !== undefined) {
+          e.preventDefault();
+          setHeight(next);
+        }
+      }}
+    />
+  );
+}
+
 export function Dock() {
   const { t } = useTranslation();
   const tab = useApp((s) => s.dockTab);
@@ -20,8 +104,10 @@ export function Dock() {
   const problems = useApp((s) => s.snapshot?.diagnostics.filter((d) => d.severity !== 'info').length ?? 0);
   const exercise = useApp((s) => !!s.exercise);
   const tabs: DockTab[] = ['library', 'events', 'problems', 'check', ...(exercise ? (['exercise'] as const) : []), ...(level === 'pro' ? (['matrix'] as const) : [])];
+  const [height, setHeight] = useDockHeight();
   return (
-    <section className="dock" aria-label={t('ui.dock.title')}>
+    <section className="dock" aria-label={t('ui.dock.title')} style={{ flexBasis: height }} data-testid="dock">
+      <DockResizer height={height} setHeight={setHeight} />
       <div className="dock-tabs" role="tablist">
         {tabs.map((x) => (
           <button key={x} role="tab" aria-selected={tab === x} className={tab === x ? 'active' : ''} onClick={() => ui.setDock(x)} data-testid={`dock-${x}`}>

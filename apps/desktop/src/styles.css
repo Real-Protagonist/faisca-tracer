@@ -34,7 +34,7 @@ button, select, input { font: inherit; color: inherit; }
 .app > .menubar { flex: 0 0 30px; }
 .app > .toolbar { flex: 0 0 44px; }
 .app > .work { flex: 1 1 auto; }
-.app > .dock { flex: 0 0 210px; }
+.app > .dock { flex: 0 0 210px; min-height: 40px; }
 
 /* ---- menus ---- */
 .menubar { display: flex; align-items: center; gap: 2px; padding: 0 8px; background: #161a25; border-bottom: 1px solid var(--ui-line); }
@@ -203,7 +203,13 @@ table.meas td { text-align: right; font-variant-numeric: tabular-nums; }
 .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: middle; }
 
 /* ---- doca ---- */
-.dock { display: grid; grid-template-rows: 32px 1fr; min-height: 0; background: var(--ui-bg2); border-top: 1px solid var(--ui-line); }
+.dock { position: relative; display: grid; grid-template-rows: 32px 1fr; min-height: 0; background: var(--ui-bg2); border-top: 1px solid var(--ui-line); }
+/* Barra para ajustar a altura da doca: 8 px de zona de arrasto sobre a borda de cima. */
+.dock-resize { position: absolute; left: 0; right: 0; top: -5px; height: 9px; z-index: 5; cursor: ns-resize; touch-action: none; }
+.dock-resize::after { content: ""; position: absolute; left: 50%; top: 3px; width: 44px; height: 3px; margin-left: -22px; border-radius: 2px; background: var(--ui-line); opacity: 0; transition: opacity 0.15s; }
+.dock-resize:hover::after, .dock-resize:focus-visible::after, body.resizing-dock .dock-resize::after { opacity: 1; background: var(--accent); }
+.dock-resize:focus-visible { outline: none; box-shadow: inset 0 2px 0 var(--accent); }
+body.resizing-dock, body.resizing-dock * { cursor: ns-resize !important; user-select: none; }
 .dock-tabs { display: flex; gap: 2px; padding: 3px 8px 0; background: var(--ui-bg); }
 .dock-tabs button { padding: 4px 14px; border: 0; border-radius: 5px 5px 0 0; background: none; cursor: pointer; color: var(--ui-muted); }
 .dock-tabs button.active { background: var(--ui-bg2); color: var(--ui-text); }

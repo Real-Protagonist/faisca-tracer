@@ -18,7 +18,7 @@ import {
   ui,
   useApp,
 } from '../store';
-import { bbox, endPos, midPoint, sizeOf, snap, terminalPos, toPath, wirePoints, type Pt } from './geometry';
+import { bbox, endPos, layoutWires, midPoint, sizeOf, snap, terminalPos, toPath, type Pt } from './geometry';
 import { SymbolView } from './SymbolView';
 
 const TERM_COLOR: Record<string, string> = { L: '#8b5a2b', L1: '#8b5a2b', L2: '#222', L3: '#888', N: '#2f6fd6', PE: '#2e9e44', C: '#d33', 'DC+': '#d33', 'DC-': '#222', any: '#5b6676' };
@@ -58,6 +58,11 @@ export function Canvas() {
   const snapshot = useApp((s) => s.snapshot);
   const probes = useApp((s) => s.probes);
   const lang = useApp((s) => s.lang);
+  // Rotas de todos os cabos, com os troços sobrepostos afastados. Só mudam quando muda a geometria
+  // (posição, rotação e largura dos aparelhos, pontas e pontos de curva dos cabos).
+  const geomKey = JSON.stringify([project.devices.map((d) => [d.id, d.x, d.y, d.rot, d.params.W]), project.wires.map((w) => [w.id, w.a, w.b, w.points])]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const routes = useMemo(() => layoutWires(registry, project), [geomKey]);
   const [drag, setDrag] = useState<Drag | null>(null);
   const [mouse, setMouse] = useState<Pt>({ x: 0, y: 0 });
   const [space, setSpace] = useState(false);
@@ -247,7 +252,7 @@ export function Canvas() {
           <DeviceView key={d.id} d={d} selected={selection.devices.includes(d.id)} mark={marks.get(d.id)} lang={lang} />
         ))}
         {project.wires.map((w) => (
-          <WireView key={w.id} w={w} selected={selection.wires.includes(w.id)} single={selection.wires.length === 1 && selection.devices.length === 0} mark={marks.get(w.id)} current={snapshot?.wires[w.id] ?? 0} clamp={probes.clamp === w.id} />
+          <WireView key={w.id} w={w} pts={routes.get(w.id)} selected={selection.wires.includes(w.id)} single={selection.wires.length === 1 && selection.devices.length === 0} mark={marks.get(w.id)} current={snapshot?.wires[w.id] ?? 0} clamp={probes.clamp === w.id} />
         ))}
         {others.map((d) => (
           <DeviceView key={d.id} d={d} selected={selection.devices.includes(d.id)} mark={marks.get(d.id)} lang={lang} />
@@ -320,14 +325,7 @@ function DeviceView({ d, selected, mark, lang }: { d: Device; selected: boolean;
   );
 }
 
-function WireView({ w, selected, single, mark, current, clamp }: { w: Wire; selected: boolean; single: boolean; mark?: 'error' | 'warning'; current: number; clamp: boolean }) {
-  const project = useApp((s) => s.project);
-  const da = project.devices.find((d) => d.id === w.a.device);
-  const db = project.devices.find((d) => d.id === w.b.device);
-  // A rota só muda quando os aparelhos das pontas ou os pontos de curva mudam.
-  const key = JSON.stringify([da?.x, da?.y, da?.rot, da?.params.W, db?.x, db?.y, db?.rot, db?.params.W, w.a, w.b, w.points]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const pts = useMemo(() => wirePoints(registry, project, w), [key]);
+function WireView({ w, pts, selected, single, mark, current, clamp }: { w: Wire; pts?: Pt[]; selected: boolean; single: boolean; mark?: 'error' | 'warning'; current: number; clamp: boolean }) {
   if (!pts) return null;
   const d = toPath(pts);
   const I = Math.abs(current);

@@ -10,7 +10,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { Device, Project, Registry } from '@faisca/sim-core';
-import { bbox, sizeOf, terminalPos, wirePoints, type Pt } from '../editor/geometry';
+import { bbox, layoutWires, sizeOf, terminalPos, type Pt } from '../editor/geometry';
 import { buildModel, modelId, mountOf, type Live, type Model, type Mount } from './models';
 import { mats } from './kit';
 
@@ -168,8 +168,9 @@ export function buildBench(P: Project, registry: Registry): Built {
 
   // Cabos: o percurso do esquema sobre o painel, e no fim sobem até ao borne do aparelho.
   const byColor = new Map<number, THREE.BufferGeometry[]>();
+  const routes = layoutWires(registry, P);
   for (const w of P.wires) {
-    const pts = wirePoints(registry, P, w);
+    const pts = routes.get(w.id);
     if (!pts) continue;
     const z = 0.14;
     const end = (e: typeof w.a, p: Pt) => {

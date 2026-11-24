@@ -1062,7 +1062,9 @@
       "problems": "Problems",
       "matrix": "MNA matrix",
       "check": "Compliance",
-      "exercise": "Exercise"
+      "exercise": "Exercise",
+      "resize": "Adjust the height of the library and panels",
+      "resizeHint": "Drag to enlarge or reduce. Double-click restores the default size. Keyboard: arrows, Home, End, Enter."
     },
     "library": {
       "all": "All",

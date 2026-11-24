@@ -179,6 +179,198 @@ export function wirePoints(registry: Registry, P: Project, w: Wire): Pt[] | null
   return routeWire(a, b, w.points, boxes);
 }
 
+/* ---------------- Separação de cabos sobrepostos ----------------
+ * Dois cabos podem ter a mesma rota (por exemplo, fase e neutro entre os mesmos aparelhos) e
+ * aparecer como um só. Depois do encaminhamento, os troços paralelos que se sobrepõem passam a
+ * faixas lado a lado, como num caminho de cabos. Os troços junto aos terminais (as saídas, STUB)
+ * ficam no sítio; o resto do cabo desloca-se e, se for preciso, faz um pequeno degrau logo a
+ * seguir à saída. Só muda o desenho: o comprimento do cabo para o cálculo vem da rota original.
+ */
+
+/** Distância entre faixas (px); diminui em feixes grandes para não invadir a grelha vizinha. */
+const LANE_MAX = 8;
+const LANE_MIN = 4;
+const LANE_SPAN = 36;
+/** Sobreposição mínima (px) para dois troços contarem como sobrepostos. */
+const OVERLAP = 1;
+
+interface Seg {
+  wire: string;
+  /** Índice do troço na lista de pontos do cabo (troço i vai do ponto i ao i+1). */
+  i: number;
+  h: boolean;
+  /** Coordenada da linha: y para troços horizontais, x para verticais. */
+  c: number;
+  lo: number;
+  hi: number;
+  /** Para onde segue o cabo em cada ponta do troço: -1 (para cima / esquerda), +1, ou 0. */
+  dirLo: number;
+  dirHi: number;
+}
+
+/** Junta-lhe as saídas como troços próprios, para o resto do primeiro e do último troço poder mexer. */
+function splitStubs(pts: Pt[]): Pt[] {
+  if (pts.length < 2) return pts;
+  const out = pts.slice();
+  const cut = (from: Pt, to: Pt): Pt | null => {
+    const l = Math.hypot(to.x - from.x, to.y - from.y);
+    if (l <= STUB + OVERLAP) return null;
+    return { x: from.x + ((to.x - from.x) / l) * STUB, y: from.y + ((to.y - from.y) / l) * STUB };
+  };
+  const last = cut(out[out.length - 1]!, out[out.length - 2]!);
+  if (last) out.splice(out.length - 1, 0, last);
+  const first = cut(out[0]!, out[1]!);
+  if (first) out.splice(1, 0, first);
+  return out;
+}
+
+/** Cruzamentos que a ordem «s antes de t» (s acima / à esquerda de t) provoca nas pontas dos dois troços. */
+function crossCost(s: Seg, t: Seg): number {
+  let n = 0;
+  const inside = (v: number, r: Seg) => v > r.lo + OVERLAP && v < r.hi - OVERLAP;
+  // s segue para baixo/direita a partir de uma ponta dentro de t: atravessa a faixa de t.
+  if (s.dirLo > 0 && inside(s.lo, t)) n++;
+  if (s.dirHi > 0 && inside(s.hi, t)) n++;
+  // t segue para cima/esquerda a partir de uma ponta dentro de s: atravessa a faixa de s.
+  if (t.dirLo < 0 && inside(t.lo, s)) n++;
+  if (t.dirHi < 0 && inside(t.hi, s)) n++;
+  return n;
+}
+
+/**
+ * Afasta os troços paralelos sobrepostos de cabos diferentes (ou do mesmo cabo). Recebe e devolve
+ * as rotas por id de cabo; as pontas ficam nos terminais e os troços continuam ortogonais.
+ */
+export function separateWires(routes: Map<string, Pt[]>): Map<string, Pt[]> {
+  const split = new Map<string, Pt[]>();
+  const segs: Seg[] = [];
+  /** Saídas dos terminais: não mexem, mas os outros cabos não devem passar por cima delas. */
+  const stubs: Seg[] = [];
+  for (const [id, raw] of routes) {
+    const pts = splitStubs(raw);
+    split.set(id, pts);
+    const n = pts.length - 1;
+    for (let i = 0; i < n; i++) {
+      const a = pts[i]!;
+      const b = pts[i + 1]!;
+      const h = a.y === b.y;
+      if (!h && a.x !== b.x) continue; // não ortogonal (não acontece com o encaminhamento actual)
+      const [p0, p1] = h ? (a.x <= b.x ? [a, b] : [b, a]) : a.y <= b.y ? [a, b] : [b, a];
+      // Direcção do cabo antes de p0 e depois de p1, perpendicular ao troço.
+      const nextOf = (p: Pt) => (p === a ? pts[i - 1] : pts[i + 2]);
+      const dir = (p: Pt) => {
+        const q = nextOf(p);
+        if (!q) return 0;
+        const d = h ? q.y - p.y : q.x - p.x;
+        return d > 0 ? 1 : d < 0 ? -1 : 0;
+      };
+      const seg = { wire: id, i, h, c: h ? a.y : a.x, lo: h ? p0.x : p0.y, hi: h ? p1.x : p1.y, dirLo: dir(p0), dirHi: dir(p1) };
+      (i === 0 || i === n - 1 ? stubs : segs).push(seg);
+    }
+  }
+
+  // Grupos: mesma orientação e mesma linha.
+  const key = (s: Seg) => `${s.h ? 'h' : 'v'}${Math.round(s.c * 100)}`;
+  const groups = new Map<string, Seg[]>();
+  for (const s of segs) {
+    if (!groups.has(key(s))) groups.set(key(s), []);
+    groups.get(key(s))!.push(s);
+  }
+  const fixedIn = new Map<string, Seg[]>();
+  for (const s of stubs) {
+    if (!fixedIn.has(key(s))) fixedIn.set(key(s), []);
+    fixedIn.get(key(s))!.push(s);
+  }
+  const offset = new Map<string, number>(); // `${wire}#${i}` → deslocamento
+  const overlaps = (s: Seg, t: Seg) => Math.min(s.hi, t.hi) - Math.max(s.lo, t.lo) > OVERLAP;
+  for (const [gk, group] of groups) {
+    group.sort((s, t) => s.lo - t.lo);
+    // Componentes de troços que se sobrepõem (em cadeia).
+    const comps: Seg[][] = [];
+    let cur: Seg[] = [];
+    let hi = -Infinity;
+    for (const s of group) {
+      if (cur.length && s.lo < hi - OVERLAP) cur.push(s);
+      else {
+        if (cur.length) comps.push(cur);
+        cur = [s];
+        hi = -Infinity;
+      }
+      hi = Math.max(hi, s.hi);
+    }
+    comps.push(cur);
+    for (const comp of comps) {
+      if (comp.length < 2) continue;
+      // Ordem das faixas: a que provoca menos cruzamentos nas pontas (ordenação por inserção).
+      const order: Seg[] = [];
+      for (const s of comp) {
+        let at = order.length;
+        while (at > 0 && overlaps(order[at - 1]!, s) && crossCost(order[at - 1]!, s) > crossCost(s, order[at - 1]!)) at--;
+        order.splice(at, 0, s);
+      }
+      // Faixas: cada troço fica na primeira livre entre os que se sobrepõem a ele.
+      const lane = new Map<Seg, number>();
+      for (const s of order) {
+        const used = new Set<number>();
+        for (const [t, l] of lane) if (overlaps(s, t)) used.add(l);
+        let l = 0;
+        while (used.has(l)) l++;
+        lane.set(s, l);
+      }
+      const k = Math.max(...lane.values()) + 1;
+      if (k < 2) continue;
+      const gap = Math.max(LANE_MIN, Math.min(LANE_MAX, LANE_SPAN / (k - 1)));
+      for (const [s, l] of lane) offset.set(`${s.wire}#${s.i}`, (l - (k - 1) / 2) * gap);
+    }
+    // Um troço que ficou em cima da saída de outro cabo afasta-se para o lado com menos cruzamentos.
+    for (const s of group) {
+      const o = offset.get(`${s.wire}#${s.i}`) ?? 0;
+      if (Math.abs(o) >= LANE_MIN) continue;
+      const f = (fixedIn.get(gk) ?? []).find((x) => x.wire !== s.wire && overlaps(s, x));
+      if (f) offset.set(`${s.wire}#${s.i}`, crossCost(s, f) <= crossCost(f, s) ? -LANE_MAX : LANE_MAX);
+    }
+  }
+
+  const out = new Map<string, Pt[]>();
+  for (const [id, pts] of split) {
+    const n = pts.length - 1;
+    if (n < 3 || !segs.some((s) => s.wire === id && offset.has(`${id}#${s.i}`))) {
+      out.set(id, routes.get(id)!);
+      continue;
+    }
+    // Linha de cada troço depois do deslocamento.
+    const lines = [];
+    for (let i = 0; i < n; i++) {
+      const a = pts[i]!;
+      const b = pts[i + 1]!;
+      const h = a.y === b.y;
+      lines.push({ h, c: (h ? a.y : a.x) + (offset.get(`${id}#${i}`) ?? 0) });
+    }
+    const res: Pt[] = [pts[0]!];
+    for (let i = 0; i < n - 1; i++) {
+      const s = lines[i]!;
+      const t = lines[i + 1]!;
+      const p = pts[i + 1]!;
+      if (s.h !== t.h) res.push(s.h ? { x: t.c, y: s.c } : { x: s.c, y: t.c });
+      else if (s.h) res.push({ x: p.x, y: s.c }, { x: p.x, y: t.c });
+      else res.push({ x: s.c, y: p.y }, { x: t.c, y: p.y });
+    }
+    res.push(pts[n]!);
+    out.set(id, dedupe(res));
+  }
+  return out;
+}
+
+/** Rotas de todos os cabos do projecto, já com os troços sobrepostos afastados. */
+export function layoutWires(registry: Registry, P: Project): Map<string, Pt[]> {
+  const routes = new Map<string, Pt[]>();
+  for (const w of P.wires) {
+    const pts = wirePoints(registry, P, w);
+    if (pts) routes.set(w.id, pts);
+  }
+  return separateWires(routes);
+}
+
 /** Caixa envolvente de um equipamento rodado. */
 export function bbox(registry: Registry, d: Device) {
   const def = registry.require(d.type);

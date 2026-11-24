@@ -1062,7 +1062,9 @@
       "problems": "Problèmes",
       "matrix": "Matrice MNA",
       "check": "Vérification",
-      "exercise": "Exercice"
+      "exercise": "Exercice",
+      "resize": "Ajuster la hauteur de la bibliothèque et des panneaux",
+      "resizeHint": "Faites glisser pour agrandir ou réduire. Un double-clic rétablit la taille par défaut. Clavier : flèches, Début, Fin, Entrée."
     },
     "library": {
       "all": "Tous",

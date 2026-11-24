@@ -1062,7 +1062,9 @@
       "problems": "Problemas",
       "matrix": "Matriz MNA",
       "check": "Verificação",
-      "exercise": "Exercício"
+      "exercise": "Exercício",
+      "resize": "Ajustar a altura da biblioteca e dos painéis",
+      "resizeHint": "Arraste para aumentar ou reduzir. Duplo clique repõe o tamanho normal. Teclado: setas, Home, End, Enter."
     },
     "library": {
       "all": "Todos",

@@ -6,7 +6,7 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { TFunction } from 'i18next';
 import { billOfMaterials, formatNumber, lookFrom, type Bom, type Lang, type Measurement, type Project } from '@faisca/sim-core';
-import { bbox, sizeOf, terminalPos, toPath, wirePoints } from '../editor/geometry';
+import { bbox, layoutWires, sizeOf, terminalPos, toPath } from '../editor/geometry';
 import { SymbolView } from '../editor/SymbolView';
 import { registry } from '../store';
 
@@ -64,13 +64,14 @@ export function buildSheet(P: Project, measurements: Record<string, Measurement[
   const date = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'fr' ? 'fr-FR' : 'pt-PT');
   let y = schH + 30;
 
+  const routes = layoutWires(registry, P);
   const svg = (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
       <style>{symbolCss()}</style>
       <rect x={0} y={0} width={width} height={height} fill="#ffffff" />
       <g transform={`translate(${-x0} ${-y0})`}>
         {P.wires.map((w) => {
-          const pts = wirePoints(registry, P, w);
+          const pts = routes.get(w.id);
           if (!pts) return null;
           return <path key={w.id} d={toPath(pts)} fill="none" stroke={WIRE[w.conductor] ?? '#888'} strokeWidth={w.conductor === 'PE' ? 2.6 : 2} strokeDasharray={w.fault?.cut ? '6 4' : undefined} />;
         })}
